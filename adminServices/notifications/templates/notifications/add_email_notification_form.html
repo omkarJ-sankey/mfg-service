@@ -1,0 +1,265 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Email Notification{% endblock %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/notifications/email_notifications/add_email_notification_form.css'%}">
+{% endblock %}
+{% block content %}
+<!-- add form page -->
+<div class="formContainer add-email-notification" id="formContainer">
+    <div class="custom_dialouge sub-main">
+        <div class="content-div">
+            <div>
+                <div>
+                    <a href="{% url 'email_list' %}"><em id="backButton"
+                            class="arrow cursor-pointer left-arrow back_button_styl"></em></a>
+                    <a href="{% url 'email_list' %}" class="user_back_navigation">
+                        {{page_name}}
+                    </a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <div><a class="usr_detaile input_container"><b>Notification Details</b></a></div>
+                        <div class="user_form_container">
+                            <div class="add-email-notification-form" id="add-email-notification-form">
+                                {% csrf_token %}
+                                <div class="input_container">
+                                    <label class="field_lable">Assign To</label>
+                                    <select class="select-field" id="user_category"
+                                        onchange="checkAssignedTo(this.value)">
+                                        <option value="Select">Select</option>
+                                        {% for user_category in user_category_list %}
+                                        {% if user_category == email_notification_data.assign_to %}
+                                        <option value="{{user_category}}" selected>{{user_category}}</option>
+                                        {%else%}
+                                        <option value="{{user_category}}">{{user_category}}</option>
+                                        {%endif%}
+                                        {% endfor %}
+                                    </select>
+                                    <p class='error-messages' id='assign-to-error'></p>
+                                </div>
+                                <div class="input_container" id="email-data-container">
+                                    <label class="field_lable">Add Email</label>
+                                    <div class="add-email-div" id="add-email-div">
+                                        <input type="text" id="user-email-input" class="user-email-input">
+                                        <button class="add-email-button" id="add-email-button"
+                                            onclick="addUserEmail()">Add Email</button>
+                                    </div>
+                                    <p class='error-messages' id='user-email-error'></p>
+                                </div>
+                                <div class="input_container emails-dispaly-div" id="emails-dispaly-div">
+
+                                </div>
+
+                                <div class="input_container" id="preference-container">
+                                    <label class="field_lable">Preference</label>
+                                    <select class="select-field" name="email_preference" id="email_preference">
+                                        <option value="Select">Select</option>
+                                        {% for i in list_of_email_preference %}
+                                        {% if i == email_notification_data.email_preference %}
+                                        <option value="{{i}}" selected>{{i}}</option>
+                                        {%else%}
+                                        <option value="{{i}}">{{i}}</option>
+                                        {%endif%}
+                                        {% endfor %}
+                                    </select>
+                                    <p class='error-messages' id='preference-type-error'></p>
+                                </div>
+
+                                <div class="input_container" id="postcode-data-container">
+                                    <label class="field_lable">Postcode</label>
+                                    <input type="text" id="postcode-input" class="postcode-input"
+                                        value="{{email_notification_data.postcode}}">
+                                    <p class='error-messages' id='postcode-error'></p>
+                                </div>
+
+                                <div class="input_container" id="subject-data-container">
+                                    <label class="field_lable">Subject</label>
+                                    <input type="text" id="subject-input" class="subject-input"
+                                        value="{{email_notification_data.subject}}">
+                                    <p class='error-messages' id='subject-error'></p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="attachment-container-main" id="attachment-container">
+                            <div class="attachment-info-message-container">
+                                <span>Attachments </span> <img class="attachment-info"
+                                    src="{%static '/images/i_icon.png'%}" alt="">
+                                <span class="attachment-info-message">Combined size of all files should be less than 10
+                                    MB</span>
+                            </div>
+                            <div>
+                                <button class="assign_button" onclick="displayAddAttachmentModal()"><b>Assign</b></button>
+                            </div>
+                        </div>
+                        <div class="main-attachment-container" id="main-attachment-container">
+
+                        </div>
+
+                        <div class="discription-conatiner" id="discription-conatiner">
+                            <div>
+                                <form id="custom-email-body" action="" method='post'>
+                                    {% csrf_token %}
+                                    {{discription_form.media}}
+                                    {{discription_form.as_p}}
+                                    <p class='error-messages' id='ckeditor-error'></p>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="cancel-preview-done-btn-container" id="cancel-preview-done-btn-container">
+                            <div class="cancel-btn-container">
+                                <a href="{% url 'email_list' %}"><button class="cancel-btn">Cancel</button></a>
+                            </div>
+                            <div class="preview-done-button-container">
+                                <button class="preview-btn" data-toggle="modal"
+                                    data-target="#preview-email-notifications-modal"
+                                    onclick="previewEmail()">Preview</button>
+                                <button class="done-btn" id="done-btn" onclick="sendEmailData()">Done</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- attachemnt modal -->
+<div class="attachment-modal" id="attachment-modal">
+    <div class="attachment-main-container">
+        <div class="attachment-container">
+            <div class="modal-header-content">
+                <div class="assign-attachments">
+                    <b>Assign Attachments</b>
+                </div>
+                <div class="attachment-modal-cross-btn-div">
+                    <button onclick="hideAddAttachmentModal()" id="attachment-modal-cross-btn">X</button>
+                </div>
+            </div>
+            <div class="count-add-attchment-btn-div">
+                <div class="files-count">
+                    <span id="count-span"><b>00</b> Added</span>
+                </div>
+                <div class="add-attachment-btn-container">
+                    <input type="file" id="add-attachments" name="add-attachments" hidden multiple
+                        accept="{{accept_extension}}">
+                    <label id="add-attachment-label" for="add-attachments"><b>Add Attachment</b></label>
+                </div>
+            </div>
+            <div class='error-messages' id="attachment-error-in-modal">
+
+            </div>
+            <div class="assigned-images-container" id="assigned-images-container">
+
+            </div>
+        </div>
+        <div class="cancel-assign-btn-div">
+            <div class="cancel-btn-div">
+                <button id="attachment-modal-cancel-btn" onclick="hideAddAttachmentModal()">Cancel</button>
+            </div>
+            <div class="assign-btn-div">
+                <button id="attachment-modal-assign-btn" onclick="mainModalAttachmentDisplayer()">Assign</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- preview modal -->
+<div class="modal show fade" id="preview-email-notifications-modal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content preview-email-notification-content">
+            <div class="modal-body">
+                <div class="heading ">
+                    <h6 class="heading-text">Email Preview</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="email-preview-content">
+                    <div class="email-body-header">
+                        <img class="marketing-email-heading-image"
+                            src="{% static '/images/marketing_email_header_img.png' %}" alt="">
+                    </div>
+                    <div>
+                        <p>Hi first_name</p>
+                    </div>
+                    <div class="email-custom-body">
+
+                    </div>
+                    <div class="email-body-footer">
+                        <p>
+                            If you have any queries, please contact Motor Fuel Group by email:
+                            CustomerCare@motorfuelgroup.com or call our helpline on +44 (0) 1727 898890
+                        </p>
+                        <p>
+                            Regards,<br>
+                            <span class="name-bold">Motor Fuel Group</span>
+                        </p>
+                        <p>
+                            MFG Group of Companies includes
+                        </p>
+                        <p>
+                            ©<span class="footer-year"></span> All rights reserved Motor Fuel Limited - 10 Bricket Road,
+                            Marlborough Court,St Albans, Hertfordshire, AL1 3JX
+                        </p>
+                        <p>
+                            ©<span class="footer-year"></span> All rights reserved MFG EV Power Limited - 10 Bricket
+                            Road, Marlborough Court,St Albans, Hertfordshire, AL1 3JX
+                        </p>
+                        <p>
+                            Registered in England & Wales:
+                        </p>
+                        <p>
+                            Motor Fuel Limited: 05206547 VAT Number: 123414161
+                        </p>
+                        <p>
+                            MFG EV Power Limited: 13353242 VAT Number: 123414161
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    let validate_user_email = "{% url 'validate-user-email'%}"
+    var token = '{{csrf_token}}';
+    let cross_one_icn_url = "{% static 'images/cross-1.png' %}";
+    let pdf_icon = "{% static 'images/pdf_icon.png' %}";
+    let excel_icon = "{% static 'images/excel_icon.png' %}";
+    let image_icon = "{% static 'images/image_icon.png' %}";
+    let ppt_icon = "{% static 'images/ppt_icon.png' %}";
+    let document_icon = "{% static 'images/document_icon.png' %}";
+    let common_filetype_icon = "{% static 'images/common_filetype_icon.png' %}";
+    let add_update_new_email_notification_url = ""
+    let lst_of_attachments_for_update_page;
+    {% if lst_of_attachments_for_update_page %}
+    lst_of_attachments_for_update_page = JSON.parse("{{lst_of_attachments_for_update_page|escapejs}}");
+    add_update_new_email_notification_url = "{% url 'update_email_notification' email_notification_data.id %}"
+    {% else %}
+    lst_of_attachments_for_update_page = [];
+    add_update_new_email_notification_url = "{% url 'add_new_email_notification' %}"
+    {% endif %}
+    list_of_allowed_file_types = JSON.parse("{{list_of_allowed_file_types|escapejs}}")
+    email_notification_total_file_size_limit = JSON.parse("{{email_notification_total_file_size_limit|escapejs}}")
+    let user_emails = [];
+    let assigned_to = "";
+    {% if users_list %}
+    user_emails = JSON.parse("{{users_list|escapejs}}")
+    {% endif %}
+    assigned_to = "{{email_notification_data.assign_to|safe}}"
+
+
+</script>
+
+
+<script src="{% static '/js/notifications/email-notifications.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,207 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}3DS Logs{% endblock %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/notifications/notifications/notifications.css' %}">
+{% endblock %}
+{% block content %}
+<div>
+    <div id='userMan' class="user_container_man active_form">
+        {% include "three_ds_config/3ds_sub_nav_bar.html" %}
+        <div class="Fields-container justify-content-between">
+            <div class="">
+                <label class="labels" for="cars">Search</label>
+                <div class="search-box">
+                    <img src="{% static '/images/search-1.png' %}" alt="">
+                    <input id="search" type="text" placeholder="E.g. DRIIVZ Account Number" class="inputs driivz-search" value="{{prev_search}}"
+                        onchange="filterFunction('search',this.value);" />
+                </div>
+            </div>
+            <div class="d-flex w-75 justify-content-end align-items-end">
+                <div class="w-25 mr-3">
+                    <label class="labels" for="cars">Status</label>
+                    <div class="select-box">
+                        <select class="dropdown_input" id="status" onchange="filterFunction('status',this.value);">
+                            <option value="All">All</option>
+                            {% for i in status_list %}
+                                {% if prev_status == i%}
+                                <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endif %}
+    
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="w-25 mr-3">
+                    <label class="labels">From Date</label>
+                    <div class="date_container" onclick="showFromDatePicker()">
+                        
+                        <input disabled type="text" id="from_date" value="{{prev_from_date}}" placeholder="From date" onchange="filterFunction('from_date',this.value);" class="datepicker" >
+                    
+                    </div>
+                    
+                </div>
+                <div class="w-25 mr-3">
+                    <label  class="labels">To Date</label>
+                    <div class="date_container" onclick="showToDatePicker()">
+                        
+                        <input disabled type="text" id="to_date" value="{{prev_to_date}}" placeholder="To date"  onchange="filterFunction('to_date',this.value);" class="datepicker" >
+                    
+                    </div>
+                    
+                </div> 
+                {% if logs_available %}    
+                    <div >
+                        <button class="bulk_upload"><a href="{% url 'three_ds_logs' %}?export=Yes{{update_url_param}}" class="export_link px-3" onclick="afterBulkExportRefreshPage();showLoader(null,null)">Bulk <img src="{% static '/images/up_arrow.png' %}" alt=""></a></button>
+                    </div>
+                {% else %}
+                    <div class="extra_small_width_field">
+                        <button class="bulk_upload" onclick="showDownloadError();">Bulk <img src="{% static '/images/up_arrow.png' %}" alt=""></button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="table_container_for_shadow">
+        <div class="table_container_promotions">
+            
+            <div class="left-table">
+                <table class="table_promotions promotion_box_shadow_none" aria-describedby="promotionlist">
+                    <thead>
+                      <tr>
+                        <!-- <th scope="col" class="pr-3">
+                            DRIIVZ Account Number
+                        </th> -->
+                        <th scope="col" class="pr-3">Session Id</th>
+                        <th scope="col" class="pr-3">User Email</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in three_ds_logs %}
+                            <tr class="leftrows" id="left{{log.id}}" >
+                                <!-- <th scope="row" class="promotion_table promotion_view_link pr-3">{{log.driivz_account_number}}</th> -->
+                                <th scope="row" class="promotion_table promotion_view_link pr-3">{{log.session_id}}</th>
+                                <th scope="row" class="promotion_table promotion_view_link pr-3">{{log.email}}</th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+            <div class="right_table" id="sliding_table">
+                <table class="table_promotions big" aria-describedby="orderpromotions">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="px-3">Reason for 3DS</th>
+                        <th scope="col" class="pr-3">Reason-kWh</th>
+                        <th scope="col" class="pr-3">Reason-Days</th>
+                        <th scope="col" class="pr-3">Reason-Transactions</th>
+                        <th scope="col" class="pr-3">Configuration set by Admin for 3DS</th>
+                        <th scope="col" class="pr-3">Configuration-kWh</th>
+                        <th scope="col" class="pr-3">Configuration-Days</th>
+                        <th scope="col" class="pr-3">Configuration-Transactions</th>
+                        <th scope="col" class="pr-3">Account creation Date</th>
+                        <th scope="col" class="pr-3">Log Date</th>
+                        <th scope="col" class="pr-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                          
+                        {% for log in three_ds_logs %}
+                            <tr id="right{{log.id}}">
+                                <th scope="row" class="promotion_table promotion_view_link px-3">{{log.reason_for_3ds}}</th>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.reason_for_3ds_kwh}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.reason_for_3ds_days}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.reason_for_3ds_transactions}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.configuration_set_by_admin_for_3ds}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.configuration_set_by_admin_for_3ds_kwh}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.configuration_set_by_admin_for_3ds_days}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.configuration_set_by_admin_for_3ds_transactions}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{% load offers_date_formater %}{{log.account_creation_date | offers_date_formater}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{% load offers_date_formater %}{{log.log_date | offers_date_formater}}</td>
+                                <td scope="row" class="promotion_table promotion_view_link pr-3">{{log.status}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="promotion_pagination">
+            <div class="pagination_div">    
+                <div class="record_count">
+                    {% if data_count is 0 %}
+                        <p class="promotion_list_table">No records</p>
+                    {% else %}
+                        <p class="promotion_list_table">   <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of <strong>{{data_count}}</strong> records </p>
+                
+                    {% endif %}
+                </div>
+                <div class="pagination_buttons">
+                    
+                    {% if data_count >= 10 %}
+                        {% if prev  %}
+                            <a href="{% url 'three_ds_logs' %}?page={{prev}}{{update_url_param}}" ><button class="pagination_button prev" >Previous</button></a>
+                        {% else %}
+                            
+                            <button class="disabled_button promotion prev">Previous</button>
+                        {% endif %} 
+                    {% endif %}
+                    {% for i in pagination_num_list%}
+                    
+                        {% if i is None %}
+
+                            <span>.</span>
+
+                        {% else %}
+                            {% if current_page == i%}
+                                <a href="#"  ><button class="active_pagination_button">{{i}}</button></a>
+                            {% else %}
+                                <a href="{% url 'three_ds_logs' %}?page={{i}}{{update_url_param}}" ><button class="pagination_button">{{i}}</button></a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if data_count >= 10 %}
+                        {% if next  %}
+                            <a href="{% url 'three_ds_logs' %}?page={{next}}{{update_url_param}}" ><button class="pagination_button next">Next</button></a>
+                        {% else %}
+                            
+                            <button class="disabled_button promotion next">Next</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="no_download_box"  data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content no_data_to_export_warning_modal no-records-modal no-records-modal" >
+        <div class="modal-body">
+            <h3 id="updated_status">No logs to export!</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
+{% block js %}
+<script type="text/javascript">
+    let url_u = `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'three_ds_logs'%}";
+    
+    let time_difference = Number("{{time_difference|safe}}");
+    let maximum_to_date = Number("{{maximum_to_date|safe}}");
+    let dashboard_data_days_limit = Number("{{dashboard_data_days_limit|safe}}");
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static '/js/three_ds_config/3ds_config.js' %}"></script>
+<!-- <script src="{% static '/js/notifications/email-list.js' %}"></script> -->
+{% endblock %}

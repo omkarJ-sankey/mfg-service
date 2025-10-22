@@ -1,0 +1,300 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %} Loyalties{% endblock %}
+{%block css%}
+<style>
+    
+</style>
+{%endblock%}
+{% block content %}
+
+<div class="Fields-container">
+    <div class="bigger_width_field">
+        <label for="fname" class="labels">Search</label>
+        <div class="search-box">
+            
+            <img src="{% static '/images/search-1.png' %}" >
+            <input type="text" id="fname" name="fname" class="inputs" value="{{prev_search}}" placeholder="E.g.BIG HOOPS BBQ BEEF" onchange="filterFunction('search',this.value);"><br><br>
+        </div>
+    </div>
+
+    <div class="small_width_field">
+        <label class="labels">From Date</label>
+        <div class="date_container" onclick="showFromDatePicker()">
+            
+            <input disabled type="text" id="from_date" value="{{prev_from_date}}" placeholder="From date" onchange="filterFunction('from_date',this.value);" class="datepicker" >
+          
+        </div>
+        
+    </div>
+    <div class="small_width_field">
+        <label  class="labels">To Date</label>
+        <div class="date_container" onclick="showToDatePicker()">
+            
+            <input disabled type="text" id="to_date" value="{{prev_to_date}}" placeholder="To date"  onchange="filterFunction('to_date',this.value);" class="datepicker" >
+        
+        </div>
+        
+    </div> 
+    <div class="small_width_field">
+        <label for="cars" class="labels">Status</label>
+        <div class="select-box">
+            <select class="dropdown_input small_dropdown_input" onchange="filterFunction('status',this.value);">
+                <!-- <option value="Active" selected>Active</option> -->
+                {% for i in status_list %}
+                    {% if prev_status == i%}
+                        <option value="{{i}}" selected>{{i}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+    {% if loyalties_available %}
+        <div class="extra_small_width_field"> 
+            <button class="bulk_upload" ><a href="{% url 'loyalties_list' %}?export=Yes{{update_url_param}}" class="export_link" onclick="afterBulkExportRefreshPage();showLoader(null,null)">Bulk <img src="{% static '/images/up_arrow.png' %}" ></a></button>
+        </div>
+    {% else %}  
+        
+        <div class="extra_small_width_field">
+            <button class="bulk_upload" onclick="showDownloadError();">Bulk <img src="{% static '/images/up_arrow.png' %}"  ></button>
+        </div>
+    {% endif %}
+
+    <div class="small_width_field1">
+        <a href="{% url 'add_loyalties' %}" class="add_new_site"><img src="{% static '/images/plus-sign.png'%}"></a>
+    </div>
+
+
+</div>
+<div class="table_container_for_shadow">
+<div class="table_container_promotions">
+    
+    <div class="left-table">
+        <table class="table_promotions promotion_box_shadow_none">
+            <thead>
+              <tr>
+                  
+                <th scope="col">
+                    Loyalty Title
+                </th>
+                <th scope="col">
+                    Offer Type
+                </th>
+                <th scope="col">
+                    Loyalty Type
+                </th>
+                <th scope="col">
+                    Reward
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for loyalty in loyalties %}
+                    
+                  <tr class="leftrows" id="left{{loyalty.id}}" >
+                    <th scope="row" class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{{loyalty.loyalty_title}}</a></th>
+                    <th scope="row" class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{% if loyalty.offer_type %} {{loyalty.offer_type}} {% else %} NA {% endif %}</a></th>
+                    <th scope="row" class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{% if loyalty.loyalty_type %} {{loyalty.loyalty_type}} {% else %} NA {% endif %}</a></th>
+                    <td scope="row" class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{{loyalty.redeem_product_code}}, {{loyalty.redeem_product}}</a></td>
+                    
+                </tr>
+
+                {% endfor %}
+              
+            </tbody>
+          </table>
+    </div>
+    <div class="right_table" id="sliding_table">
+        <table class="table_promotions big">
+            <thead>
+              <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Redeem type</th>
+                <th scope="col" onclick="orderByFunction('order_by_start_date')">Start Date
+                    {% if prev_start_date == 'Descending' %}
+                    
+                        <img id="order_by_start_date" class="order-by" src="{%static 'images/order-img.png'%}">
+                    {% else %}
+                        
+                        <img id="order_by_start_date"  src="{%static 'images/order-img.png'%}">
+                    {% endif %}
+                </th>
+                <th scope="col" onclick="orderByFunction('order_by_end_date')">End Date
+                    {% if prev_end_date  == 'Descending' %}
+                    
+                        <img id="order_by_end_date" class="order-by" src="{%static 'images/order-img.png'%}">
+                    {% else %}
+                        
+                        <img id="order_by_end_date"  src="{%static 'images/order-img.png'%}">
+                    {% endif %}
+                </th>
+                <th scope="col">Status</th>
+                <th scope="col text_align_style">Actions</th>
+
+              </tr>
+            </thead>
+            <tbody>
+                  
+                {% for loyalty in loyalties %}
+                    
+                    <tr id="right{{loyalty.id}}">
+                        <th class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{{loyalty.category}}</a></th>
+                        <td class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{% if loyalty.redeem_type %} {{loyalty.redeem_type }} {% else %} NA {% endif %}</a></td>
+                        <td class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{% load offers_date_formater %}{{loyalty.valid_from_date | offers_date_formater}}</a></td>
+                        <td class="promotion_table"><a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}">{% load offers_date_formater %}{{loyalty.valid_to_date | offers_date_formater}}</a></td>
+                        <td class="promotion_table">
+                            <div class="active_status_box promotion_table " >
+                                {% if loyalty.status == 'Active' %}
+                                    <a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}"><div class="active_status"></div></a>
+                                {%else%} 
+                                <a class="promotion_view_link" href="{% url 'view_loyalties' loyalty.id %}{{query_params_str}}"><div class="inactive_status"></div></a>
+                                {% endif %}{{loyalty.status}}
+                                <div class="dropdown display-none-style-promotion-status"  id="dropdownMenuButton{{loyalty.id}}" >
+                                    <ul class="dropdown-menu show dropdown-menu-style">
+                                        <li class="text_align_style">
+                                            {% if loyalty.status == 'Active' %}
+                                            <p class="dropdown-item" onclick="makeAction('{{forloop.counter}}', '{{loyalty.status}}','{{loyalty.id}}');">Make Inactive</p>
+                                            {% else %}
+                                                <p class="dropdown-item" onclick="makeAction('{{forloop.counter}}', '{{loyalty.status}}','{{loyalty.id}}');">Make Active</p>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="dots"  onclick="changeStatus('{{loyalty.id}}')" ><span></span><span></span><span></span></div>
+                                
+                            </div>
+                        </td>
+                        
+                        <td class="promotion_del_edit_btn"><button class="delete-station-image-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="appendDeleteContent(`{% url 'delete_loyalties' loyalty.id %}`, `{{loyalty.loyalty_title}}`)";><img class="table_buttons promotion_list_delete_button" src="{% static '/images/delete.png' %}"></button><a href="{% url 'edit_loyalties' loyalty.id %}{{query_params_str}}"><img class="table_buttons promotion_list_edit_button" src="{% static '/images/pencil-2.png' %}"></a></td>
+
+                    </tr>
+
+              {% endfor %}
+              
+            </tbody>
+          </table>
+
+
+
+    </div>
+       
+</div>
+
+<div class="Promotion_pagination">
+    <div class="pagination_div">
+        <div class="record_count">
+            {% if data_count is 0 %}
+                <p class="promotion_list_table">No records</p>
+            {% else %}
+                <p class="promotion_list_table">   <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of <strong>{{data_count}}</strong> records </p>
+        
+            {% endif %}
+        </div>
+        <div class="pagination_buttons">
+            
+            {% if data_count >= 10 %}
+                {% if prev  %}
+                    <a href="{% url 'loyalties_list' %}?page={{prev}}{{update_url_param}}" ><button class="pagination_button prev" >Previous</button></a>
+                {% else %}
+                    
+                    <button class="disabled_button promotion prev">Previous</button>
+                {% endif %} 
+            {% endif %}
+            {% for i in pagination_num_list%}
+                {% if i is None %}
+
+                    <span>.</span>
+
+                {% else %}
+                    {% if current_page == i%}
+                        <a href="#"  ><button class="active_pagination_button">{{i}}</button></a>
+                    {% else %}
+                        <a href="{% url 'loyalties_list' %}?page={{i}}{{update_url_param}}" ><button class="pagination_button">{{i}}</button></a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            {% if data_count >= 10 %}
+                {% if next  %}
+                    <a href="{% url 'loyalties_list' %}?page={{next}}{{update_url_param}}" ><button class="pagination_button next">Next</button></a>
+                {% else %}
+                    
+                    <button class="disabled_button promotion next">Next</button>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div> 
+
+
+</div>
+</div>
+
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promotion_modal_styling" >
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h5>Delete Loyalty</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <div id="delete-modal-content">
+
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="action_status_popup"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promotion_modal_styling change_status_modal_style">
+         
+        <div class="modal-body d-flex justify-content-center">
+            <h3 id="updated_status">Succesfully updated status of loyalty!!</h3>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="no_download_box"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promotion_modal_styling change_status_modal_style no-records-modal" >
+         
+        <div class="modal-body">
+            <h3 id="updated_status">No loyalties to download!</h3>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock%}
+
+
+{% block js %}
+
+<script type="text/javascript">
+    let url_u= "{{update_url_param|safe}}";
+    let window_radirect_location = "{% url 'loyalties_list'%}";
+
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+
+    var token = '{{csrf_token}}';
+
+    var change_status_view_url = `{% url 'change_loyalty_status_view' %}`;
+    
+    let time_difference = Number("{{time_difference|safe}}");
+    let maximum_to_date = Number("{{maximum_to_date|safe}}");
+    let dashboard_data_days_limit = Number("{{dashboard_data_days_limit|safe}}");
+
+
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static 'js/loyalty/loyalty-list.js'%}"></script>
+{% endblock %}

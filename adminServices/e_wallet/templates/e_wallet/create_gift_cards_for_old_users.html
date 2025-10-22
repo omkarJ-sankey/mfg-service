@@ -1,0 +1,75 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}E-Wallet{% endblock %}
+{% load static %}
+{%block css%}
+    <link rel="stylesheet" href="{% static '/css/wallet/wallet.css'%}" />
+{% endblock %}
+{% block content %}
+
+{% for message in messages %}
+    {% if message.tags == "success" %}
+        <div class="alert alert-success" role="alert">
+        {{message}}
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{message}}</div>
+    {% endif %}
+{% endfor %}
+<div class="container">
+    <div class="top_container my-5">
+        <div class="card_container">
+            <div class="card_title">
+                <a>
+                    Total users with gift card
+                </a>
+            </div>
+            <div class="sub_container">
+                <img class="icon_size mr-1" src="{% static '/images/user-icon-green.png' %}"  alt=""/>
+                <a class="card_value">{{users_having_gift_cards_count}}</a>
+            </div>
+        </div>
+        <div class="card_container">
+            <div class="card_title">
+                <a>
+                    Total users without gift card
+                </a>
+            </div>
+            <div class="sub_container">
+                <img class="icon_size mr-1" src="{% static '/images/user-icon-red.png' %}"  alt=""/>
+                <a class="card_value">{{users_not_having_gift_cards_count}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-4">
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="email_type">Specify user batch size to create gift cards</label><br>
+        <div class="d-flex w-50">
+            <div class="w-50 mr-3">
+                <input
+                    type="number"
+                    id="email_type"
+                    class="form-control my-2 w-100"
+                    name="create_gift_card_user_count"
+                    placeholder="Enter user batch size to create gift cards"
+                    min="0"
+                />
+            </div>
+            <div class="w-25">
+                <button class="create-gift-cards-btn mt-2 p-2 rounded-2">Create gift cards</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    
+    var token = '{{csrf_token}}';
+</script>
+<script src="{% static '/js/wallet/wallet_details.js' %}"></script>
+{% endblock%}

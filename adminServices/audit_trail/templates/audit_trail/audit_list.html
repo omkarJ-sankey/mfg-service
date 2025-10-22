@@ -1,0 +1,257 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Audit trail{% endblock %}
+{% block content %}
+
+{% for message in messages %}
+    {% if message.tags == "success" %}
+        <div class="alert alert-success" role="alert">
+        {{message}}
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{message}}</div>
+    {% endif %}
+{% endfor %}
+<div class="Fields-container">
+    <div class="bigger_width_field">
+        <label for="fname" class="labels">Search</label>
+        <div class="search-box">
+            
+            <img src="{% static '/images/search-1.png' %}" alt="">
+            <input type="text" class="inputs" value="{{prev_search}}" placeholder="E.g. FS001" onchange="filterFunction('search',this.value);"><br><br>
+        </div>
+    </div>
+
+    <div class="small_width_field">
+        <label class="labels">From Date</label>
+        <div class="date_container" onclick="showFromDatePicker()">
+            
+            <input disabled type="text" id="from_date" value="{{prev_from_date}}" placeholder="From date" onchange="filterFunction('from_date',this.value);" class="datepicker" >
+          
+        </div>
+        
+    </div>
+    <div class="small_width_field">
+        <label  class="labels">To Date</label>
+        <div class="date_container" onclick="showToDatePicker()">
+            
+            <input disabled type="text" id="to_date" value="{{prev_to_date}}" placeholder="To date"  onchange="filterFunction('to_date',this.value);" class="datepicker" >
+        
+        </div>
+        
+    </div> 
+    <div class="small_width_field">
+        <label for="cars" class="labels">User Role</label>
+        <div class="select-box">
+            <select class="dropdown_input session_transaction_input" onchange="filterFunction('user_role',this.value);">
+                <option value="All">All</option>
+                {% for i in user_role_list %}
+                    {% if prev_user_role == i%}
+                        <option value="{{i}}" selected>{{i.capitalize}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i.capitalize}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+ 
+    
+    <div class="small_width_field">
+        <label for="cars" class="labels">Reviewed</label>
+        <div class="select-box">
+            <select class="dropdown_input session_transaction_input" onchange="filterFunction('review_status',this.value);">
+                <option value="All">All</option>
+                {% for i in review_status_list %}
+                    {% if prev_review_status and prev_review_status == i %}
+                        <option value="{{i}}" selected>{{i.capitalize}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i.capitalize}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+      
+    <div class="small_width_field">
+        <label for="cars" class="labels">Module</label>
+        <div class="select-box">
+            <select class="dropdown_input session_transaction_input" onchange="filterFunction('module',this.value);">
+                <option value="All">All</option>
+                {% for i in module_list %}
+                    {% if prev_module and prev_module == i%}
+                        <option value="{{i}}" selected>{{i}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+    <div class="small_width_field">
+        <label for="cars" class="labels">Action</label>
+        <div class="select-box">
+            <select class="dropdown_input session_transaction_input" onchange="filterFunction('action',this.value);">
+                <option value="All">All</option>
+                {% for i in action_list %}
+                    {% if prev_action and prev_action == i%}
+                        <option value="{{i}}" selected>{{i}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+
+</div>
+
+
+<div class="d-flex flex-column align-items-center mt-4 justify-content-center">
+    <div class="table_container">
+        <table class="table" aria-describedby="stationtemplate">
+            <thead>
+            <tr>
+                <th scope="col" class="table-heading" onclick="orderByFunction('order_by_id')">
+                    ID
+                    {% if prev_id_order == 'Descending' %}
+                        
+                        <img id="order_by_id" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+                        
+                        <img id="order_by_id"  src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th scope="col" class="table-heading" onclick="orderByFunction('order_by_date')">
+                    Date  
+                    {% if prev_date_order == 'Descending' %}
+                        
+                        <img id="order_by_date" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+                        
+                        <img id="order_by_date"  src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th scope="col" class="table-heading">User</th>
+                <th scope="col" class="table-heading">User Role</th>
+                <th scope="col" class="table-heading">Data Identifier</th>
+                <th scope="col" class="table-heading">Module</th>
+                <th scope="col" class="table-heading">Action</th>
+                <th scope="col" class="table-heading text_align_style">Reviewed</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in audit_data %}
+                <tr>
+                    <th scope="row" class="sites_table"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">{{i.id}}</a></th>
+                    <td class="sites_table"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">{% load date_formater %}{{i.created_date | date_formater}}</a></td>
+                    <td class="sites_table"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">{{i.user_name}}</a></td>
+                    
+                    <td class="sites_table"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">{{i.user_role}}</a></td>
+                    <td class="sites_table module_id_overflow"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">{{i.module_id}}</a></td>
+                    <td class="sites_table"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">{{i.module}}</a></td>
+                    <td class="sites_table"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">
+                        <span 
+                            {% if i.action == 'Update' %}
+                                class="update_action"
+                            {% elif i.action == 'Create' %}
+                                class="create_action"
+                            {% else %}
+                                class="delete_action"
+                            {% endif %}  
+                        >{{i.action}}</span>
+                    </a></td>
+                    <td class="sites_table text_align_style"><a class="view_station_details_link_styl" href="{% url 'audit_detail' i.id %}{{query_params_str}}">
+                        {% if i.review_status and i.review_status == 'Yes' %}
+                            <img class="audit_list_review_image" src="{% static 'images/tick-3@2x.png'%}">
+                        {% else %}
+                            <div class="mx-auto not_reviewed_box"></div>
+                        {% endif%}
+                    </a></td>
+                    
+                    
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="9" class="pagination_bx_background">
+                    <div class="pagination_div">
+                            <div class="record_count">
+                                
+                                {% if data_count is 0 %}
+                                    <p class="sites_table">No records</p>
+                                {% else %}
+                                    <p class="sites_table">   <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of <strong>{{data_count}}</strong> records </p>
+                                {% endif %}
+                            </div>
+                            <div class="pagination_buttons d-flex justify-content-lg-start">
+                                {% if data_count >= 10 %}
+                                    {% if prev  %}
+                                        <a href="{% url 'audit_list' %}?page={{prev}}{{update_url_param}}" ><button class="pagination_button prev" >Previous</button></a>
+                                    {% else %}
+                                        
+                                        <button class="disabled_button prev">Previous</button>
+                                    {% endif %} 
+                                {% endif %}
+                                {% for i in pagination_num_list%}
+                                    
+                                    {% if i is None %}
+
+                                        <span>.</span>
+
+                                    {% else %}
+                                        {% if current_page == i%}
+                                            <a href="#"  ><button class="active_pagination_button">{{i}}</button></a>
+                                        {% else %}
+                                            <a href="{% url 'audit_list' %}?page={{i}}{{update_url_param}}" ><button class="pagination_button">{{i}}</button></a>
+                                        {% endif %}
+                                    {% endif %}   
+                                {% endfor %}
+                                
+                                {% if data_count >= 10 %}
+                                    {% if next  %}
+                                        <a href="{% url 'audit_list' %}?page={{next}}{{update_url_param}}" ><button class="pagination_button next">Next</button></a>
+                                    {% else %}
+                                        
+                                        <button class="disabled_button next">Next</button>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                    </div>  
+                
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock%}
+
+
+{% block js %}
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'audit_list' %}";
+
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+    
+    
+    var token = '{{csrf_token}}';
+    // var change_status_view_url = `{% url 'mark_as_reviewed' %}`;
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static 'js/audit_trail/audit_trail.js'%}"></script>
+
+{% endblock %}

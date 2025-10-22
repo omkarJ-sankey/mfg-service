@@ -1,0 +1,102 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}E-Wallet{% endblock %}
+{% load static %}
+{%block css%}
+<link rel="stylesheet" href="{% static '/css/wallet/wallet.css'%}" />
+{% endblock %}
+{% block content %}
+<div class="formContainer active_form">
+<div class="custom_dialouge w-100" role="document">
+
+    <div class="flex-1">
+        <div>
+            <div class="user_management_edit_user_container justify-content-between" >
+                <div>
+                    <a href="{% url 'ewallet' %}"><i id="backButton" class="arrow cursor-pointer left-arrow back_button_styl"></i></a>
+                    <a class="user_back_navigation" href="{% url 'ewallet' %}" id="container_heading">Voucher Detail View</a>
+                </div>
+                {% if user_data.is_withdrawn == 'No'%}
+                    {% if request.user.role_id.role_name == 'Super admin' or request.user.role_id.role_name == 'Admin' or request.user.id == user_data.assigned_by__id %}
+                        <div>
+                            <button 
+                                class="withdraw_button"
+                                onclick="walletAmountWithdrawl('{{user_data.id}}')"
+                            >Withdraw</button>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div>
+                        <span class="mark_as_review_light_text">Withdrawn by</span>
+                        <span class="mark_as_review_text">{{user_data.updated_by}}</span>
+                        <span class="mark_as_review_light_text">on</span>
+                        <span class="mark_as_review_text">
+                            {% load date_formater %}{{user_data.updated_date | date_formater}}</span>
+                    </div>
+                {% endif %}
+                
+             </div>
+            </div>
+      
+                <div>
+                    <div>
+                        <a class="usr_detaile input_container">User Voucher Details</a>  
+                    </div>
+                    <div class="user_form_container d-flex flex-row flex-wrap">
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Receiver</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.user_id__username}}</label>
+                        </div>
+                    
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Assigned by</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.assigned_by__full_name}}</label>
+                        </div>
+                  
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Assigner Role</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.assigned_by__role_id__role_name}}</label>
+                        </div>
+                   
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Date</label>
+                            <label class="field_lable e_wallet_field_lable">
+                                {% load date_formater %}
+                                {{user_data.created_date |date_formater }}
+                            </label>
+                        </div>
+                   
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Amount</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.transaction_amount}}</label>
+                        </div>
+                    
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">DRIIVZ ID</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.driivz_account_number}}</label>
+                        </div>
+
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Description</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.comments}}</label>
+                        </div>
+
+                        <div class="input_container e_wallet_detail_box">
+                            <label class="detailLabels">Wallet balance</label>
+                            <label class="field_lable e_wallet_field_lable">{{user_data.user_updated_balance}}</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+           
+    </div>
+    </div>
+</div>
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    
+    var token = '{{csrf_token}}';
+</script>
+<script src="{% static '/js/wallet/wallet_details.js' %}"></script>
+{% endblock%}

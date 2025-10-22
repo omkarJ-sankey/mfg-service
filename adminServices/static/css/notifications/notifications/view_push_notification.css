@@ -1,0 +1,307 @@
+.details-parent-container {
+    width: 100%;
+    background-color: #FAFAFA;
+    padding: 40px 100px 50px 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-div-update-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #888;
+}
+
+.update-email-notification-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 30px;
+    border-radius: 3px;
+    background-color: #E2373F;
+
+}
+
+.update-email-notification-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.view-file-type-image-container {
+    margin: 10px;
+}
+
+.back-navigator-to-email-list {
+    width: 180px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.details-div-label {
+    font-size: 14px;
+    padding: 0px;
+    margin: 0px;
+    color: #666666;
+}
+
+.details-div-value {
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.email-notification-details-div {
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    width: 100%;
+    padding: 20px 20px;
+}
+.image_block{
+    display: block;
+    max-width: 100px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+}
+.div_assign_to{
+    margin-left: 15px;
+}
+.push-notification-attachment-div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    width: 100%;
+    padding: 10px 10px;
+    width: 100%;
+    height: 100px;
+    background-attachment: fixed
+}
+
+#view-file-type-image {
+    width: 40px;
+}
+
+.bottom-navigation-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancel-btn {
+    background-color: #FAFAFA;
+    border: none;
+    box-shadow: 0px 0px 2px;
+    font-size: 14px;
+    padding: 7px 20px 7px 20px;
+    border-radius: 3px;
+
+
+}
+
+.schedule-btn {
+    background-color: #003875;
+    border: none;
+    box-shadow: 0px 0px 2px;
+    color: #FAFAFA;
+    font-size: 14px;
+    padding: 7px 20px 7px 20px;
+    border-radius: 3px;
+
+}
+
+.send-now-btn,
+.view-email-save-as-draft {
+    background-color: #E2373F;
+    border: none;
+    box-shadow: 0px 0px 2px;
+    color: #FAFAFA;
+    font-size: 14px;
+    padding: 7px 20px 7px 20px;
+    border-radius: 3px;
+}
+
+#back-nav-notification-view {
+    margin-bottom: 0rem;
+}
+
+.file-name-div {
+    width: 50px;
+}
+
+.file-name-para {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.cancel-email-notification-content {
+    width: 72% !important;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.view-email-notification-btns {
+    padding: 0.3rem 1.2rem;
+    border-color: #00000033;
+}
+
+#view-push-notification-schedule-btn {
+  background-color: #003875;
+  border-color: #003875
+}
+
+#confirm-msg-para {
+    text-align: justify;
+    color: #666666;
+    font-size: 14px;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+#subject-name-span-in-cancel {
+    color: #212529;
+    font-weight: bold;
+}
+
+
+.schedule-date-container {
+    width: 100%;
+    position: relative;
+    background: var(--white);
+    display: flex;
+    height: 2.2rem;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding-right: 0.5rem;
+}
+
+.schedule-date {
+    width: 70%;
+    background-color: #FFFFFF;
+    margin-left: 4px;
+    height: 2rem;
+    border: none;
+    outline: none;
+    padding: 0 3px;
+    font: normal normal medium var(--font-14);
+    font-family: 'Roboto', serif;
+    letter-spacing: 0.14px;
+    color: #444444;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+#view-email-notification-schedule-btn {
+    background-color: #003875;
+    border-color: #003875
+}
+
+.schedule-email-notification-content {
+    width: 70% !important;
+    margin: 0 auto;
+}
+
+#label-for-date-time {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-time-header {
+    margin-bottom: 0.75rem;
+}
+
+.time-picker {
+    margin-top: 10px;
+}
+
+.time-input {
+    margin-left: 10px;
+    border: none;
+    width: 100%;
+    color: #444444;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.error-messages {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+    color: #E2373F;
+}
+
+.view_email_back_btn {
+    color: #888888;
+    text-decoration: none;
+}
+
+.view_email_back_btn:hover {
+    text-decoration: none;
+    color: #888888;
+}
+.notification_details_view{
+    display: flex;
+}
+.delete-button{
+    border: none;
+}
+.cancle_notification {
+  padding-top: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #444444;
+}
+
+.details-div-status {
+  font-size: 14px;
+  padding: 0px;
+  margin: 0px;
+  color: #666666;
+}
+.details-div-delivered-time {
+  font-size: 14px;
+  padding: 0px;
+  margin: 0px;
+  color: #666666;
+}
+.notification_status_view{
+  display: flex;
+  margin-top: 20px;
+}
+.push-notification-status-div {
+  display: flex;
+  align-items: center;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px;
+  background-color: #FFFFFF;
+  padding: 0px 20px;
+  width: 100%;
+  height: 80px;
+  background-attachment: fixed;
+  margin-bottom: 20px;
+}
+.delivered_div {
+  margin-left: 5rem;
+}

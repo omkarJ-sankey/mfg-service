@@ -1,0 +1,157 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} OCPI Configurations {% endblock %}
+{% load static %}
+
+
+{%block css%}
+{%endblock%}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/configurations/conf.css'%}">
+<div class="configration-nav-container">
+
+    {% include "configurations/side_nav.html" %}
+
+    <div class="form_container ocpi_form_container" id="Amenities">
+        <div class="Fields-container" id="ocpi_configurations_fields_container">
+            <div class="cpo_search_div">
+                <label for="fname" class="labels ocpi_search_label">Search</label>
+                <div class="ocpi-search-box">
+                    <img src="{% static '/images/search-1.png' %}" alt="">
+                    <input id="search-input" type="text" placeholder="E.g. Driivz" class="inputs" />
+                </div>
+            </div>
+
+            <div id="add_and_status_filter">
+
+                <div class="bigger_width_field">
+                    <label for="fname" class="labels">Status</label>
+                    <div class="cpo_status_box">
+                        <select id="cpo_status_filter" class="txtbox input-txt ">
+                            <option value="">All</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Initiated">Initiated</option>
+                            <option value="Failed">Failed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn_container">
+                    <button class="add-btn" onclick="addOCPIConfiguration()" data-toggle="modal"
+                        data-target="#addBasConfigurations">
+                        <img src="{% static '/images/plus-sign.png'%}" alt="">
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="table_container configurations_table_container">
+            <table class="table configurations_table base_configurations_table" aria-describedby="configdesc"
+                id="table-amenities">
+                <thead>
+                    <tr>
+                        <th scope="col" hidden>ID</th>
+                        <th scope="col" class="align-middle  ocpi_th">Name</th>
+                        <th scope="col" class="align-middle  ocpi_th">Endpoint</th>
+                        <th scope="col" class="align-middle  ocpi_th">Party ID</th>
+                        <th scope="col" class="align-middle  ocpi_th">Country Code</th>
+                        <th scope="col" class="align-middle  ocpi_th">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="listingTable">
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="pagination_bx_background">
+                            <div class="pagination_div">
+                                <div class="record_count">
+                                    <span id="record_count"></span>
+                                </div>
+                                <div class="pagination_buttons d-flex justify-content-lg-start align-items-center"
+                                    id="pagination_button_box">
+                                    <span class="pagination_button prev" id="button_prev">Previous</span>
+                                    <span id="page_number"></span>
+                                    <span class="pagination_button next" id="button_next">Next</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- modal for add ocpi conf -->
+    <div class="modal fade" id="addBasConfigurations" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addAmenitiesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content add_base_conf_modal">
+                <div class="modal-body">
+                    <div class="heading">
+                        <h6 class="add_conf_heading">OCPI Configuration</h6>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="d-flex flex-column">
+
+                        {% csrf_token %}
+                        <div>
+                            <div id="d-flex flex-column" class="mr-tp">
+                                <label for="email" class="labels">Name</label><br>
+                                <input type="text" id="var_name" class="txtbox input-txt" name="service_name"
+                                    placeholder="">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div id="d-flex flex-column" class="mr-tp">
+                                <label class="labels">Endpoint</label><br>
+                                <input type="text" id="var_endpoint" class="txtbox input-txt" name="service_name"
+                                    placeholder="">
+                            </div>
+                        </div>
+                        <div>
+                            <div id="d-flex flex-column" class="mr-tp">
+                                <label class="labels">Token</label><br>
+                                <input id="var_token" class="txtbox input-txt textarearea-txt" name="service_name"
+                                    placeholder="">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer modal_footer_padding">
+                    <button type="submit" class="btn btn-danger" onclick="addOCPIConfDetails()"
+                        id="add_ocpi_credentials_button">Configure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock%}
+
+
+{% block js %}
+
+
+<script type="text/javascript">
+    var errors = ["{%for m in messages%}{{m}}{%endfor%}"];
+    is_error = "{% firstof messages%}";
+    var token = '{{csrf_token}}';
+    let ocpi_add_credentials_url = "{% url 'addOCPIConfigurations' %}";
+    let ocpi_node_token = "{{ocpi_node_token}}";
+    let group_png_url = "{% static '/images/Group.png' %}";
+
+    let paginationObj = JSON.parse('{{json_data | escapejs }}');
+    let pencilEditImage = "{% static '/images/pencil-2.png' %}";
+    let paginationCount = "{{pagination_count}}";
+    let paginationFor = "ocpi_configurations";
+</script>
+
+<script src="{% static 'js/configurations/common-configurations-func.js' %}"></script>
+<script src="{% static 'js/configurations/ocpi_configurations.js' %}"></script>
+<script src="{% static 'js/configurations/pagination.js' %}"></script>
+{% endblock %}

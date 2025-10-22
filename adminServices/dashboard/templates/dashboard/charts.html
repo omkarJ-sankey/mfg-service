@@ -1,0 +1,264 @@
+{% load static %}
+{% block chart %}
+<!-- Salse Chart -->
+{% if chart_active_tab == "Sales" %}
+<div id='cSales' class="active chart_container_bx">
+  {%else%}
+
+  <div id='cSales' class="chart_container_bx">
+    {%endif%}
+    <div class=" chart-container chart_card" id='cSales'>
+      <div class="chart_bx_bottom_border">
+        <a class="chart_title">Total Charging Sessions In EV Charging</a>
+      </div>
+      <div class="form-check checkbox_container">
+        <input class="form-check-input" type="checkbox" value="" id="show_trend_sessions">
+        <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+          Show Trend
+        </label>
+      </div>
+      <canvas id="canvas_sessions" width="700"></canvas>
+    </div>
+    <div class="chart-container chart_card" id=''>
+      <div class="chart_bx_bottom_border">
+        <a class="chart_title">Total Sales In EV Charging</a>
+      </div>
+      <div class="form-check checkbox_container">
+        <input class="form-check-input" type="checkbox" value="" id="show_trend_salse">
+        <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+          Show Trend
+        </label>
+      </div>
+      <canvas id="canvas_total_salse" width="200"></canvas>
+    </div>
+    <div class="chart-container chart_card" id=''>
+      <div class="chart_bx_bottom_border">
+        <a class="chart_title">Total Power Consumed In EV Charging</a>
+      </div>
+      <div class="form-check checkbox_container">
+        <input class="form-check-input" type="checkbox" value="" id="show_trend_power">
+        <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+          Show Trend
+        </label>
+      </div>
+      <canvas id="canvas_power_consumed" width="700"></canvas>
+    </div>
+  </div>
+
+  <!-- Users Chart -->
+
+  {% if chart_active_tab == "Users" %}
+  <div id='cUsers' class="active chart_container_bx">
+    {%else%}
+
+    <div id='cUsers' class="chart_container_bx">
+      {% endif %}
+      <div class="chart-container chart_card" id=''>
+        <div class="chart_bx_bottom_border">
+          <a class="chart_title">New Registered Users</a>
+        </div>
+        <div class="form-check checkbox_container">
+          <input class="form-check-input" type="checkbox" value="" id="single_bar">
+          <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+            Show Trend
+          </label>
+        </div>
+        <canvas id="canvas_new_reg" width="700"></canvas>
+      </div>
+      <div class="chart-container chart_card" id=''>
+        <div class="chart_bx_bottom_border">
+          <a class="chart_title">Active Users</a>
+        </div>
+        <div class="form-check checkbox_container">
+          <input class="form-check-input" type="checkbox" value="" id="single_bar_active">
+          <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+            Show Trend
+          </label>
+        </div>
+        <canvas id="canvas_active_user" width="200"></canvas>
+      </div>
+    </div>
+    <!-- Rating Chart -->
+
+    {% if chart_active_tab == "Ratings" %}
+    <div id='cRatings' class="active chart_container_bx">
+      {% else%}
+
+      <div id='cRatings' class="chart_container_bx">
+        {% endif%}
+        <div class="chart-container chart_card" id=''>
+          <div class="chart_bx_bottom_border">
+            <a class="chart_title">Positive Charging Session Ratings</a>
+          </div>
+          <div class="legend_chart">
+            <div class="ratings_count_cntainer">
+              <div class="rating_icn_styl five_stars_ratings"></div><a>5 &#9733;</a>
+            </div>
+            <div class="ratings_count_cntainer">
+              <div class="rating_icn_styl four_stars_ratings"></div><a>4 &#9733;</a>
+            </div>
+            <div class="form-check checkbox_container ml-auto">
+              <input class="form-check-input" type="checkbox" value="" id="single_bar_positive">
+              <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+                Show Trend
+              </label>
+            </div>
+          </div>
+
+          <canvas id="canvas_positive_ratings" width="700"></canvas>
+        </div>
+        <div class="chart-container chart_card" id=''>
+          <div class="chart_bx_bottom_border">
+            <a class="chart_title">Negative Charging Session Ratings</a>
+          </div>
+          <div class="legend_chart">
+            <div class="ratings_count_cntainer">
+              <div class="rating_icn_styl one_stars_ratings"></div><a>1 &#9733;</a>
+            </div>
+            <div class="ratings_count_cntainer">
+              <div class="rating_icn_styl two_stars_ratings"></div><a>2 &#9733;</a>
+            </div>
+            <div class="form-check checkbox_container ml-auto">
+              <input class="form-check-input" type="checkbox" value="" id="single_bar_negative">
+              <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+                Show Trend
+              </label>
+            </div>
+          </div>
+          <canvas id="canvas_negative_ratings" width="200"></canvas>
+        </div>
+        <div class="chart-container chart_card" id=''>
+          <div class="chart_bx_bottom_border">
+            <a class="chart_title">Neutral Charging Session Ratings</a>
+          </div>
+          <div class="legend_chart">
+            <div class="ratings_count_cntainer">
+              <div class="rating_icn_styl three_stars_ratings"></div><a>3 &#9733;</a>
+            </div>
+            <div class="form-check checkbox_container ml-auto">
+              <input class="form-check-input" type="checkbox" value="" id="single_bar_neutral">
+              <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+                Show Trend
+              </label>
+            </div>
+          </div>
+          <canvas id="canvas_neutral_ratings" width="700"></canvas>
+        </div>
+      </div>
+
+      <!-- loyalty charts -->
+      {% if chart_active_tab == "Loyalty" %}
+      <div id='cLoyalty' class="active chart_container_bx">
+        {% else%}
+
+        <div id='cLoyalty' class="chart_container_bx">
+          {% endif%}
+          <div class="chart-container chart_card" id=''>
+            <div class="chart_bx_bottom_border">
+              <a class="chart_title">QR Codes</a>
+            </div>
+            <div class="legend_chart">
+              <div class="purchased-container">
+                <div class="purchased-redeemed-icon-style purchased-color"></div><a>Purchased</a>
+              </div>
+              <div class="purchased-container">
+                <div class="purchased-redeemed-icon-style redeemed-color"></div><a>Redeemed</a>
+              </div>
+              <div class="form-check checkbox_container ml-auto">
+                <input class="form-check-input" type="checkbox" value="" id="single_bar_qr_codes">
+                <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+                  Show Trend
+                </label>
+              </div>
+            </div>
+
+            <canvas id="canvas-qr-codes-loyalty" width="700"></canvas>
+          </div>
+        </div>
+
+
+    <!-- loyalty charts -->
+    {% if chart_active_tab == "3DS" %}
+    <div id='cLoyalty' class="active chart_container_bx">
+      {% else%}
+
+      <div id='cLoyalty' class="chart_container_bx">
+        {% endif%}
+        <div class="chart-container chart_card" id=''>
+          <div class="chart_bx_bottom_border">
+            <a class="chart_title">3DS Analytics</a>
+          </div>
+          <div class="legend_chart">
+            <div class="purchased-container">
+              <div class="three-ds-status-icon-style success-check-color"></div><a>Success</a>
+            </div>
+            <div class="purchased-container">
+              <div class="three-ds-status-icon-style failed-check-color"></div><a>Failed</a>
+            </div>
+            <div class="form-check checkbox_container ml-auto">
+              <input class="form-check-input" type="checkbox" value="" id="single_bar_3ds_analytics">
+              <label class="form-check-label checkbox-lable" for="flexCheckDefault">
+                Show Trend
+              </label>
+            </div>
+          </div>
+
+          <canvas id="canvas-three-ds-analytics" width="700"></canvas>
+        </div>
+      </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/chart.min.js"
+          integrity="sha256-uVEHWRIr846/vAdLJeybWxjPNStREzOlqLMXjW/Saeo=" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
+          </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+          integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous">
+          </script>
+        <script type="text/javascript">
+          // This javascript code uses data from django tags
+          var data = [{% for i in chart_data %}
+          { x: "{{i.date}}", y: "{{ i.no_of_sessions }}" },
+          {% endfor %}]
+          var data2 = [{% for i in power_data %}
+          { x: "{{i.date}}", y: "{{ i.power }}" },
+          {% endfor %}]
+          var data3 = [{% for i in sales_data %}
+          { x: "{{i.date}}", y: "{{ i.sales }}" },
+          {% endfor %}]
+          var ratings_three_data = [{% for i in ratings_data.2 %}
+          { x: "{{i.date}}", y: "{{ i.ratings }}" },
+          {% endfor %}];
+          var ratings_one_data = [{% for i in ratings_data.0 %}
+          { x: "{{i.date}}", y: "{{ i.ratings }}" },
+          {% endfor %}];
+          var ratings_two_data = [{% for i in ratings_data.1 %}
+          { x: "{{i.date}}", y: "{{ i.ratings }}" },
+          {% endfor %}];
+          var ratings_four_data = [{% for i in ratings_data.3 %}
+          { x: "{{i.date}}", y: "{{ i.ratings }}" },
+          {% endfor %}];
+          var ratings_five_data = [{% for i in ratings_data.4 %}
+          { x: "{{i.date}}", y: "{{ i.ratings }}" },
+          {% endfor %}];
+          var user_data = [{% for i in user_list %}
+          { x: "{{i.date}}", y: "{{ i.count }}" },
+          {% endfor %}];
+          let purchased_loyalty_qr_data = [{% for i in purchased_qr_data %}
+          { x: "{{i.date}}", y: "{{ i.count_of_transactions__sum }}" },
+          {% endfor %}];
+          let redeemed_loyalty_qr_data = [{% for i in redeemed_qr_data %}
+          { x: "{{i.date}}", y: "{{ i.count_of_transactions__sum }}" },
+          {% endfor %}];
+
+          let successful_3ds_checks = [{% for i in successful_3ds_checks %}
+          { x: "{{i.date}}", y: "{{ i.id__count }}" },
+          {% endfor %}];
+          let failed_3ds_checks = [{% for i in failed_3ds_checks %}
+          { x: "{{i.date}}", y: "{{ i.id__count }}" },
+          {% endfor %}];
+          var xAxsLable = "{{x_axis_lable|safe}}"
+        </script>
+
+        <script src="{% static '/js/dashboard/charts.js'%}"></script>
+        {% endblock chart %}

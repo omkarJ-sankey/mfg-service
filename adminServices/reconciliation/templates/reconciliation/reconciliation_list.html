@@ -1,0 +1,342 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %} Reconciliation {% endblock %}
+{% block content %}
+
+<div class="filter_container_recon container_reco">
+    <div class="small_width_field">
+        <label  class="labels">From Site</label>
+        <div class="select-box">
+            <select class="dropdown_input small_dropdown_input" onchange="filterFunction('from_site',this.value);">
+                <option value="All">All</option>
+               
+                {% for station in stations %}
+                
+                    {% if prev_from_site == station.station_id__station_id%}
+                        <option value="{{station.station_id__station_id}}" selected>{{station.station_id__station_id}}</option>
+                    {%else%}
+                        <option value="{{station.station_id__station_id}}">{{station.station_id__station_id}}</option>
+                    {% endif %}
+                {% endfor %}
+                
+            </select>
+        </div>
+        
+    </div>
+    <div class="small_width_field">
+        <label class="labels">To site</label>
+        <div  class="select-box">
+            <select class="dropdown_input small_dropdown_input"  onchange="filterFunction('to_site',this.value);">
+                <option value="All">All</option>
+                
+                {% for station in stations %}
+                {% if prev_from_site != station.station_id__station_id%}
+                    {% if prev_to_site == station.station_id__station_id%}
+                        <option value="{{station.station_id__station_id}}" class="to_site_options"
+                        id="to_site_option{{station.station_id__station_id}}" selected>{{station.station_id__station_id}}</option>
+                    {%else%}
+                        <option value="{{station.station_id__station_id}}" class="to_site_options"
+                        id="to_site_option{{station.station_id__station_id}}">{{station.station_id__station_id}}</option>
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+                
+            </select>
+        </div>
+        
+    </div>
+    <div  class=" date">
+        <label class="labels">From Date</label>
+        <div class="date_container">
+            
+            <input type="text" id="to_date" value="{{prev_from_date}}" placeholder="From date" onchange="filterFunction('from_date',this.value);" class="datepicker maxWidth-53" >
+            <img class="date_image" src="{% static 'images/calendar-1.png'%}" alt="">
+        </div>
+        
+    </div>
+    <div  class=" date">
+        <label  class="labels">To Date</label>
+        <div class="date_container">
+            
+            <input type="text" id="from_date" value="{{prev_to_date}}" placeholder="To date"  onchange="filterFunction('to_date',this.value);" class="datepicker maxWidth-53" >
+            <img class="date_image" src="{% static 'images/calendar-1.png'%}" alt="">
+        </div>
+        
+    </div>  
+    <div class="small_width_field">
+        <label class="labels">Payment Method</label>
+        <div class="select-box">
+            <select class="dropdown_input small_dropdown_input" onchange="filterFunction('payment_method',this.value);">
+                
+                {% for i in payment_options %}
+                    {% if prev_payment == i%}
+                        <option value="{{i}}" selected>{{i}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+    <div class="small_width_field">
+        <label  class="labels">Status</label>
+        <div class="select-box">
+            <select class="dropdown_input small_dropdown_input" onchange="filterFunction('status',this.value);">
+                {% for i in status_list %}
+                    {% if prev_status == i%}
+                        <option value="{{i}}" selected>{{i}}</option>
+                    {%else%}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+                
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+    <div class="extra_small_width_field maxWidth-53">
+        <button data-toggle="modal" data-target="#bulkupload" class="bulk_upload">Import</button>
+    </div>
+    
+    <div class="extra_small_width_field">
+        <button class="bulk_upload"><a href="{% url 'reconciliation_list'%}?export=True{{update_url_param}}" class="export_link">Export</a></button>
+        
+    </div>
+
+
+</div>
+
+<div class="tabs_for_reconciliation ">
+    <a href="{% url 'reconciliation_list'%}" class="tab_links active_tab" >Transaction Summary</a>
+    <a href="{% url 'reconciliation_transaction_list'%}" class="tab_links">All Transactions</a>
+</div>
+<div class="transaction_info_container">
+    <div class="info_content">
+        <p>Total Records:<strong>{{Total_transactions}}</strong></p>
+    </div>
+    <span>|</span>
+    <div class="info_content">
+        <p>Total Transaction Amount:<strong>£ {{Total_transaction_amount}}</strong></p>
+    </div>
+    <span>|</span>
+    <div class="info_content">
+        <p>Total Settlement Amount:<strong>£ {{Total_settlement}}</strong></p>
+    </div>
+</div>
+<div  class="reco_table table_container_for_shadow">
+<div class="table_container_promotions reconciliation">
+    
+   
+    <div class="right_table reconciliation_table" id="sliding_table"  >
+        <!-- reused promotions classes for scrolling functionlity -->
+        <table class="table_promotions medium" aria-describedby="slidetablelist">
+            <thead>
+              <tr>
+                <th scope="col" onclick="orderByFunction('order_by_date')">
+                    Date
+                    {% if prev_order_by_date == 'Descending' %}
+                    
+                        <img id="order_by_date" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+                        
+                        <img id="order_by_date"  src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th scope="col" onclick="orderByFunction('order_by_station_id')" alt="">
+                    Station Id
+                    {% if prev_order_by_station_id == 'Descending' %}
+                    
+                        <img id="order_by_station_id" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+                        
+                        <img id="order_by_station_id"  src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th scope="col">Station Name</th>
+                <th scope="col">Payment Method</th>
+                <th scope="col">Transaction Total</th>
+                <th scope="col">Settlement Total</th>
+                <th scope="col">Status</th>
+                <th scope="col recon_align_center">Comments</th>
+
+              </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+              <tr>
+                <th id="reconcilaition_list">
+                    {{transaction.date}}
+                  </th>
+                  <td><a class="view_recon_details_link" href="{% url 'reconciliation_list_for_station' transaction.station_db_id %}?payment_type={{transaction.payment_method}}&date={{transaction.date}}">{{transaction.station_id}}</a></td>
+                  <td>{{transaction.station_name}}</td>
+                  <td>{{transaction.payment_method}}</td>
+                  <td>{{transaction.transaction_total}}</td>
+                  <td>{{transaction.settlement_total}}</td>
+                  <td>{{transaction.status}}</td>
+                  <td class="transaction_comment_box" ><button class="delete-station-image-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="appendCommentsContent()">
+                    <img class="table_buttons provide_comment" src="{% static '/images/pencil-2.png' %}" alt="">
+                  </button></td>
+             </tr> 
+             {% endfor %}
+              
+            </tbody>
+          </table>
+
+
+
+    </div>
+       
+</div>
+
+<div class="Promotion_pagination">
+    <div class="pagination_div">
+        <div class="record_count">
+            {% if data_count is 0 %}
+                <p>No records</p>
+            {% else %}
+                <p>   <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of <strong>{{data_count}}</strong> records </p>
+        
+            {% endif %}
+        </div>
+        <div class="pagination_buttons">
+            
+            {% if data_count >= 10 %}
+                {% if prev  %}
+                    <a href="{% url 'reconciliation_list' %}?page={{prev}}{{update_url_param}}" ><button class="pagination_button prev" >Previous</button></a>
+                {% else %}
+                    
+                    <button class="disabled_button promotion prev">Previous</button>
+                {% endif %} 
+            {% endif %}
+            {% for i in pagination_num_list%}
+            
+                {% if i is None %}
+
+                    <span>.</span>
+
+                {% else %}
+                    {% if current_page == i%}
+                        <a href="#"  ><button class="active_pagination_button">{{i}}</button></a>
+                    {% else %}
+                        <a href="{% url 'reconciliation_list' %}?page={{i}}{{update_url_param}}" ><button class="pagination_button">{{i}}</button></a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            {% if data_count >= 10 %}
+                {% if next  %}
+                    <a href="{% url 'reconciliation_list' %}?page={{next}}{{update_url_param}}" ><button class="pagination_button next">Next</button></a>
+                {% else %}
+                    
+                    <button class="disabled_button promotion next">Next</button>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div> 
+
+
+</div>
+</div>
+
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content add_transaction_comment_modal" >
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h5>Comments</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <div class="provide_comment_content" id="delete-modal-content">
+
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="bulkupload" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content modal_padding">
+        <div class="modal-header recon_border_none">
+          <h5 class="modal-title" id="bulkuploadTitle">Bulk Upload</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body file_upload">
+            <label class="custom_file_upload" for='selectSheet'>Select File </label>
+            <input id='selectSheet' onchange="onCSVUpload()" type="file">
+            <a id='filename'></a>
+        </div>
+        <div id="bulk_upload_res_error">
+
+        </div>
+        <div id="empty_column_errors" >
+        </div>
+        <div class="error_csv_container recon_display_none" id='errorheader'>
+            <div  >
+                <div class="error_csv_title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF3B3B" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                  </svg>
+                  <strong id="csverrorcount" class="recon_error_count_shower">0</strong>
+                  invalid entries
+                  <div  onclick="printError(true)" class="ml-auto">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                    </svg>
+                </div>
+                </div>
+                <div id='containerlisterror' class="show_error_list">
+                    <div class="width50">
+                        <strong>Order ID</strong>
+                        <div class="error_list_csv" id ='retailbarcode'>
+
+                            
+                        </div>
+                    </div>
+                    <div class="width50">
+                        <strong>Transaction date</strong>
+                        <div class="error_list_csv" id ='prodduct'>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+            <div class="bulk_upload_warning_txt"><a class="req_invalid">Please upload the file with all valid entries</a></div>
+        <div class="modal-footer recon_border_none">
+          <button type="button" class="btn btn-secondary cancel_button_bulk" data-dismiss="modal">Close</button>
+          <button type="button" id='upload' class="btn btn-primary upload_button_bulk">Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<br><br><br><br>
+{% endblock%}
+
+
+{% block js %}
+
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'reconciliation_list'%}";
+    var token = '{{csrf_token}}';
+
+    let import_reconciliation_data_url = "{% url 'import_reconciliation_data' %}";
+
+</script>
+<script src="{% src 'js/reconciliation/bulk-upload-common-func.js'%}"></script>
+<script src="{% src 'js/reconciliation/reconciliation_list.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Block App Users{% endblock %}
+{% block content %}
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{message}}</div>
+        {% endif %}
+    {% endfor %}
+    <div class="container">
+        <div class="pt-4">
+            <h4 class="py-2 font-weight-bold">Block App User Form</h3>
+            <div class="d-flex justify-content-center">
+                <div class="w-100 border px-5 pt-3 pb-1 mb-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="col-form-label">{{form.action.label}}</label>
+                            <div>
+                                {{form.action}}
+                            </div>
+                            <p class="text-danger">{{form.errors.action}}</p>
+                        </div>
+                        <div class="mb-3"
+                            {% if block_user_phone_number_action_selected %}
+                                style="display: none;" 
+                            {% endif %}
+                            id="emailInput"
+                        >
+                            <label class="col-form-label">{{form.email.label}}</label>
+                            <div>
+                                {{form.email}}
+                            </div>
+                            <p class="text-danger">{{form.errors.email}}</p>
+                        </div>
+                        <div class="mb-3" 
+                            {% if not block_user_phone_number_action_selected%}
+                                style="display: none;" 
+                            {% endif %}
+                            id="phoneInput"
+                        >
+                            <label class="col-form-label">{{form.phone.label}}</label>
+                            <div class="d-flex justify-content-between">
+                                <div class="w-25 pr-2">
+                                    {{form.country_code}}
+                                </div>
+                                <div class="w-75">
+                                    {{form.phone}}
+                                </div>
+                            </div>
+                            <p class="text-danger">{{form.errors.phone}}</p>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex justify-content-start mt-3 mb-1">
+                <button class="btn btn-secondary rounded-0" role="button" onclick="filterData('email');" id="view-blocked-emails-button">View Blocked Emails (Account)</button>
+                <button class="btn btn-light rounded-0" role="button" onclick="filterData('phone');" id="view-blocked-phones-button">View Blocked Numbers</button>
+            </div>
+            <div class="col-6 col-lg-3 my-3 p-0">
+                <label for="fname" class="labels">Search</label>
+                <div class="search-box px-2 py-4" id="search-box-content">
+                    <img src="{% static '/images/search-1.png' %}" >
+                    <input type="text" id="fname" name="fname" class="inputs w-100" value="{{prev_search}}" placeholder="Johndoe@gmail.com" onkeyup="filterData('email', this.value);">
+                </div>
+            </div>
+            <div class="w-100 mb-5">
+                <ul class="list-group w-100" id="table-content">
+                    {% for email in blocked_emails %}
+                        <li class="list-group-item font-weight-bold border border-secondary rounded-0">{{email}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        
+    </div>
+{% endblock%}
+
+{% block js %}
+
+<script type="text/javascript">
+    let searchIconUrl = "{% static '/images/search-1.png' %}";
+    let blocked_phone_numbers = JSON.parse("{{blocked_phone_numbers|escapejs}}".replaceAll(`'`, `"`));
+    let blocked_email = JSON.parse("{{blocked_emails|escapejs}}".replaceAll(`'`, `"`));
+
+</script>
+<script src="{% static '/js/app_users/app_users.js'%}"></script>
+{% endblock js %}

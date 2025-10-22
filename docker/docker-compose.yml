@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    backend:
+        build:
+            context: ..
+            dockerfile: docker/DockerBackend
+        container_name: backendServices
+        ports: 
+            - "8001:8001"
+        command: runBackEndserver
+
+    admin:
+        build:
+            context: ..
+            dockerfile: docker/DockerAdmin
+        container_name: adminServices
+        ports: 
+            - "8000:8000"
+        command: runAdminserver
+

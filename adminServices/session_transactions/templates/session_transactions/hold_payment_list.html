@@ -1,0 +1,287 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Hold Payments{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/session_transaction/transaction.css'%}">
+{% endblock %}
+{% block content %}
+
+{% for message in messages %}
+{% if message.tags == "success" %}
+<div class="alert alert-success" role="alert">
+  {{message}}
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+  {{message}}</div>
+{% endif %}
+{% endfor %}
+    <div class="Fields-container">
+        <div class="bigger_width_field">
+          <label for="fname" class="labels">Search</label>
+          <div class="search-box">
+            <img src="{% static '/images/search-1.png' %}" alt="">
+            <input type="text" class="inputs" value="{{prev_search}}" placeholder="E.g. FS324, Halewood"
+              onchange="filterFunction('search',this.value);"><br><br>
+          </div>
+        </div>
+        <div class="small_width_field">
+          <label class="labels">From Date</label>
+          <div class="date_container" onclick="showFromDatePicker()">
+            <input disabled type="text" id="from_date" value="{{prev_from_date}}" placeholder="From date"
+              onchange="filterFunction('from_date',this.value);" class="datepicker">
+          </div>
+        </div>
+        <div class="small_width_field">
+          <label class="labels">To Date</label>
+          <div class="date_container" onclick="showToDatePicker()">
+            <input disabled type="text" id="to_date" value="{{prev_to_date}}" placeholder="To date"
+              onchange="filterFunction('to_date',this.value);" class="datepicker">
+          </div>    
+        </div>
+        {% if sessions_available %}
+        <div class="extra_small_width_field hold-payment-bulk-upload">
+            <button class="bulk_upload"><a href="{% url 'hold_payment_list' %}?export=Yes{{update_url_param}}"
+                class="export_link" onclick="afterBulkExportRefreshPage();showLoader(null,null)">Bulk <img
+                  src="{% static '/images/up_arrow.png' %}" alt=""></a></button>
+        </div>
+        {% else %}
+        <div class="extra_small_width_field hold-payment-bulk-upload">
+          <button class="bulk_upload" onclick="showDownloadError();">Bulk <img src="{% static '/images/up_arrow.png' %}"
+              alt=""></button>
+        </div>
+        {% endif %}
+</div>
+<div class="table_container_for_shadow">
+    <div class="table_container_promotions">
+      <div class="left-table">
+        <table class="table_promotions promotion_box_shadow_none" aria-describedby="transactionlist">
+          <thead>
+            <tr>
+              <th scope="col" class="table-heading">Session ID</th>
+              <th scope="col" class="table-heading">CDR ID</th>
+              <th scope="col" class="table-heading">Session Status</th>
+              <th scope="col" class="table-heading">Payment Status</th>
+              <th scope="col" class="table-heading">Payment Collected By</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in session_transactions %}
+            <tr>
+              <th scope="row" class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}">
+                  {{i.session_id}}
+                </a>
+              </th>
+              <th class="sites_table" id = "cdr_id_text" title="{{ i.back_office_cdr_id }}">
+                <a class="view_station_details_link_styl" 
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}">
+                  {% if i.cdr_id %}
+                  {{i.back_office_cdr_id}}
+                  {% else %}
+                  Not available
+                  {% endif %}
+                </a>
+              </th>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}">
+                  {{i.session_status.capitalize}}
+                </a>
+              </td>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}">
+                  {{i.paid_status}}
+                </a>
+              </td>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}">
+                  {{i.is_reviewed}}
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+      <div class="right_table" id="sliding_table">
+        <table class="table_promotions big" aria-describedby="transactiontable">
+          <thead>
+            <tr>
+              <th scope="col" class="table-heading">Station ID</th>
+              <th scope="col" class="table-heading">Station Name</th>
+              <th scope="col" class="table-heading">Charge Point Name</th>
+              <th scope="col" class="table-heading">User Email</th>
+              <!-- <th scope="col" class="table-heading">Driivz Account Number</th> -->
+              <th scope="col" class="table-heading">Back Office</th>
+              <th scope="col" class="table-heading">Start time</th>
+            </tr>
+          </thead>
+          <tbody>
+  
+            {% for i in session_transactions %}
+            <tr>
+              <th id="session_transaction_details" class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}" rel=noopener>
+                  {% if i.station_id %}
+                  {{i.station_id.station_id}}
+                  {% else %}
+                  Not available
+                  {% endif %}
+  
+                </a>
+              </th>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}" rel=noopener>
+                  {% if i.station_id %}
+                  {{i.station_id.station_name}}
+                  {% else %}
+                  Not available
+                  {% endif %}
+  
+                </a>
+              </td>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}" rel=noopener>
+                  {% if i.chargepoint_id %}
+                  {{i.chargepoint_id.charger_point_name}}
+                  {% else %}
+                  Not available
+                  {% endif %}
+  
+                </a>
+              </td>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}" rel=noopener>
+                  {% if i.user_id and i.user_id.decrypted_email %}
+                  {{i.user_id.decrypted_email}}
+                  {% else %}
+                  Not available
+                  {% endif %}
+                </a>
+              </td>
+              <!-- <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}" rel=noopener>
+                  {% if i.user_account_number %}
+                  {{i.user_account_number}}
+                  {% else %}
+                  Not available
+                  {% endif %}
+                </a>
+              </td> -->
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}" rel=noopener>
+                  {{i.back_office}}
+  
+                </a>
+              </td>
+              <td class="sites_table">
+                <a class="view_station_details_link_styl"
+                  href="{% url 'hold_payment_details' i.id %}?is_ocpi={{i.is_ocpi}}{{query_params_str}}">
+  
+                  {% load date_formater %}
+                  {{i.start_time |date_formater }}
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal fade" id="no_download_box" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content no_data_to_export_warning_modal no-records-modal">
+  
+          <div class="modal-body">
+            <h3 id="updated_status">No Transactions to export!</h3>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="promotion_pagination">
+      <div class="pagination_div">
+        <div class="record_count">
+          {% if data_count is 0 %}
+          <p class="promotion_list_table">No records</p>
+          {% else %}
+          <p class="promotion_list_table"> <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of
+            <strong>{{data_count}}</strong> records
+          </p>
+  
+          {% endif %}
+        </div>
+        <div class="pagination_buttons">
+  
+          {% if data_count >= 10 %}
+          {% if prev %}
+          <a href="{% url 'hold_payment_list' %}?page={{prev}}{{update_url_param}}"><button
+              class="pagination_button prev">Previous</button></a>
+          {% else %}
+  
+          <button class="disabled_button promotion prev">Previous</button>
+          {% endif %}
+          {% endif %}
+          {% for i in pagination_num_list%}
+          {% if i is None %}
+  
+          <span>.</span>
+  
+          {% else %}
+          {% if current_page == i%}
+          <a href="#"><button class="active_pagination_button">{{i}}</button></a>
+          {% else %}
+          <a href="{% url 'hold_payment_list' %}?page={{i}}{{update_url_param}}"><button
+              class="pagination_button">{{i}}</button></a>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+  
+          {% if data_count >= 10 %}
+          {% if next %}
+          <a href="{% url 'hold_payment_list' %}?page={{next}}{{update_url_param}}"><button
+              class="pagination_button next">Next</button></a>
+          {% else %}
+  
+          <button class="disabled_button promotion next">Next</button>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock%}
+{% block js %}
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'hold_payment_list' %}";
+    
+    
+    var token = '{{csrf_token}}';
+
+    let time_difference = Number("{{time_difference|safe}}");
+    let maximum_to_date = Number("{{maximum_to_date|safe}}");
+    let dashboard_data_days_limit = Number("{{dashboard_data_days_limit|safe}}");
+
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+    
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static 'js/session_transactions/hold_payments_list.js' %}"></script>
+
+{% endblock %}

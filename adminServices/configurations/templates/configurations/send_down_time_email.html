@@ -1,0 +1,31 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} Map indicators {% endblock %}
+{% load static %}
+
+
+{%block css%}
+{%endblock%}
+
+{% block content %}
+
+{% for message in messages %}
+    {% if message.tags == "success" %}
+        <div class="alert alert-success" role="alert">
+        {{message}}
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{message}}</div>
+    {% endif %}
+{% endfor %}
+<div class="container my-5">
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="email_type">Specify email type</label><br>
+        <input id="email_type" class="form-control my-2" name="email_type" placeholder="Enter email type eg. pre_down_time"/>
+        <button class="btn btn-light">Send mail</button>
+    </form>
+</div>
+
+{%endblock%}

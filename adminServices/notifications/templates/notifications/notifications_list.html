@@ -1,0 +1,256 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} Notifications {% endblock %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/dashboard/reviews.css'%}">
+<link rel="stylesheet" href="{% static '/css/notifications/notifications/notifications.css'%}">
+{% endblock %}
+{% block content %}
+<div class="d-flex flex-column align-items-center justify-content-center email-list-page">
+    {% include "notifications/notification_sub_nav_bar.html" %}
+    <div class="Fields-container">
+        <div class="bigger_width_field">
+            <label class="field_lable" for="">Search</label>
+            <div class="search-box search-box-extended">
+                <img src="{% static '/images/search-1.png' %}" alt="">
+                <input id="search" type="text" value='{{prev_search}}' onchange="filterFunction('search',this.value)"
+                    placeholder="E.g. Title" class="inputs" />
+            </div>
+        </div>
+        <div class="small_width_field margin_filter">
+            <label class="field_lable" for="">Type</label>
+            <div class="select-box">
+                <select class="dropdown_input" id="type_of_notification"
+                    onchange="filterFunction('notification_type',this.value);">
+                    <option value="All" selected>All</option>
+                    {% for i in type_of_notifications %}
+                    {% if prev_notification_type == i%}
+                    <option value="{{i}}" selected>{{i}}</option>
+                    {% else %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="small_width_field">
+            <label class="field_lable" for="">Status</label>
+            <div class="select-box">
+                <select class="dropdown_input" id="status" onchange="filterFunction('status',this.value);">
+                    <option value="All" selected>All</option>
+                    {% for i in status_list %}
+                    {% if prev_status == i%}
+                    <option value="{{i}}" selected>{{i}}</option>
+                    {%else%}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="btn_container ml-auto">
+            <a href="{% url 'add_new_push_notification' %}"><button class="add-btn"><img
+                        src="{% static '/images/plus-sign.png' %}" alt=""></button></a>
+        </div>
+    </div>
+    <div class="table_container">
+        <table id="tableID" class="table" aria-describedby="reviewstable">
+            <thead class="rounded-top">
+                <tr>
+                    <th id="review_station_id" class="table_header">
+                        Title
+                    </th>
+                    <th id="review_station_name" class="table_header image_header">Image</th>
+                    <th id="review_id" class="table_header">Category</th>
+                    <th id="review_date" class="table_header"> Type</th>
+                    <th id="review_heading" class="table_header"> Admin</th>
+                    <th id="review_flag" class="table_header" onclick="orderByFunction('order_by_scheduled_time')">
+                        Scheduled Time
+                        {% if previous_order_by_scheduled_time == 'Descending' %}
+
+                        <img id="order_by_scheduled_time" class="order-by" src="{%static 'images/order-img.png'%}"
+                            alt="">
+                        {% else %}
+
+                        <img id="order_by_scheduled_time" src="{%static 'images/order-img.png'%}" alt="">
+                        {% endif %}
+                    </th>
+                    <th id="review_flag" class="table_header" onclick="orderByFunction('order_by_delivered_time')">
+                        Delivered Time
+                        {% if previous_order_by_delivered_time == 'Descending' %}
+
+                        <img id="order_by_delivered_time" class="order-by" src="{%static 'images/order-img.png'%}"
+                            alt="">
+                        {% else %}
+
+                        <img id="order_by_delivered_time" src="{%static 'images/order-img.png'%}" alt="">
+                        {% endif %}
+                    </th>
+                    <th id="review_flag" class="table_header">Status</th>
+                    <th id="review_flag" class="table_header">Action</th>
+                </tr>
+            </thead>
+            <tbody class="review_table">
+                {% for data in push_notification %}
+                <tr>
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                            href="{% url 'view_push_notification' data.id %}">{{data.subject}}</a></td>
+                    <td class="text_overflow"><a class="view-push-notification-link image_td"
+                            href="{% url 'view_push_notification' data.id %}">
+                            {% if data.image %}
+                            <img src="{{data.image.url}}" class="image_size">
+                            {% endif %}
+                        </a></td>
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                            href="{% url 'view_push_notification' data.id %}">{{data.category}}</a></td>
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                            href="{% url 'view_push_notification' data.id %}">
+                            <div>
+
+                                {{data.type_of_notification}}
+                                {% if data.inapp_notification == "true" %}
+                                <p>In App Notification</p>
+                                {% endif %}
+                                {% if data.push_notification == "true" %}
+                                <p>Push Notification</p>
+                                {% endif %}
+                            </div>
+                        </a></td>
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                            href="{% url 'view_push_notification' data.id %}">{{data.updated_by}}</a></td>
+                    {% if data.scheduled_time %}
+                    <td class="text_overflow"><a class="view-push-notification-link "
+                        href="{% url 'view_push_notification' data.id %}">{% load offers_date_formater %}{{data.scheduled_time | offers_date_formater}}</a></td>
+                        {%else%}
+                    <td class="text_overflow"><a class="view-push-notification-link "
+                        href="{% url 'view_push_notification' data.id %}">Not Scheduled</a></td>
+                        {% endif %}
+                    {% if data.delivered_time %}
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                        href="{% url 'view_push_notification' data.id %}">{% load offers_date_formater %}{{data.delivered_time | offers_date_formater}}</a></td>
+                        {%else%}
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                        href="{% url 'view_push_notification' data.id %}">Not Delivered</a></td>
+                        {% endif %}
+                    <td class="text_overflow"><a class="view-push-notification-link"
+                        href="{% url 'view_push_notification' data.id %}">{{data.status}}</a></td>
+                    {% if data.status != 'Delivered' %}
+                    <td>
+                        <div class="update-delete-icons">
+                            <a href="#" onclick="appendDeleteContent('{{data.id}}','{{data.subject}}')"><button
+                                    data-bs-toggle="modal" data-bs-target="#email-delete-email-modal"
+                                    id="emails-delete-email-notification" class="delete-button"><img
+                                        src="{% static 'images/active_delete.png' %}" alt=""></button></a>
+                            <a href="{% url 'update_push_notification' data.id %}" onclick="showLoader()"><img
+                                    src="{% static 'images/pencil-2.png' %}" alt=""></a>
+                        </div>
+                    </td>
+                    {% else %}
+                    <td>
+                        <div class="update-delete-icons">
+                            <img src="{%static 'images/inactive_delete.png'%}" alt=""><img
+                                src="{%static 'images/inactive-pencil.png'%}" alt="">
+                        </div>
+                    </td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="9" class="pagination_bx_background">
+                        <div class="pagination_div">
+                            <div class="record_count">
+
+                                {% if data_count is 0 %}
+                                <p class="sites_table">No records</p>
+                                {% else %}
+                                <p class="sites_table">
+                                    <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of
+                                    <strong>{{data_count}}</strong> records
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="pagination_buttons d-flex justify-content-lg-start">
+                                {% if data_count >= 10 %}
+                                {% if prev %}
+
+                                <a href="{% url 'notifications_list' %}?page={{prev}}{{update_url_param}}"><button
+                                        class="pagination_button prev">Previous</button></a>
+                                {% else %}
+
+                                <button class="disabled_button prev">Previous</button>
+                                {% endif %}
+                                {% endif %}
+                                {% for i in pagination_num_list%}
+
+                                {% if i is None %}
+
+                                <span>.</span>
+
+                                {% else %}
+                                {% if current_page == i%}
+                                <a href="#"><button class="active_pagination_button">{{i}}</button></a>
+                                {% else %}
+                                <a href="{% url 'notifications_list' %}?page={{i}}{{update_url_param}}"><button
+                                        class="pagination_button">{{i}}</button></a>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+
+                                {% if data_count >= 10 %}
+                                {% if next %}
+                                <a href="{% url 'notifications_list' %}?page={{next}}{{update_url_param}}"><button
+                                        class="pagination_button next">Next</button></a>
+                                {% else %}
+
+                                <button class="disabled_button next">Next</button>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id='footer'></div>
+    </div>
+</div>
+
+
+
+<!-- delete email notification modal -->
+<div class="modal fade" id="email-delete-email-modal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content station_list_delete_site_modal_styl">
+
+            <div class="modal-body">
+                <div class="heading">
+                    <h5>Delete Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+                <div class="emails_list_delete_email_modal_styl_content" id="delete-modal-content">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block js %}
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    var token = '{{csrf_token}}';
+    let url_u = `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'notifications_list'%}";
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static '/js/reviews/review.js' %}"></script>
+<script src="{% static 'js/notifications/push-notifications.js' %}"></script>
+
+{%endblock%}

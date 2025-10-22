@@ -1,0 +1,431 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} View promotions{% endblock %}
+{% block css %}
+
+{% load static %}
+    <link rel="stylesheet" href="{% static '/css/promotions/app_preview.css'%}">
+{% endblock %}
+{% block content %}
+
+
+
+
+{% load static %}
+<div class="add_station_container">
+
+    <div class="side_content_indicator">
+            <p class="ptext active1" onclick="scrollPageFunction('formSection')">Promotion Details</p>
+            <p class="ptext" onclick="scrollPageFunction('view-assign-promotions-section')">Assign Promotions</p>
+            <p class="ptext" onclick="scrollPageFunction('images_container')">Images</p>
+    </div>
+    
+    <div class="form_container">
+        <div class="actions_box">
+            <div class="add_new_site_link"><div class="flex-text" ><a class="link_no_margin" href="{% url 'promotions_list' %}{{query_params_str}}" onclick="showLoader();"><div class="rotated_square"></div></a><a class="link_no_margin text_no_margin" href="{% url 'promotions_list' %}{{query_params_str}}" onclick="showLoader();"><p class="user_back_navigation" >Promotion Detail View</p></a></div></div>
+            <div class="action_buttons">
+                <button  class="delete_button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{% static '/images/delete.png' %}" alt=""></button>
+                <a href="{% url 'edit_promotions' promotion.id %}{{query_params_str}}" class="edit_button"><img src="{% static '/images/pencil.png' %}" alt=""></a>
+            </div>
+        
+        </div>
+        <p class="site_details">Promotion Details</p>
+        
+        <div class="forms page-section" id="formSection">
+            <div class="station_form">
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Retail Barcode</label>
+                    
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.retail_barcode}}</p>
+                    </div>
+                </div>
+    
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Promotions Title</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.promotion_title}}</p>
+                    </div>
+                </div>
+    
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Product</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.product}}</p>
+                    </div>
+                </div>
+     
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">M Code</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.m_code}}</p>
+                    </div>
+                </div>
+
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Status</label>
+                    <div class="station_select-box view_part">
+                        <div class="view_details__box">
+                            <p class=".promotions_p view_part_p_tag">{{promotion.status}}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Available For</label>
+                    <div class="station_select-box view_part">
+                        <div class="view_details__box">
+                            <p class=".promotions_p view_part_p_tag">{{promotion.available_for}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Start Date</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{% load offers_date_formater %}{{promotion.start_date| offers_date_formater}}</p>
+                    </div>
+                        
+                    <p class="error_field" id="error_field4"></p>
+                </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">End Date</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{% load offers_date_formater %}{{promotion.end_date | offers_date_formater}}</p>
+                    </div>
+                </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Price</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.price}}</p>
+                    </div>
+                </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Quantity</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.quantity}}</p>
+                    </div>
+                </div>
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Unique Code / Barcode</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.unique_code}}</p>
+                    </div>
+                </div>
+                <div class="station_fields big promotions">
+                
+                    <label    class="labels">Offer Details</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.offer_details}}</p>
+                    </div>
+                </div>
+                <div class="station_fields big promotions">
+                
+                    <label    class="labels">Terms And Conditions</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{promotion.terms_and_conditions}}</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        
+        <div class="horizontal-lines"></div>
+
+        
+    <p class="site_details">Assign Promotions</p>
+
+        <div class="assign_promotions_form page-section" id="view-assign-promotions-section">
+
+            <div class="station_fields promotions">
+                
+                <label    class="labels">Offer Type</label>
+                {% if promotion.offer_type %}
+                <div class="view_details__box">
+                    <p class=".promotions_p">{{promotion.offer_type}}</p>
+                </div>
+                {% else %}
+                <p>Not Selected</p>
+                {% endif %}
+            </div>
+            <div class="station_fields promotions">
+                
+                <label    class="labels">Shop</label>
+                {% if promotion.shops %}
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('shop-checkboxes')">
+                          <select class="select-dropdown-arrow">
+                            <option >  
+                            {% for shop in promotion.shops %}
+                                {% if forloop.last %}
+                                    
+                                    {{shop}}.
+                                {% else %}
+                                    
+                                    {{shop}},
+                                {% endif %}
+                       
+                            {% endfor %}
+                            </option>
+                          </select>
+                          <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="shop-checkboxes">
+                            {% for shop in promotion.shops %}
+                            <p class=".promotions_p">{{shop}}</p>
+                       
+                            {% endfor %}
+                        </div>
+                      </div>
+                </div>
+                {% else %}
+                <p>Not Selected</p>
+                {% endif %}
+            </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Londis Code (If Applicable)</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{% if promotion.londis_code != "nan" %}{{promotion.londis_code}} {% else %} NA {% endif %}</p>
+                    </div>
+                </div>
+    
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Budgen Code (If Applicable)</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{% if promotion.budgen_code != "nan" %}{{promotion.budgen_code}} {% else %} NA {% endif %}</p>
+                    </div>
+                </div>
+    
+
+                
+                
+    
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Operation Regions</label>
+                    {% if promotion.operation_regions %}
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('ops-region-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    
+                                
+                                {% for ops in promotion.operation_regions  %}
+                                    {% if forloop.last %}
+                                        
+                                        {{ops}}.
+                                    {% else %}
+                                        
+                                        {{ops}},
+                                    {% endif %}
+                        
+                                {% endfor %}
+
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="ops-region-checkboxes">
+                                {% for ops in promotion.operation_regions %}
+                                 <p class=".promotions_p">{{ops}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                    {% else %}
+                    <p>Not Selected</p>
+                    {% endif %}
+                </div>
+
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Regions</label>
+                    {% if promotion.regions %}
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('region-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    
+                                {% for region in promotion.regions  %}
+                                    {% if forloop.last %}
+                                        
+                                        {{region}}.
+                                    {% else %}
+                                        
+                                        {{region}},
+                                    {% endif %}
+                        
+                                {% endfor %}
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="region-checkboxes">
+                                {% for region in promotion.regions %}
+                                <p class=".promotions_p">{{region}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                    {% else %}
+                    <p>Not Selected</p>
+                    {% endif %}
+                </div>
+
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Areas</label>
+                    {% if promotion.area %}
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('area-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    
+                                    
+                                {% for area in promotion.area  %}
+                                    {% if forloop.last %}
+                                        
+                                        {{area}}.
+                                    {% else %}
+                                        
+                                        {{area}},
+                                    {% endif %}
+                        
+                                {% endfor %}
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="area-checkboxes">
+                                {% for area in promotion.area %}
+                                <p class=".promotions_p">{{area}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                    {% else %}
+                    <p>Not Selected</p>
+                    {% endif %}
+                </div>
+
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Stations</label>
+                    {% if promotion.stations %}
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('station-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    {% for station in promotion.stations  %}
+                                        {% if forloop.last %}
+                                            
+                                            {{station}}.
+                                        {% else %}
+                                            
+                                            {{station}} ; 
+                                        {% endif %}
+                            
+                                    {% endfor %}
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="station-checkboxes">
+                                {% for station in promotion.stations %}
+                                <p class=".promotions_p">{{station}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                    {% else %}
+                    <p>Not Selected</p>
+                    {% endif %}
+                </div>
+               
+        </div>
+
+
+    
+    <div class="horizontal-lines"></div>
+
+
+<!-- Assign promotions section -->
+
+
+    <!-- Images section -->
+
+<div class="upper_collapsibles page-section">
+    <p class="site_details">Images</p>
+</div>
+
+<div class="content1">
+    <div id="images_container">
+        {% for img in promotion.images %}
+        <img src="{{img}}" alt="">
+        {% endfor %}
+    </div>
+</div>
+<div class="horizontal-lines"></div>
+
+
+
+
+
+
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promotion_modal_styling" >
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h5>Delete Promotion</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <p class="delete-modal-text">Are you sure you want to remove <strong>{{promotion.retail_barcode}}</strong>, <strong>{{promotion.promotion_title}}</strong>?</p>
+          <div class="google_maps_submit_buttons">
+            <div class="google_maps_container_buttons">
+                
+                <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                <a href="{% url 'delete_promotions' promotion.id %}"><button class="done_button">Yes</button></a>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+{% endblock %}
+
+
+{% block js %}
+
+<script  src="{% static 'js/promotions/view-promotion.js' %}"></script>
+
+
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'auths/auth_main.html' %}
+{% block title %} Admin login page{% endblock %}
+
+{% block body %}
+<div class="login_section">
+    
+  {% load  static %}
+    <div class="login_container">
+        <div class="blur">
+            <img src="{% static '/images/mfg_logo22.png' %}" class="mfg_logo" alt="">
+        </div>  
+        <div class="login_form">
+            
+            <h3 class="heading_login_container">Login</h3>
+            <form method="post" action="" class="d-flex flex-column" id="AddStationForm" enctype="multipart/form-data" autocomplete='off'>
+
+                {% csrf_token %}
+                <div class="text_box_container">
+                    
+                    <label for="email" class="labels">Email:</label><br>
+                    <input type="text" id="email" class="txtbox" autocomplete="username" name="email" onchange="validateFields(this.value,'email');" placeholder="Email">
+                    <p class="login-error-field" id="email_error"></p>
+                </div>
+                <div class="text_box_container">
+                    
+                    <label for="password" class="labels">Password:</label><br>
+                    <div class="pass_container">
+                        <input type="password" id="password" autocomplete="current-password" class="txtbox1 password_box" name="password" onkeyup="validateFields(this.value,'password');"  placeholder="Password">
+                        <div class="img_container" id="toggle" onclick="showHidePassword();">
+                            <img src="{% static '/images/password_img.png' %}" alt="">
+                        </div>
+                    </div>
+                    
+                    <p class="login-error-field" id="password_error"></p>
+                  </div>
+                
+                  <div class="link_container">
+                <div class="text_box_container remeber_me_container">
+                    <div>
+                        <input type="checkbox" id="remeber_me_id" onclick="rememeberMeToggler();"
+                            class="remeber_me_button" name="remeber_me">&nbsp;Remember me
+                    </div>
+                        <a href="{% url 'AdminForgotPassword' %}" class="forgot_password_link">Forgot Password?</a>
+                    </div>
+                </div>
+                
+                <input type="submit" value="Get OTP" id="submit_button" class="submit_button">
+            </form>
+        </div>
+        {% for message in messages %}
+
+            {% if message.tags == 'success' %}
+            
+                <div class="success-messages-box hid-box" >
+                        <p >Success: {{message}} </p>
+                </div>
+            {% else %}
+                <div class="errors hid-box" >
+                        <p >Error: {{message}}</p>
+                </div>
+
+            {% endif %}
+            
+        {% endfor %}
+    </div>
+    
+</div>
+
+
+{% endblock %}
+{% block js %}
+{% endblock %}

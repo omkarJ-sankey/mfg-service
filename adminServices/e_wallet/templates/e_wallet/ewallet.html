@@ -1,0 +1,297 @@
+{% extends 'dashboard/base.html' %}
+{% include 'e_wallet/assignamount.html' %}
+
+{% block title %}E-Wallet{% endblock %}
+{% load static %}
+{%block css%}
+<link rel="stylesheet" href="{% static '/css/wallet/wallet.css'%}">
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"
+/>
+{% endblock %}
+{% block content %}
+<div class="main-cotainer">
+    <div style="width:82vw; margin: 1.2rem auto;" class="top_container align-self-start">
+        <div class="card_container">
+            <div class="card_title">
+                <a>
+                    Total Amount Issued
+                </a>
+            </div>
+            <div class="sub_container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28.579" height="22.579" viewBox="0 0 28.579 22.579">
+                    <g id="Group_15573" data-name="Group 15573" transform="translate(-135.469 -208.711)">
+                      <g id="noun-pound-1241933" transform="translate(-765.531 296.711)" opacity="0.23">
+                        <path id="Path_10002" data-name="Path 10002" d="M95.29,14a11.29,11.29,0,1,0,11.29,11.29A11.3,11.3,0,0,0,95.29,14Zm2.234,11.1v1.949H94.743c-.024.737-.095,1.426-.166,1.973H98.5v1.973h-6.37l.309-1.212a16.645,16.645,0,0,0,.38-2.733H92.01V25.1h.808V22.3a3.2,3.2,0,0,1,3.09-3.28H96a3.234,3.234,0,0,1,2.591,1.474l-1.616,1.141a1.181,1.181,0,0,0-2.234.665v2.8Z" transform="translate(817 -102)" fill="#ffb13b"/>
+                      </g>
+                      <g id="noun-pound-1241933-2" data-name="noun-pound-1241933" transform="translate(-759.531 296.711)">
+                        <path id="Path_10002-2" data-name="Path 10002" d="M95.29,14a11.29,11.29,0,1,0,11.29,11.29A11.3,11.3,0,0,0,95.29,14Zm2.234,11.1v1.949H94.743c-.024.737-.095,1.426-.166,1.973H98.5v1.973h-6.37l.309-1.212a16.646,16.646,0,0,0,.38-2.733H92.01V25.1h.808V22.3a3.2,3.2,0,0,1,3.09-3.28H96a3.234,3.234,0,0,1,2.591,1.474l-1.616,1.141a1.181,1.181,0,0,0-2.234.665v2.8Z" transform="translate(817 -102)" fill="#ffb13b"/>
+                      </g>
+                    </g>
+                  </svg>                <a class="card_value ml-2 mt-1">{{total_amount}}</a>
+            </div>
+        </div>
+        <div class="card_container">
+            <div class="card_title">
+                <a>
+                    Total Widrawn Amount
+                </a>
+            </div>
+            <div class="sub_container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28.579" height="22.579" viewBox="0 0 28.579 22.579">
+                    <g id="Group_15573" data-name="Group 15573" transform="translate(-135.469 -208.711)">
+                      <g id="noun-pound-1241933" transform="translate(-765.531 296.711)" opacity="0.23">
+                        <path id="Path_10002" data-name="Path 10002" d="M95.29,14a11.29,11.29,0,1,0,11.29,11.29A11.3,11.3,0,0,0,95.29,14Zm2.234,11.1v1.949H94.743c-.024.737-.095,1.426-.166,1.973H98.5v1.973h-6.37l.309-1.212a16.645,16.645,0,0,0,.38-2.733H92.01V25.1h.808V22.3a3.2,3.2,0,0,1,3.09-3.28H96a3.234,3.234,0,0,1,2.591,1.474l-1.616,1.141a1.181,1.181,0,0,0-2.234.665v2.8Z" transform="translate(817 -102)" fill="#ffb13b"/>
+                      </g>
+                      <g id="noun-pound-1241933-2" data-name="noun-pound-1241933" transform="translate(-759.531 296.711)">
+                        <path id="Path_10002-2" data-name="Path 10002" d="M95.29,14a11.29,11.29,0,1,0,11.29,11.29A11.3,11.3,0,0,0,95.29,14Zm2.234,11.1v1.949H94.743c-.024.737-.095,1.426-.166,1.973H98.5v1.973h-6.37l.309-1.212a16.646,16.646,0,0,0,.38-2.733H92.01V25.1h.808V22.3a3.2,3.2,0,0,1,3.09-3.28H96a3.234,3.234,0,0,1,2.591,1.474l-1.616,1.141a1.181,1.181,0,0,0-2.234.665v2.8Z" transform="translate(817 -102)" fill="#ffb13b"/>
+                      </g>
+                    </g>
+                  </svg><a class="card_value ml-2 mt-1">{{total_withdrawn_amount}}</a>
+            </div>
+        </div>
+        <div class="card_container">
+            <div class="card_title">
+                <a>
+                    Total Vouchers
+                </a>
+            </div>
+            <div class="sub_container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24.656" height="22.078" viewBox="0 0 24.656 22.078">
+                    <g id="Group_15844" data-name="Group 15844" transform="translate(-401 -208.961)">
+                      <g id="noun-trade-5040244" transform="translate(237.48 137.837)" opacity="0.1">
+                        <path id="Path_10003" data-name="Path 10003" d="M342.514,81.853H333.5a.858.858,0,0,1-.857-.857V71.981a.858.858,0,0,1,.857-.857h9.015a.858.858,0,0,1,.857.857V81A.822.822,0,0,1,342.514,81.853Z" transform="translate(-160.196)" fill="#0076bc"/>
+                        <path id="Path_10004" data-name="Path 10004" d="M171.206,101.579h-3.724l1.6-1.6a.36.36,0,0,0,0-.473l-.857-.857a.36.36,0,0,0-.473,0l-2.483,2.512-1.094,1.064a.36.36,0,0,0,0,.473l3.606,3.606a.36.36,0,0,0,.473,0l.857-.857a.36.36,0,0,0,0-.473l-1.6-1.6h3.724a.3.3,0,0,0,.3-.325V101.9c-.03-.207-.148-.325-.325-.325Z" transform="translate(-0.534 -25.992)" fill="#0076bc"/>
+                        <path id="Path_10005" data-name="Path 10005" d="M174.279,290.979A5.379,5.379,0,1,1,168.9,285.6a5.379,5.379,0,0,1,5.379,5.379" transform="translate(0 -203.156)" fill="#0076bc"/>
+                        <path id="Path_10006" data-name="Path 10006" d="M395.654,316.059h3.724l-1.6-1.6a.36.36,0,0,1,0-.473l.857-.857a.36.36,0,0,1,.473,0l2.483,2.512,1.094,1.094a.36.36,0,0,1,0,.473l-1.094,1.094-2.483,2.512a.36.36,0,0,1-.473,0l-.857-.857a.36.36,0,0,1,0-.473l1.6-1.6h-3.724a.3.3,0,0,1-.3-.325v-1.153a.314.314,0,0,1,.3-.355Z" transform="translate(-219.602 -229.152)" fill="#0076bc"/>
+                      </g>
+                      <g id="noun-trade-5040244-2" data-name="noun-trade-5040244" transform="translate(242.48 137.837)">
+                        <path id="Path_10003-2" data-name="Path 10003" d="M342.514,81.853H333.5a.858.858,0,0,1-.857-.857V71.981a.858.858,0,0,1,.857-.857h9.015a.858.858,0,0,1,.857.857V81A.822.822,0,0,1,342.514,81.853Z" transform="translate(-160.196)" fill="#0076bc"/>
+                        <path id="Path_10004-2" data-name="Path 10004" d="M171.206,101.579h-3.724l1.6-1.6a.36.36,0,0,0,0-.473l-.857-.857a.36.36,0,0,0-.473,0l-2.483,2.512-1.094,1.064a.36.36,0,0,0,0,.473l3.606,3.606a.36.36,0,0,0,.473,0l.857-.857a.36.36,0,0,0,0-.473l-1.6-1.6h3.724a.3.3,0,0,0,.3-.325V101.9c-.03-.207-.148-.325-.325-.325Z" transform="translate(-0.534 -25.992)" fill="#0076bc"/>
+                        <path id="Path_10005-2" data-name="Path 10005" d="M174.279,290.979A5.379,5.379,0,1,1,168.9,285.6a5.379,5.379,0,0,1,5.379,5.379" transform="translate(0 -203.156)" fill="#0076bc"/>
+                        <path id="Path_10006-2" data-name="Path 10006" d="M395.654,316.059h3.724l-1.6-1.6a.36.36,0,0,1,0-.473l.857-.857a.36.36,0,0,1,.473,0l2.483,2.512,1.094,1.094a.36.36,0,0,1,0,.473l-1.094,1.094-2.483,2.512a.36.36,0,0,1-.473,0l-.857-.857a.36.36,0,0,1,0-.473l1.6-1.6h-3.724a.3.3,0,0,1-.3-.325v-1.153a.314.314,0,0,1,.3-.355Z" transform="translate(-219.602 -229.152)" fill="#0076bc"/>
+                      </g>
+                    </g>
+                  </svg>                <a class="card_value ml-2 mt-1">{{total_vouchers}}</a>
+            </div>
+        </div>
+    </div>
+    <div class="Fields-container">
+        <div class="bigger_width_field">
+            <label class="labels" for="cars">Search</label>
+            <div class="search-box">
+                <img src="{% static '/images/search-1.png' %}" alt="">
+                <input id="search" type="text" onchange="filterFunction('search',this.value)"
+                    placeholder="Receiver & Driivz ID" class="inputs"  />
+            </div>
+        </div>
+        <div class="small_width_field">
+            <label class="labels" for="cars">Role</label>
+            <div class="select-box">
+                <select onchange="filterFunction('role_id',this.value)" class="dropdown_input" id="role_id">
+                    <option value="All">All</option>
+                    {% for role in roles%}
+                        {% if role.role_name == prev_role %}
+                            <option value="{{role.role_name}}" selected>{{role.role_name}}</option>
+                        {%else%}
+                            <option value="{{role.role_name}}">{{role.role_name}}</option>
+                        {% endif %}
+                    {%endfor%}
+                </select>
+            </div>
+        </div>
+        <div class="small_width_field">
+            <label class="labels" for="cars">Withdrawn</label>
+            <div class="select-box">
+                <select onchange="filterFunction('is_withdrawn',this.value)" class="dropdown_input" id="is_withdrawn">
+                    <option value="All">All</option>
+                    {% for withdrawn_status in withdrawn_statuses %}
+                        {% if withdrawn_status == prev_withdrawn_status %}
+                            <option value="{{withdrawn_status}}" selected>{{withdrawn_status}}</option>
+                        {%else%}
+                            <option value="{{withdrawn_status}}">{{withdrawn_status}}</option>
+                        {% endif %}
+                    {%endfor%}
+                </select>
+            </div>
+        </div>
+        <div class="small_width_field">
+            <label class="labels">From Date</label>
+            <div class="date_container" onclick="showFromDatePicker()">
+                
+                <input disabled type="text" id="from_date" value="{{prev_from_date}}" placeholder="From date" onchange="filterFunction('from_date',this.value);" class="datepicker" >
+              
+            </div>
+            
+        </div>
+        <div class="small_width_field">
+            <label  class="labels">To Date</label>
+            <div class="date_container" onclick="showToDatePicker()">
+                
+                <input disabled type="text" id="to_date" value="{{prev_to_date}}" placeholder="To date"  onchange="filterFunction('to_date',this.value);" class="datepicker" >
+            
+            </div>
+        </div> 
+        
+       
+        <div class="extra_small_width_field">
+            <button  data-target="#assignAmount" data-toggle="modal" title="Add New user" class="add_new_site add_new_voucher"
+                id="addButton"><img class="add_user_plus_image" src="{% static '/images/plus-sign@2x.png' %}" alt=""></button>
+        </div>
+</div>
+<div class="table_container">
+    <table id="tableID" class="table" aria-describedby="usertable">
+        <thead class="rounded-top">
+            <tr>
+                <th id="order_by_assigned_th" onclick="orderByFunction('order_by_assigned')"
+                    class="table-heading" data-sortas="case-insensitive">
+                    Assigned by
+                    {% if order_by_assigned == 'Descending' %}
+                    <img id="order_by_assigned" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+                    <img id="order_by_assigned" src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th id="order_by_role_th" onclick="orderByFunction('order_by_role')" class="table-heading">
+                    Assigner Role
+                    {% if order_by_role == 'Descending' %}
+
+                    <img id="order_by_role" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+
+                    <img id="order_by_role" src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th id="order_by_date_th" class="table-heading">Date</th>
+                <th id="order_by_receiver_th" onclick="orderByFunction('order_by_receiver')" class="table-heading"
+                    data-sortas="numeric">
+                    Receiver
+                    {% if order_by_receiver == 'Descending' %}
+
+                    <img id="order_by_receiver" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                    {% else %}
+
+                    <img id="order_by_receiver" src="{%static 'images/order-img.png'%}" alt="">
+                    {% endif %}
+                </th>
+                <th id="order_by_login_th" class="table-heading">DRIIVZ ID</th>
+                <th id="order_by_login_th" class="table-heading">Voucher amount</th>
+                <th id="order_by_login_th" class="table-heading">Wallet balance</th>
+                <th id="order_by_login_th" class="table-heading">Amount Withdrawn</th>
+            </tr>
+        </thead>
+        <tbody id="showUserDetails">
+            {% for trans in transaction_data %}
+            <tr data-href="{% url 'wallet_details' trans.payment_id %}" class="cursor-pointer" name="usersDetail" id={{trans.id}}>
+                    <td class="name_align_center">
+                        <div class="username_cell">
+                            <a class="table_user_name">&nbsp; {{trans.assigned_by.full_name}}</a>
+                        </div>
+                    </td>
+                    <td class="user_mgmt_table">
+                        {{trans.assigned_by.role_id.role_name}}</td>
+                    <td class="user_mgmt_table">
+                        {% load date_formater %}
+                        {{trans.created_date |date_formater }}
+                    </td>
+                    <td class="user_mgmt_table" id='userrole'>{{trans.user_id.username}}</td>
+                    <td class="user_mgmt_table">
+                        {% if trans.user_id.user_profile.driivz_account_number %}
+                            {{trans.user_id.user_profile.driivz_account_number}}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </td>
+                    <td class="user_mgmt_table">
+                        {% load date_formater %}
+                        {{trans.transaction_amount| wallet_amount}}
+                    </td>
+                    <td class="user_mgmt_table">
+                        {% if trans.user_updated_balance %}
+                            {% load wallet_amount_formatter %}
+                            {{trans.user_updated_balance |wallet_amount_formatter}}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </td>
+                    <td class="user_mgmt_table">
+                        {% if trans.is_withdrawn and trans.is_withdrawn == 'Yes' %}
+                            {{trans.is_withdrawn}}
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                   
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="9" class="white_bg">
+                        <div class="pagination_div">
+                            <div class="record_count">
+                                {% if data_count is 0 %}
+                                <p class="user_mgmt_records">No records</p>
+                                {% else %}
+                                <p class="user_mgmt_records"> <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong>
+                                    of <strong>{{data_count}}</strong> records </p>
+
+                                {% endif %}
+                            </div>
+                            <div class="pagination_buttons">
+                                {% if data_count >= 10 %}
+
+                                {% if prev %}
+                                <a href="{% url 'ewallet' %}?page={{prev}}{{update_url_param}}"><button
+                                        class="pagination_button prev">Previous</button></a>
+                                {% else %}
+
+                                <button class="disabled_button prev">Previous</button>
+                                {% endif %}
+                                {% endif %}
+                                {% for i in pagination_num_list%}
+                                
+                                    {% if i is None %}
+
+                                        <span>.</span>
+
+                                    {% else %}
+                                        {% if current_page == i%}
+                                        <a href="#"><button class="active_pagination_button">{{i}}</button></a>
+                                        {% else %}
+                                        <a href="{% url 'ewallet' %}?page={{i}}{{update_url_param}}"><button
+                                                class="pagination_button">{{i}}</button></a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if data_count >= 10 %}
+
+                                {% if next %}
+                                <a href="{% url 'ewallet' %}?page={{next}}{{update_url_param}}"><button
+                                        class="pagination_button next">Next</button></a>
+                                {% else %}
+
+                                <button class="disabled_button next">Next</button>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div id='foter'></div>
+
+</div>
+{% include 'e_wallet/assignamount.html' %}
+</div>
+<script>
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'ewallet'%}";
+    let prev_role = `{{prev_role}}`
+    let prev_search = `{{prev_search}}`
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static '/js/wallet/wallet.js' %}"></script>
+
+{% endblock content %}

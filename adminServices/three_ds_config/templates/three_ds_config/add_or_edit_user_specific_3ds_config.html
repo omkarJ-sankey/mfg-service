@@ -1,0 +1,102 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}User Specific 3DS{% endblock %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/notifications/notifications/notifications.css' %}">
+<link rel="stylesheet" href="{% static '/css/three_ds_config/3ds_config.css' %}">
+{% endblock %}
+{% block content %}
+<div>
+    <form method="post" id="userSpecific3DSConfigForm">
+        {% csrf_token %}
+        <div id='threeDSConfig'>
+            {% include "three_ds_config/3ds_sub_nav_bar.html" %}
+            <div class="three-3ds-add-container">
+                
+                <div class="three-3ds-heading">
+                    Parameter Checks Configurations
+                </div>
+
+                <div class="three-3ds-add-form">
+                    <div class="configurations-box user-three-ds-configurations-box">
+                        <div>
+                            <span>Set Parameter Configuration For</span>
+                            <input
+                                type="email"
+                                required
+                                class="three-3ds-input-boxes three-3ds-user-input-boxes"
+                                name="three_ds_user_email"
+                                id="three_ds_user_email"
+                                value="{{user_specific_3ds_configurations.email}}"
+                                placeholder="johndoe@gmail.com"
+                                {% if edit_user_configurations %}
+                                    disabled
+                                {% endif %}
+                            >
+                        </div>
+                        <div class="d-flex align-items-center w-25">
+                            <span>Status</span>
+                            <select required class="three-3ds-input-boxes three-3ds-user-select-boxes dropdown_input w-100" id="three_ds_status" name="three_ds_status" >
+                                <option value="">Select</option>
+                                {% for status in status_list %}
+                                    <option
+                                        value="{{status}}"
+                                        {% if status == user_specific_3ds_configurations.user_specific_3ds_configurations.status %}
+                                            selected
+                                        {% endif %}
+                                    >{{status}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="configurations-box">
+                        <input
+                            class="three-3ds-checkbox"
+                            type="checkbox"
+                            name="trigger_three_ds_for_all_transactions"
+                            id="trigger_three_ds_for_all_transactions"
+                            {% if user_specific_3ds_configurations.user_specific_3ds_configurations.triggered_3ds_for_all_transactions %}
+                                checked
+                            {% endif %}
+                        >
+                        <span>Trigger 3DS for all Transactions.</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" onclick="validateuser3DSForm();" class="three-3ds-conf-submit-button" id="submit3DSConfig">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="modal fade" id="confirm3DSConfigurations" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content three_ds_confirmation_modal_content_box">
+                    <div class="modal-body mx-1 mb-2">
+                        <div class="heading">
+                            <img src="{% static '/images/3ds_confirmation_icon.png' %}" alt="3ds_confirmation_icon" class="three_ds_confirmation_icon">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="three_ds_confirmation_modal_content">
+                            <h6 class="font-weight-bold mt-3 sub-head">3DS Configuration Parameters set for <span id="modal_user_email"></span></h6>
+                            <p class="mt-2 sub-text">Do you want to save or discard changes?</p>
+                            <div class="d-flex justify-content-between">
+                                <button class="discard_button" data-bs-dismiss="modal">Discard</button>
+                                <button class="save_button" type="submit" onclick="showSubmitFormLoader();">Save</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+{% endblock content %}
+{% block js %}
+<script src="{% static '/js/three_ds_config/3ds_config.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,133 @@
+.three-3ds-add-container {
+    width: 100%;
+    width: 82vw;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+}
+.three-3ds-heading {
+    font-size: 1.125rem;
+    letter-spacing: 0.18px;
+    color: var(--dark-gray);
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.three-3ds-add-form{
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid var(--light-gray) !important;
+    margin-bottom: 20px;
+}
+.configurations-box {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.14px;
+    color: #888888;
+    margin-top: 17px;
+    margin-bottom: 5px;
+}
+.configurations-box.error-box{
+    color: var(--mfg-red);
+    margin: 0;
+}
+.configurations-box.user-three-ds-configurations-box{
+    justify-content: space-between;
+}
+.three-3ds-checkbox {
+    margin-right: 8px;
+}
+.three-3ds-input-boxes{
+    width: 70px;
+    padding: 0.625rem;
+    background: var(--white) 0% 0% no-repeat padding-box;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    color: var(--dark-gray);
+    font-size: 0.8rem;
+    font-weight: 400;
+    height: 1.9rem;
+    margin: 0 8px;
+}
+.three-3ds-input-boxes.three-3ds-user-input-boxes{
+    width: 230px;
+}
+
+.three-3ds-input-boxes.three-3ds-user-select-boxes{
+    width: 180px;
+    padding: 0 0.625rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 2px;  /* to align custom dropdwon arrow need 5 px padding */
+    padding: 0 0.6rem;
+}
+.three-3ds-conf-submit-button {
+    order:  1px solid var(--mfg-red);
+    border: none;
+    outline: none;
+    background: var(--mfg-red) 0% 0% no-repeat padding-box;
+    width: 6rem;
+    height: 2.2rem;
+    box-shadow: 0px 0px 6px #00000033;
+    font: normal normal medium var(--font-14);
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    border-radius: 4px;
+    color: var(--white);
+    opacity: 1;
+}
+.three_ds_confirmation_icon{
+    height: 3rem;
+}
+
+.three_ds_confirmation_modal_content_box {
+    width: 21rem;
+    margin: 0 auto;
+}
+
+.three_ds_confirmation_modal_content .discard_button{
+    border:  1px solid #888888;
+    outline: none;
+    background: transparent;
+    width: 6rem;
+    height: 2.2rem;
+    font: normal normal medium var(--font-14);
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    border-radius: 4px;
+    color: #111111;
+    opacity: 1;
+    width: 48%;
+}
+.three_ds_confirmation_modal_content .save_button{
+    border:  1px solid var(--mfg-red);
+    border: none;
+    outline: none;
+    background: var(--mfg-red) 0% 0% no-repeat padding-box;
+    width: 6rem;
+    height: 2.2rem;
+    box-shadow: 0px 0px 6px #00000033;
+    font: normal normal medium var(--font-14);
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    border-radius: 4px;
+    color: var(--white);
+    opacity: 1;
+    width: 48%;
+}
+.three_ds_confirmation_modal_content .sub-text {
+    color: #888888;
+}
+.add-three-ds-configs-icon{
+    height: 1rem;
+}
+input[type="checkbox"] {
+    accent-color: rgb(0 117 255);
+}

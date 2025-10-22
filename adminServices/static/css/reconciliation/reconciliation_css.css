@@ -1,0 +1,299 @@
+.table_promotions.medium{
+    width: 100rem
+}
+.right_table.reconciliation {
+    width: 100%;
+}
+.table_promotions.full-width{
+    width: 100%;
+}
+.reconciliation_table{
+    overflow-y: hidden; 
+    overflow-x: scroll;
+}
+.recon_align_center{
+    text-align: center;
+}
+.view_recon_details_link{
+    text-decoration: none; 
+    color:var(--dark-gray);
+}
+.transaction_comment_box{
+    display: flex; justify-content: center;align-items: center;
+    text-align: center;
+}
+.provide_comment{
+    margin : 0 0.625rem;
+}
+.add_transaction_comment_modal{
+    width: 400px; margin: 0 auto !important; height: 250px
+}
+.provide_comment_content{
+    margin-right: 1rem ;
+}
+.recon_border_none{
+    border: none;
+}
+.recon_display_none{
+    display: none;
+}
+.recon_error_count_shower{
+    padding-left:5px; padding-right:5px;
+}
+.bulk_upload_warning_txt{
+    display: flex; justify-content: center;
+}
+.transaction_comment_box_styl{
+    height:90px; 
+    width:100%; 
+    margin-top:0.625rem; 
+    margin-bottom:15px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+}
+.transaction_details_ation_buttons{
+    margin : 0 0.625rem;
+}
+.transaction_container{
+
+    width:80%;
+    margin : 0 auto;
+    margin-top: 25px;
+    height:  auto;
+}
+.filter_container_recon .small_width_field{
+    width:13% !important;
+}
+
+.transaction_container .add_new_site_link .flex-text{
+    display: flex; 
+    align-items: center;
+}
+.transaction_container .add_new_site_link .flex-text .rotated_square{
+    height: 0.625rem;
+    width: 0.625rem;
+    margin: 3px;
+    margin-top: 5px;
+    border-left: 2px solid #888888;
+    border-bottom: 2px solid #888888;
+    transform: rotate(45deg);
+
+}
+.transaction_container .add_new_site_link .flex-text a,.transaction_back_link{
+    text-decoration: none;
+    font: normal normal medium 18px/22px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.18px;
+    color: #888888;
+    margin-left: 0.625rem; 
+    cursor: pointer;
+    margin-bottom: 0 !important;
+}
+
+.transaction_container .site_details{
+    font: normal normal medium 18px/22px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.18px;
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+.transaction_container_content{
+    width:100%;
+    margin-top : 20px;
+    height: auto;
+    padding:0.625rem;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    background: var(--white) 0% 0% no-repeat padding-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+.transaction_container_content_field{
+    width: 25%;
+    padding: 0.625rem 0;
+}
+.transaction_container_content_field.comment{
+    width:50%;
+    padding:0.625rem 0;
+}
+.transaction_container_content_field.comment .comment_heading{
+    display: flex;
+    justify-content: space-between;
+}
+
+.transaction_container_content_field.comment .comment_heading .left-part, .right-part{
+    display: flex;
+}
+.transaction_container_content_field.comment .comment_heading  .right-part.hide{
+    display: none;
+}
+.hide_element{
+    display: none;
+}
+.transaction_container_content_field.comment .comment_heading .transaction_heading_comment{
+    font: normal normal normal 14px/17px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    color: #666666;
+    opacity: 1;
+    margin:0;
+}
+.transaction_container_content_field .transaction_heading{
+    font: normal normal normal 14px/17px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    color: #666666;
+    opacity: 1;
+    margin:0;
+}
+.transaction_container_content_field .transaction_value{
+    font: normal normal medium;
+    font-family: 'Roboto',serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.16px;
+    color: var(--dark-gray);
+    margin: 0.625rem 0;
+}
+.transaction_container_content_field .transaction_value.hide{
+    display: none;
+}
+
+.comment_input{
+    width:100%; 
+     border: 1px solid #CCCCCC;
+     border-radius: 4px;
+     padding: 5px 0.625rem;
+     margin-top: 0.625rem;
+}
+.comment_input.hide{
+    display: none;
+}
+
+
+.back-link{
+    width:94%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.back-link .flex-text{
+    display: flex; 
+    align-items: center;
+}
+.back-link .flex-text .rotated_square{
+    height: 0.625rem;
+    width: 0.625rem;
+    margin: 3px;
+    margin-top: 5px;
+    border-left: 2px solid #888888;
+    border-bottom: 2px solid #888888;
+    transform: rotate(45deg);
+
+}
+.back-link .flex-text a{
+    margin-top: 8px;
+    text-decoration: none;
+    font: normal normal medium 18px/22px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.18px;
+    color: #888888;
+    margin-left: 0.625rem; 
+}
+
+.tabs_for_reconciliation{
+    width: 95%;
+    margin:0 auto;
+    height:50px;
+    display: flex;
+
+}
+.tabs_for_reconciliation a{
+    text-decoration: none;
+    margin: 0.625rem 0;
+    margin-right: 20px;
+    font: normal normal normal 16px/19px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.16px;
+    color: #999999;
+    padding: 3px 0.625rem;
+
+}
+.tabs_for_reconciliation a.active_tab{
+    font: normal normal medium 16px/19px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.16px;
+    font-weight: 600;
+    color: var(--dark-blue);
+    border-bottom: 3px solid var(--dark-blue);
+    
+
+}
+.tabs_for_reconciliation a.active_tab:hover{
+    font: normal normal medium 16px/19px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.16px;
+    font-weight: 600;
+    color: var(--dark-blue);
+    border-bottom: 3px solid var(--dark-blue);
+}
+.tabs_for_reconciliation a:hover{
+    text-decoration: none;
+    font: normal normal normal 16px/19px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.16px;
+    color: #999999;
+}
+.table_container_promotions.reconciliation{
+    margin-top: 0;
+}
+.transaction_info_container{
+    width: 95%;
+    height:45px;
+    margin:0 auto;
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0px 0px 6px #00000014;
+    background: var(--white);
+    
+}
+.transaction_info_container.space_between{
+    justify-content: space-between;
+    
+}
+.transaction_info_container .info_content{
+    font: normal normal normal 14px/17px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    color: #666666;
+    padding: 0 20px;
+}
+.transaction_info_container .info_content p{
+    padding: 0;
+    margin:0;
+}
+.transaction_info_container .info_content .vertical_line{
+    height:0.625rem;
+    background: #666666;
+    width:1px;
+
+}
+.filter_container_recon{
+    display: flex;
+    flex-direction: row;
+}
+.maxWidth-53{
+    max-width: 10rem;
+    min-width: 6.25rem;
+}
+.container_reco{
+    width: 94%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: auto;
+    margin-top: 9.5rem;
+}
+.reco_table{
+    width: 95% !important;
+}

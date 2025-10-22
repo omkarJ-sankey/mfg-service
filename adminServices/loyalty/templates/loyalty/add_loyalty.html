@@ -1,0 +1,1032 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} Add Loyalty{% endblock %}
+
+{% block stylesheet %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static '/css/promotions/app_preview.css'%}">
+<!-- <link rel="stylesheet" href="{% static '/css/notifications/notifications/add_new_push_notification.css'%}"> -->
+{% endblock %} 
+{% block css %}
+
+<style type="text/css">
+    
+  </style>
+{% endblock %}
+{% block content %}
+
+
+
+
+{% load static %}
+<div class="side_modal" id="side_modal_id">
+    <div class="background_manager">
+
+    </div>
+    <div class="side_modal_content">
+        <div id="dynamic_content_container">
+            <div class="content_of_modal"> 
+                <div class="side_modal_heading">
+                    <p>Assign Images</p>
+                    <button class="close_button" onclick="toggleModal();">X</button>
+        
+                </div>
+                <div class="side_modal_heading1">
+                    <p>00 added</p>
+                    <a href="" class="add_images">Add Images</a>
+                </div>
+                <div class="hor_line"></div>
+                
+
+                
+            </div>
+            <div class="add_images_button_cotainer">
+                <button class="cancel_image_button">Cancel</button>
+                <button class="assign_image">Assign</button>
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+<div class="add_station_container">
+
+    <div class="side_content_indicator">
+        <p class="ptext active1" onclick="scrollPageFunction('formSection')">Offer Details</p>
+        <p
+            class="ptext active1"
+            onclick="scrollPageFunction('LoyaltyOccurrenceContainer')" id="loyaltyOccuranceSectionRedirector"
+        >Set Occurrences</p>
+        <p
+            class="ptext active1"
+            onclick="scrollPageFunction('LoyaltyProductContainer')" id="loyaltyProductSectionRedirector"
+        >Offer Products Details</p>
+        <p class="ptext active1" onclick="scrollPageFunction('redemptionFormSection')">Redemption Details</p>
+        <p class="ptext" onclick="scrollPageFunction('assign_promotions_form_container')">Assign Offers</p>
+        <p class="ptext" onclick="scrollPageFunction('image_section')">Images</p>
+        <p class="ptext" onclick="scrollPageFunction('reward_image_section')">Reward Image</p>
+        <p
+            {% if loyalty.loyalty_type == 'Costa Coffee' or loyalty.loyalty_type == 'Free' %}
+                class="ptext active1"
+            {% else %}
+                class="ptext active1 disabled-content"
+            {% endif %}
+            onclick="scrollPageFunction('notifications_container')"
+            id="notificationsSectionRedirector"
+        >Notifications</p>
+    </div>
+    
+    <div class="form_container">
+        
+        <div class="add_new_site_link"><div class="flex-text" ><a class="link_no_margin" href="{% url 'loyalties_list' %}{{query_params_str}}" onclick="showLoader();"><div class="rotated_square"></div></a><a class="link_no_margin text_no_margin" href="{% url 'loyalties_list' %}{{query_params_str}}" onclick="showLoader();"><p class="user_back_navigation" id="link_text">Add New Loyalty</p></a></div></div>
+        <p class="site_details">Offer Details</p>
+        
+        <div class="forms page-section" id="formSection">
+            <div class="station_form promotion_add_form">
+                <div class="station_fields">
+                    <label class="labels">Offer Title</label>
+                    <input type="text" value="{{loyalty.loyalty_title}}"   class="inputs" onkeyup="updateUploadedDataSet(0, this.value);" placeholder="Enter loyalty title">
+                    <p class="error_field" id="error_field0"></p>
+                </div>
+                <div class="station_fields">
+                    <label class="labels">Offer Type</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(43, this.value);  offerContentTogglerBasedOnOfferType(this.value);">
+                            <option value="">Select</option>
+                            {% for i in offer_type_list %}
+                                {% if i == loyalty.offer_type %}
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field43"></p>
+                </div>
+                <div class="station_fields">
+                    <label class="labels">Unique Code</label>
+                    <input type="text" value="{{loyalty.unique_code}}"   class="inputs" onkeyup="updateUploadedDataSet(1, this.value);" placeholder="Enter unique code">
+                    <p class="error_field" id="error_field1"></p>
+                </div>
+                <div class="station_fields">
+                    <label class="labels">Category</label>
+                    <div class="station_select-box">
+                        <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(2, this.value);">
+                            <option value="">Select</option>
+                            {% for i in loyalty_category_list%}
+                                {% if i == loyalty.category %}
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field2"></p>
+                </div>
+                <div class="station_fields">
+                    <label class="labels">Bar Code Std</label>
+                    <div class="station_select-box">
+                        <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(3, this.value);">
+                            <option value="">Select</option>
+                            {% for i in bar_code_std_list%}
+                                {% if i == loyalty.bar_code_std %}
+                                    
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field3"></p>
+                </div>
+                <div class="station_fields" id="loyaltyTypeField">
+                    <label class="labels">Loyalty Type</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input" id="loyalty_type_dropdown" onchange="updateUploadedDataSet(5, this.value); loyaltyContentToggler(this.value);">
+                            <option value="">Select</option>
+                            {% for i in loyalty_types %}
+                                {% if i == loyalty.loyalty_type %}
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field5"></p>
+                </div>
+                <!-- <div class="station_fields">
+                    <label class="labels">Cycle Duration</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(5, this.value);">
+                            <option value="">Select</option>
+                            {% for i in cycle_durations %}
+                                {% if i == loyalty.cycle_duration %}
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field5"></p>
+                </div> -->
+                <div class="station_fields">  
+                    <label class="labels" id="startDateOrTimeLabel">Start Date</label>
+                    <div class="date_container1" onclick="showFromDatePicker()" id="startDateContainer">
+                        <input disabled type="text" id="start_date" value="{{loyalty.start_date}}" placeholder="Start date"  onchange="updateUploadedDataSet(6, this.value);"  class="datepicker1" >
+                    </div>
+                    <p class="error_field" id="error_field6"></p>
+                </div>
+                <div class="station_fields">
+                    <label  class="labels" id="endDateOrTimeLabel">End Date</label>
+                    <div class="date_container1" onclick="showToDatePicker()" id="endDateContainer">
+                        <input disabled type="text" id="end_date"  value="{{loyalty.end_date}}" placeholder="End date"  onchange="updateUploadedDataSet(7, this.value);"  class="datepicker1" >
+                    </div>
+                    <p class="error_field" id="error_field7"></p>
+                </div>
+                
+                <div class="station_fields" id="redeemTypeField">
+                    <label class="labels">Redeem Type</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input" id="redeem_type_dropdown" onchange="updateUploadedDataSet(4, this.value); loyaltyRedeemToggler(this.value);">
+                            <option value="">Select</option>
+                            {% for i in redeem_types %}
+                                {% if i == loyalty.redeem_type %}
+                                    
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field4"></p>
+                </div>
+                <div class="station_fields" id="triggerKWhField" style="display:none;">
+                    <label class="labels">Count of Transaction</label>
+                    <input type="number" id="trigger_kwh_count_input" value="{{loyalty.transaction_count_for_costa_kwh_consumption}}" class="inputs"
+                        placeholder="Enter count of transaction"
+                        onchange="updateUploadedDataSet(48, this.value); restrictWordInNumberFields('trigger_kwh_count_input')">
+                    <p class="error_field" id="error_field48"></p>
+                </div>
+                <div
+                    {% if loyalty.loyalty_type != 'Free' %}
+                        class="station_fields"
+                    {% else %}
+                        class="station_fields disabled-station-fields"
+                    {% endif %}
+                    id="cycleDurationField"
+                >
+                    <label class="labels">User Cycle Duration (In days)</label>
+                    <input type="number" id="cooling_down_period_field" value="{{loyalty.cycle_duration}}"  min="0" class="inputs" placeholder="Enter user cycle duration " onchange="updateUploadedDataSet(8, this.value); restrictWordInNumberFields('cooling_down_period_field')">
+                    <p class="error_field" id="error_field8"></p>
+                </div>
+                <div 
+                    {% if loyalty.loyalty_type == 'Costa Coffee' or loyalty.loyalty_type == 'Free' %}
+                        class="station_fields"
+                    {% else %}
+                        class="station_fields disabled-station-fields"
+                    {% endif %}
+                    id="numberOfIssuanceContainer"
+                >
+                    <label class="labels">Number Of Issuances</label>
+                    <input type="number"  id="number_of_issuances_field" value="{{loyalty.number_of_total_issuances}}"  min="0" class="inputs" placeholder="Enter number of issuances" onchange="updateUploadedDataSet(9, this.value); restrictWordInNumberFields('number_of_issuances_field')">
+                    <p class="error_field" id="error_field9"></p>
+                </div>
+                <div
+                    {% if loyalty.loyalty_type != 'Free' %}
+                        class="station_fields"
+                    {% else %}
+                        class="station_fields disabled-station-fields"
+                    {% endif %}
+                    id="triggerRedeemAvailableField"
+                >
+                        {% if loyalty.loyalty_type == 'Costa Coffee' %}
+                            <label    class="labels" id="redeem_type_toggle_text">Voucher Issuance Trigger Value</label>
+                            <input type="number" id="number_of_paid_purchases"  value="{{loyalty.number_of_paid_purchases}}"  min="0" class="inputs" placeholder="Enter promotion issuance trigger value" onchange="updateUploadedDataSet(10, this.value); restrictWordInNumberFields('number_of_paid_purchases')">
+                        {% else %}
+                            <label    class="labels" id="redeem_type_toggle_text">Number of Purchases</label>
+                            <input type="number" id="number_of_paid_purchases"  value="{{loyalty.number_of_paid_purchases}}"  min="0" class="inputs" placeholder="Enter purchase count for redemption" onchange="updateUploadedDataSet(10, this.value); restrictWordInNumberFields('number_of_paid_purchases')">
+                        {% endif %}
+                    <p class="error_field" id="error_field10"></p>
+                </div>
+                <div class="station_fields" id="qrExpiryField">
+                    <label class="labels">QR Code Expiry (In mins.)</label>
+                    {% if loyalty %}
+                        <input type="number" id="promotion_quantity"  value="{{loyalty.qr_refresh_time}}"  min="0" class="inputs" placeholder="Enter QR code expiry" onchange="updateUploadedDataSet(11, this.value); restrictWordInNumberFields('promotion_quantity')">
+                    
+                    {% else %}
+                        <input value="5" type="number" id="promotion_quantity"   min="0" class="inputs" placeholder="Enter QR code expiry" onchange="updateUploadedDataSet(11, this.value); restrictWordInNumberFields('promotion_quantity')">
+                    {% endif %}
+                    <p class="error_field" id="error_field11"></p>
+                </div>
+                <div class="station_fields">
+                
+                    <label class="labels">Status</label>
+                    <div class="station_select-box">
+                        <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(12, this.value);">
+                            <option value="">Select</option>
+                            {% for i in status_list %}
+                                {% if i == loyalty.status %}
+                                        
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field12"></p>
+                </div>
+                <div class="station_fields" id="footerMessageField">
+                    <label class="labels">Loyalty List Footer Message</label>
+                    <input type="text" value="{% if loyalty.loyalty_list_footer_message %} {{loyalty.loyalty_list_footer_message}} {% endif %}" class="inputs" onkeyup="updateUploadedDataSet(42, this.value);" placeholder="Enter loyalty list footer message">
+                    <p class="error_field" id="error_field42"></p>
+                </div>
+                
+                <div class="station_fields" id="setOccurrencesField">
+                
+                    <label class="labels">Set Occurrences</label>
+                    <div class="station_select-box">
+                        <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(44, this.value); loyaltyOccurrencesSectionToggler(this.value)" id="occurance_status_dropdown">
+                            <option value="">Select</option>
+                            {% for i in occurance_statuses %}
+                                {% if i == loyalty.occurance_status %}
+                                        
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field44"></p>
+                </div>
+
+                <div class="station_fields" id="loyaltyVisibilityField">
+                    <label class="labels">Offer Visibility</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showVisibilityCheckbox('loyalty-visibility-checkboxes')">
+                                <select>
+                                    <option id="loyaltyVisibilityText">Select</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="loyalty-visibility-checkboxes" style="display:none;">
+                                <label>
+                                    <input type="checkbox" class="padder loyalty-visibility-input" value="Guest Users" onchange="updateLoyaltyVisibility();"/> Guest Users
+                                </label>
+                                <label>
+                                    <input type="checkbox" class="padder loyalty-visibility-input" value="Registered Users" onchange="updateLoyaltyVisibility();"/> Registered Users
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="error_field" id="error_field_loyalty_visibility"></p>
+                </div>
+
+                <div class="station_fields" id="carWashField" style="display:none;">
+                    <label class="labels">Car Wash</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input" id="car_wash_dropdown" onchange="updateUploadedDataSet(51, this.value);">
+                            <option value="">Select</option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field50"></p>
+                </div>
+
+                <div class="station_fields" id="displayField">
+                    <label class="labels">Display On Charging Screen</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input" id="display_on_cs_dropdown" onchange="updateUploadedDataSet(52, this.value);">
+                            <option value="">Select</option>
+                            <option value="True" {% if not loyalty or loyalty.display_on_charging_screen == 1 %}selected{% endif %}>True</option>
+                            <option value="False" {% if loyalty.display_on_charging_screen == 0 %}selected{% endif %}>False</option>
+                        </select>
+                    </div>
+                    <p class="error_field" id="error_field52"></p>
+                </div>
+
+            </div>
+            <div class="station_form promotion_add_form">
+                <div class="station_fields big promotion-details-popup">
+                    <label class="labels">Offer Details <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('offer')" onmouseout="hide_info_box('offer')"><span id='show_tooltip_offer' class="icon-popup">Please limit offer details upto 1000 characters.</span></label>
+                    <textarea id="offers" class="inputs promotion_textarea" onload="removeWhiteSpace(promotion.offer_details)" onkeyup="updateUploadedDataSet(13, this.value);" placeholder="Enter offer details">
+                        {{loyalty.offer_details}}     
+                    </textarea>
+                    <p class="error_field" id="error_field13"></p>
+                </div>
+                <div class="station_fields big">
+                
+                    <label    class="labels">Terms And Conditions</label>
+                    <textarea id="terms" class="inputs promotion_textarea" onload="removeWhiteSpace(promotion.terms_and_conditions)" onkeyup="updateUploadedDataSet(14, this.value);" placeholder="Enter terms and conditions">
+                        {{loyalty.terms_and_conditions}}
+                    </textarea>
+                    <p class="error_field" id="error_field14"></p>
+                </div>
+                
+                <div class="station_fields big">
+                    <label    class="labels">Steps to redeem</label>
+                    <textarea id="steps_to_redeem" class="inputs promotion_textarea"  onload="removeWhiteSpace(promotion.steps_to_redeem)" onkeyup="updateUploadedDataSet(45, this.value);" placeholder="Enter steps for redemption">
+                        {{loyalty.steps_to_redeem}}
+                    </textarea>
+                    <p class="error_field" id="error_field45"></p>
+                </div>
+                <div class="station_fields big" id="detailSiteCheckContainer" style="display:none;">
+                <label class="labels">Detail Site Check</label>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox"
+                        id="detail_site_check"
+                        class="inputs promotion_checkbox"
+                        onchange="updateUploadedDataSet(49, this.checked ? '1' : '0')"
+                        style="width:16px; height:16px; margin:0;"
+                        {% if loyalty.detail_site_check %}checked{% endif %} />
+                    <span class="checkbox-description">
+                    This is the trigger which will check if the nearest site is in the stations list so the details of the loyalties should be shown.
+                    </span>
+                </div>
+
+                <p class="error_field" id="error_field49"></p>
+                </div>
+            </div>
+        </div>
+        <div
+            id="loyaltyOccurrencesSection"
+        >
+            <div id="loaylty_occurrences_container">
+                <div class="horizontal-lines"></div>
+                <p class="site_details">Set Occurrences</p>
+                <div id="LoyaltyOccurrenceContainer" class="page-section">
+                
+                </div>
+        
+                <div class="charge_point_button_container">
+                    <button class="add_charge_point" id="addOccurrencesButton">Add Occurrence</button>
+                </div>
+            </div>
+        </div>
+        <div
+            id="loyaltyProductsSection"
+        >
+            <div id="loaylty_products_container">
+                <div class="horizontal-lines"></div>
+                <p class="site_details">Offer Products Details</p>
+                <div id="LoyaltyProductContainer" class="page-section">
+                
+                </div>
+        
+                <div class="charge_point_button_container">
+                    <button class="add_charge_point" id="addChargePointButton">Add Product</button>
+                </div>
+            </div>
+        </div>
+        <div class="horizontal-lines"> </div>
+        <div id="redemptionDetailsSections">
+            <p class="site_details">Redemption Details</p>
+            <div class="forms page-section" id="redemptionFormSection">
+                <div class="station_form promotion_add_form">
+                    <div class="station_fields mb-4">
+                        <label    class="labels">Product Code</label>
+                        <input type="number" value="{{loyalty.redeem_product_code}}"   class="inputs" onchange="updateUploadedDataSet(15, this.value);" placeholder="Enter product code">
+                        <p class="error_field" id="error_field15"></p>
+                    </div>
+                    <div class="station_fields mb-4">
+                        <label    class="labels">Product</label>
+                        <input type="text" value="{{loyalty.redeem_product}}"   class="inputs" onchange="updateUploadedDataSet(16, this.value);" placeholder="Enter product name">
+                        <p class="error_field" id="error_field16"></p>
+                    </div>
+                    <div class="station_fields mb-4">
+                        <label    class="labels">Promotional QR code</label>
+                        <input type="number" value="{{loyalty.redeem_product_promotional_code}}"   class="inputs" onchange="updateUploadedDataSet(17, this.value);" placeholder="Enter promotional QR code">
+                        <p class="error_field" id="error_field17"></p>
+                    </div>
+                    <div class="station_fields mb-4">                
+                        <label    class="labels">Cooldown / Expiry (In Days)</label>
+                        <input type="number" value="{{loyalty.expiry_in_days}}" id="redeem_expiry"  class="inputs" onchange="updateUploadedDataSet(18, this.value);" placeholder="Enter cooldown / expiry ">
+                        <p class="error_field" id="error_field18"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="horizontal-lines"></div>
+        </div>
+        <p class="site_details">Assign offers</p>
+
+        <div class="assign_promotions_form page-section" id="assign_promotions_form_container">               
+            <div class="station_fields">
+                <label    class="labels">Shops</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('shop-checkboxes')">
+                        <select>
+                            <option id="shopText">Select</option>
+                        </select>
+                        <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="shop-checkboxes">
+                        <!-- <div id="checkbosx0_loader" ></div> -->
+                            <label class="servicesLabel">
+                                <input type="checkbox" value="All" class="padder" id="shop-all-input" onchange="updateLoyaltyData('shop', 'All');"/>All</label>
+                            {% for shop in shops %}
+                                <label class="servicesLabel">
+                                    <input
+                                        type="checkbox"
+                                        value="{{shop.1}}"
+                                        class="padder shop-input"
+                                        id="shop-{{shop.1}}-checkbox"
+                                        onchange="updateLoyaltyData('shop', '{{shop.1}}');"
+                                    />{{shop.1}}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <p class="error_field1" id="error_field34"></p>
+            </div>
+
+            <div class="station_fields">
+                <label    class="labels">Amenities</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('amenity-checkboxes')">
+                        <select>
+                            <option id="amenityText">Select </option>
+                        </select>
+                        <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="amenity-checkboxes">
+                            <!-- <div id="checkbosx6_loader" ></div> -->
+                            <label class="servicesLabel">
+                            <input type="checkbox" value="All" class="padder" id="amenity-all-input" onchange="updateLoyaltyData('amenity','All');"/>All</label>
+                            {% for amenity in amenities %}
+                                <label class="servicesLabel">
+                                    <input
+                                        type="checkbox"
+                                        value="{{amenity.1}}"
+                                        class="padder amenity-input"
+                                        id="amenity-{{amenity.1}}-checkbox"
+                                        onchange="updateLoyaltyData('amenity','{{amenity.1}}');"
+                                    />{{amenity.1}}</label>  
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <p class="error_field1" id="error_field34"></p>
+            </div>
+            <div class="station_fields">
+            
+                <label    class="labels">Operation Regions</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('ops-region-checkboxes')">
+                            <select>
+                            <option id="opsRegionText">Select</option>
+                            </select>
+                            <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="ops-region-checkboxes"> 
+                        </div>
+                        </div>
+                </div>
+                <p class="error_field1" id="station_error_field_ops_region"></p>
+            </div>
+
+            <div class="station_fields">
+            
+                <label    class="labels">Regions</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('region-checkboxes')">
+                            <select>
+                            <option id ="regionText">Select</option>
+                            </select>
+                            <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="region-checkboxes">
+                        </div>
+                        </div>
+                </div>
+                <p class="error_field1" id="station_error_field_region"></p>
+            </div>
+
+            <div class="station_fields">
+            
+                <label    class="labels">Areas</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('area-checkboxes')">
+                            <select>
+                            <option id="areaText">Select</option>
+                            </select>
+                            <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="area-checkboxes">
+                        </div>
+                        </div>
+                </div>
+                <p class="error_field1" id="station_error_field_areas"></p>
+            </div>
+
+            
+            <div class="station_fields">
+            
+                <label    class="labels">Stations</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('station-checkboxes')">
+                            <select>
+                            <option id="stationText">Select</option>
+                            </select>
+                            <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="station-checkboxes">
+                        </div>
+                        </div>
+                </div>
+                <p class="error_field1 station_error_field" ></p>
+            </div>    
+        <div class="station_fields" id="trigger_sites_container" style="display: none;">
+            <label class="labels">Trigger Sites</label>
+            <div class="station_select-box checkbox_select_box">
+                <div class="multiselect">
+                    <div class="selectBox" onclick="showCheckboxes('trigger-sites-checkboxes')">
+                        <select>
+                            <option id="triggerSitesText">Select</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div class="checkboxes" id="trigger-sites-checkboxes">
+                    </div>
+                </div>
+            </div>
+            <p class="error_field1 trigger_sites_error_field" id="error_field47"></p>
+        </div> 
+        </div>
+    <div class="horizontal-lines"></div>
+
+
+<!-- Assign promotions section -->
+
+
+    <!-- Images section -->
+
+<div class="upper_collapsibles page-section promotion-details-popup" id="image_section">
+    <p class="site_details" data-toggle="collapse" data-target="#collapseImage" aria-expanded="false" aria-controls="collapseImage">Images <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('image')" onmouseout="hide_info_box('image')"><span id='show_tooltip_image' class="icon-popup image_popup">Assign images for loyalty.</span></p>
+    <label class="assign_button" for="loyalty_image">Assign</label>
+    <input type="file" id="loyalty_image" hidden accept=".jpeg,.jpg,.png" />
+</div>
+
+<div class="content1 collapse show" id="collapseImage">
+    <div class="loyalty_images_container" id="loyalty_image_container">
+        {% if loyalty.image %}
+            <div class="img-download">
+                <img src="{{loyalty.image}}"  alt="image">
+                <b class="promotion_discard_button-style" id="discard_edit" onclick="removeAssignedLoyaltyImages('loyalty_image')" class="discard">x</b>
+            </div>
+        {%else %}
+            <div class="empty_box_text"><p>Click 'Assign' button to add images</p></div>
+        {%endif%}
+    </div>
+</div>
+<div class="horizontal-lines"></div>
+
+<div class="upper_collapsibles page-section promotion-details-popup" id="reward_image_section">
+    <p class="site_details" data-toggle="collapse" data-target="#collapseImage" aria-expanded="false" aria-controls="collapseImage">Reward Image <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('reward_image')" onmouseout="hide_info_box('reward_image')"><span id='show_tooltip_reward_image' class="icon-popup image_popup">Assign reward image for loyalty.</span></p>
+    <label class="assign_button" for="loyalty_reward_image">Assign</label>
+    <input type="file" id="loyalty_reward_image" hidden accept=".jpeg,.jpg,.png"/>
+</div>
+<div class="content1 collapse show" id="collapseImage">
+    <div class="loyalty_images_container" id="loyalty_reward_image_container">
+        {% if loyalty.reward_image %}
+            <div class="img-download">
+                <img src="{{loyalty.reward_image}}"  alt="image">
+                <b class="promotion_discard_button-style" id="discard_edit" onclick="removeAssignedLoyaltyImages('loyalty_reward_image')" class="discard">x</b>
+            </div>
+        {%else %}
+            
+        <div class="empty_box_text"><p>Click 'Assign' button to add images</p></div>
+        {%endif%}
+    </div>
+</div>
+<div class="horizontal-lines"></div>
+<div
+    class="{% if loyalty.loyalty_type == 'Costa Coffee' or loyalty.loyalty_type == 'Free' %} page-section {%endif%}"
+    id="notifications_container"
+>
+    <p class="site_details">Reward Activated Notification Details</p>
+
+    <div class="assign_promotions_notifications_form  "> 
+        
+        <div class="loyalty_input_container">
+            <label class="field_lable labels">Reward Activated Notification Title</label>
+            <input type="text" id="subject-input"
+                class="subject-input text_data" placeholder="Enter notification title" onkeyup="charCountSubject('subject1', this.value)" value="{{loyalty.reward_activated_notification_title}}" onchange="updateUploadedDataSet(19, this.value);" maxlength="60">
+                <div class="error_and_count" >
+                    <div>
+                        <p class='error_field' id='error_field19'></p>
+                    </div>
+                    <div class="text-count">
+                        <span id="text-count-for-subject1">60</span> characters remaining
+                    </div>
+                </div>
+        </div>
+        <div class="loyalty_input_container">
+            <label class="field_lable labels">Reward Activated Notification Description</label>
+            <input type="text" id="description-input"
+                class="subject-input" placeholder="Enter notification description" onkeyup="charCountDescription('description1', this.value)" value="{{loyalty.reward_activated_notification_description}}" onchange="updateUploadedDataSet(20, this.value);" maxlength="100">
+                <div class="error_and_count" >
+                    <div>
+                        <p class='error_field' id='error_field20'></p>
+                    </div>
+                    <div class="text-count">
+                        <span id="text-count-for-description1" >100</span> characters remaining
+                    </div>
+                </div>
+        </div>
+        
+        <div class="loyalty_input_container display_row">
+            <div class="station_fields loyalty_notification_fields">
+                <label class="labels">Notification Expiry (In hours)</label>
+                <input type="number" value="{{loyalty.reward_activated_notification_expiry}}" id="reward_activated_notificaton_expiry" min="0" class="inputs" placeholder="Enter notification expiry" onchange="updateUploadedDataSet(21, this.value); restrictWordInNumberFields('reward_activated_notificaton_expiry')">
+                <p class="error_field" id="error_field21"></p>
+            </div>
+        </div>
+        <div class="loyalty_input_container" id="subject-data-container">
+            <label class="field_lable labels">Screens</label>
+            <select class="select-field" name="template_type" id="screens" onchange="updateUploadedDataSet(22, this.value);">
+                <option value="Default Notification Screen" id="screen_dropdown">Default Notification Screen</option>
+                {% for screen in notification_redirect_screens %}
+                    {% if screen == loyalty.reward_activated_notification_screen %}
+                        <option value="{{screen}}" selected>{{screen}}</option>
+                    {% else %}
+                        <option value="{{screen}}" >{{screen}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <p class='error_field' id='error_field22'></p>
+        </div>
+        <div class="loyalty_input_container">
+            <div class="checkbox_error">
+                <label class="field_lable labels">Select Type Of Notification</label>
+            </div>
+            <div class="loyalty_input_container_div">
+                <div class="checkbox">
+                    {% if loyalty.reward_activated_notification_type_of_notification == "Push Notification-on" %}
+                    <input type="radio" checked class="checkbox_input"
+                        id="reward_activated_push_notification" name="reward_activated_push_notification" onchange="updateUploadedDataSet(23, 'Push Notification-'+this.value);">
+                    {% else %}
+                    <input type="radio" class="checkbox_input" id="reward_activated_push_notification"
+                        name="reward_activated_push_notification" onchange="updateUploadedDataSet(23, 'Push Notification-'+this.value);">
+                    {% endif %}
+                    <label for="push_notification">Push Notification</label>
+                </div>
+                <div class="checkbox">
+                    {% if loyalty.reward_activated_notification_type_of_notification == "In App Notification-on"  %}
+                    <input type="radio" checked class="checkbox_input"
+                        id="in_app_notification" name="reward_activated_push_notification" onchange="updateUploadedDataSet(23, 'In App Notification-'+this.value);">
+                    {% else %}
+                    <input type="radio" class="checkbox_input" id="in_app_notification"
+                        name="reward_activated_push_notification" onchange="updateUploadedDataSet(23, 'In App Notification-'+this.value);">
+                    {% endif %}
+                    <label for="in_app_notification">In-App Notification</label>
+                </div>
+            </div>
+            <p class='error_field' id='error_field23'></p>
+        </div>
+        
+    </div>
+    <div class="upper_collapsibles promotion-details-popup" id="reward_image_section">
+        <p class="site_details" data-toggle="collapse" data-target="#collapseImage" aria-expanded="false" aria-controls="collapseImage">Image <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('activate_notification_image')" onmouseout="hide_info_box('activate_notification_image')"><span id='show_tooltip_activate_notification_image' class="icon-popup image_popup">Click Assign to add images.</span></p>
+        <label class="assign_button" for="reward_activated_notificaton_image">Assign</label>
+        <input type="file" id="reward_activated_notificaton_image" hidden accept=".jpeg,.jpg,.png"/>
+    </div>
+
+    <div class="content1 collapse show" id="collapseImage">
+        <div class="loyalty_images_container" id="reward_activated_notificaton_image_container">
+            <div class="img-download"> 
+                {% if loyalty.reward_activated_notification_image %}
+                    <img src="{{loyalty.reward_activated_notification_image}}"  alt="image">
+                    <b class="promotion_discard_button-style" id="discard_edit" onclick="removeAssignedLoyaltyImages('reward_activated_notificaton_image', true)" class="discard">x</b>
+                {%else %}
+                    <img src="{{default_notification_image}}"  alt="image">
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    
+    <div class="horizontal-lines"></div>
+    <p class="site_details">Reward Expiration Notification Details</p>
+
+    <div class="assign_promotions_notifications_form"> 
+        
+        <div class="loyalty_input_container">
+            <label class="field_lable labels">Reward Expiration Notification Title</label>
+            <input type="text" id="subject-input"
+                class="subject-input text_data" placeholder="Enter notification title" onkeyup="charCountSubject('subject2', this.value)" value="{{loyalty.reward_expiration_notification_title}}" onchange="updateUploadedDataSet(24, this.value);" maxlength="60">
+                <div class="error_and_count" >
+                    <div>
+                        <p class='error_field' id='error_field24'></p>
+                    </div>
+                    <div class="text-count">
+                        <span id="text-count-for-subject2">60</span> characters remaining
+                    </div>
+                </div>
+        </div>
+        <div class="loyalty_input_container">
+            <label class="field_lable labels">Reward Expiration Notification Description</label>
+            <input type="text" id="description-input"
+                class="subject-input" placeholder="Enter notification description" onkeyup="charCountDescription('description2', this.value)" value="{{loyalty.reward_expiration_notification_description}}" onchange="updateUploadedDataSet(25, this.value);" maxlength="100">
+            <div class="error_and_count" >
+                <div>
+                    <p class='error_field' id='error_field25'></p>
+                </div>
+                <div class="text-count">
+                    <span id="text-count-for-description2" >100</span> characters remaining
+                </div>
+            </div>
+        </div>
+        
+        <div class="loyalty_input_container display_row">
+            <div class="station_fields loyalty_notification_fields">
+                <label class="labels">Notification Expiry (In hours)</label>
+                <input type="number" value="{{loyalty.reward_expiration_notification_expiry}}" id="reward_expiration_notificaton_expiry" min="0" class="inputs" placeholder="Enter notification expiry" onchange="updateUploadedDataSet(26, this.value); restrictWordInNumberFields('reward_expiration_notificaton_expiry')">
+                <p class="error_field" id="error_field26"></p>
+            </div>
+            <div class="station_fields loyalty_notification_fields">
+                <label class="labels">Trigger Notification Before x number of days</label>
+                <input type="number" value="{{loyalty.expire_reward_before_x_number_of_days}}" id="trigger_notificaton_before_x_number_of_days" min="0" class="inputs" placeholder="Enter number of days" onchange="updateUploadedDataSet(27, this.value); restrictWordInNumberFields('trigger_notificaton_before_x_number_of_days')">
+                <p class="error_field" id="error_field27"></p>
+            </div>
+            <div class="station_fields loyalty_notification_fields">
+              <label class="labels">Trigger Time</label>
+              <input type="time" value="{{loyalty.reward_expiry_notification_trigger_time}}" id="trigger_notificaton_time" min="0" class="inputs" placeholder="Notification expiry time" onchange="updateUploadedDataSet(30, this.value); restrictWordInNumberFields('trigger_notificaton_time')">
+              <p class="error_field" id="error_field30"></p>
+          </div>
+        </div>
+        <div class="loyalty_input_container" id="subject-data-container">
+            <label class="field_lable labels">Screens</label>
+            <select class="select-field" name="template_type" id="screens" onchange="updateUploadedDataSet(28, this.value);">
+                <option value="Default Notification Screen" id="screen_dropdown">Default Notification Screen</option>
+                {% for screen in notification_redirect_screens %}
+                    {% if screen == loyalty.reward_expiration_notification_screen %}
+                        <option value="{{screen}}" selected>{{screen}}</option>
+                    {% else %}
+                        <option value="{{screen}}" >{{screen}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <p class='error_field' id='error_field28'></p>
+        </div>
+        <div class="loyalty_input_container">
+            <div class="checkbox_error">
+                <label class="field_lable labels">Select Type Of Notification</label>
+            </div>
+            <div class="loyalty_input_container_div">
+                <div class="checkbox">
+                    {% if  loyalty.reward_expiration_notification_type_of_notification == "Push Notification-on" %}
+                    <input type="radio" checked class="checkbox_input"
+                        id="push_notification" name="reward_expiration_push_notification" onchange="updateUploadedDataSet(29, 'Push Notification-'+this.value);">
+                    {% else %}
+                    <input type="radio" class="checkbox_input" id="push_notification"
+                        name="reward_expiration_push_notification" onchange="updateUploadedDataSet(29, 'Push Notification-'+this.value);">
+                    {% endif %}
+                    <label for="push_notification">Push Notification</label>
+                </div>
+                <div class="checkbox">
+                    {% if  loyalty.reward_expiration_notification_type_of_notification == "In App Notification-on"  %}
+                    <input type="radio" checked class="checkbox_input"
+                        id="in_app_notification" name="reward_expiration_push_notification" onchange="updateUploadedDataSet(29, 'In App Notification-'+this.value);">
+                    {% else %}
+                    <input type="radio" class="checkbox_input" id="in_app_notification"
+                        name="reward_expiration_push_notification" onchange="updateUploadedDataSet(29, 'In App Notification-'+this.value);">
+                    {% endif %}
+                    <label for="in_app_notification">In-App Notification</label>
+                </div>
+            </div>
+            <p class='error_field' id='error_field29'></p>
+        </div>
+        
+    </div>
+    <div class="upper_collapsibles promotion-details-popup" id="reward_image_section">
+        <p class="site_details" data-toggle="collapse" data-target="#collapseImage" aria-expanded="false" aria-controls="collapseImage">Image <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('expiry_notification_image')" onmouseout="hide_info_box('expiry_notification_image')"><span id='show_tooltip_expiry_notification_image' class="icon-popup image_popup">Click Assign to add images.</span></p>
+        <label class="assign_button" for="reward_expiration_notificaton_image">Assign</label>
+        <input type="file" id="reward_expiration_notificaton_image" hidden accept=".jpeg,.jpg,.png"/>
+    </div>
+
+    <div class="content1 collapse show" id="collapseImage">
+        <div class="loyalty_images_container" id="reward_expiration_notificaton_image_container">
+            <div class="img-download"> 
+                {% if loyalty.reward_expiration_notification_image %}
+                    <img src="{{loyalty.reward_expiration_notification_image}}"  alt="image">
+                    <b class="promotion_discard_button-style" id="discard_edit" onclick="removeAssignedLoyaltyImages('reward_expiration_notificaton_image', true)" class="discard">x</b>
+                {%else %}
+                    <img src="{{default_notification_image}}"  alt="image">
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    <div class="horizontal-lines"></div>
+
+</div>
+
+<div class="submit_buttons">
+    <div class="container_buttons" id="submit_button_container">
+        
+    </div>
+</div>      
+
+    </div>
+</div>
+
+<div class="modal fade" id="cancle_submit_warning_popup"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promo_cancel_modal" >
+         
+        <div class="modal-body">
+            <h3 id="updated_status">Are you sure you want to cancel, all data will be lost after pressing yes?</h3>
+            <div class="google_maps_submit_buttons">
+                <div class="google_maps_container_buttons">
+                    <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                    <button onclick="showLoader();Previous();" class="done_button" >Yes</button>
+                </div>
+             </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content app_preview_bx">
+        <div class="modal-body">
+            <div class="heading">
+                <h5>App Preview</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <div class="content_of_preview">
+                <div class="content_heading">
+                    <h6>promotion details</h6>
+
+
+                </div>
+
+            </div>
+            <div class="slider_arrrows">
+                <div class="rotated_arrow left_arrow">
+
+                </div>
+                <div class="slide_number">
+                    <p><strong>01</strong>/02</p>
+                </div>
+                <div class=" rotated_arrow right_arrow">
+
+                </div>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="delete_loyalty_product_confirmation_model"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content delete_chargepoint_confirmation_modal_styl">
+         
+        <div class="modal-body" id="loyalty_product_delete_modal_content">
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="delete_loyalty_occurrence_confirmation_model"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content delete_chargepoint_confirmation_modal_styl">
+         
+        <div class="modal-body" id="loyalty_occurrence_delete_modal_content">
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="restrict_image_upload"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promo_image_warning_modal">
+         
+        <div class="modal-body">
+            <h3 id="updated_status">Only one image is allowed, by adding new image old image will be removed!</h3>
+            
+            <div class="google_maps_submit_buttons">
+                <div class="google_maps_container_buttons">
+                        
+                    <button class="cancle_button" data-bs-dismiss="modal" onclick="do_not_add_new_image_in_container();">Discard</button>
+                    
+                    <button class="done_button" data-bs-dismiss="modal" onclick="add_new_image_in_container();">Add new image</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+
+
+
+<script type="text/javascript">
+    // let shop_and_store_list = [{% for shop in shops %}
+    //     "{{shop.1|safe}}",
+    // {% endfor %}];
+
+    let cross_icon_image_url = "{% static 'images/cross-1.png'%}";
+    
+    // let all_stations = [{% for station in all_stations_from_backend %}
+    //     ["{{station.id|safe}}","{{station.station_id|safe}}"],
+    // {% endfor %}];
+
+    var token = '{{csrf_token}}';
+    let checkbox_data_for_add_promotions_url = `{% url 'checkbox_data_for_add_promotions' %}`;
+    let numberOfIssuedVouchers='{% if loyalty.number_of_issued_vouchers == None %} 0 {% else %} {{loyalty.number_of_issued_vouchers}} {% endif %}';
+    var promotion_data_from_backend;
+    var notification_default_image = '{{default_notification_image}}';
+    var screenIdentifier = "loyalty_screen"
+    var edit_page_check = "{{edit_page}}" === "Yes";
+    var promotion_add_edit = false;
+    var all_shops = [{% for shop in shops %} 
+        "{{shop.1|safe}}",
+    {% endfor %}];
+    var all_amenities = [{% for amenity in amenities %} 
+        "{{amenity.1|safe}}",
+    {% endfor %}];
+    var stationsMasterDataFromBackend = JSON.parse('{{stations_master_data | escapejs }}')
+    var prevShopsAndAmenities = []
+    var promotionDataFromBackend = null;
+
+    if( edit_page_check){
+        document.getElementById('link_text').innerHTML = 'Edit offer details';
+        document.title = "Edit Loyalty";
+        promotionDataFromBackend = JSON.parse('{{tsjson | escapejs }}');
+        prevShopsAndAmenities=promotionDataFromBackend.shop
+    }
+    var query_params_str_edit_promotion = "{{query_params_str|safe}}" ;
+</script>
+
+<script src="{% static 'js/loyalty/add-loyalty.js' %}"></script>
+<script  src="{% static 'js/common_functions/loyalty_promotions_common.js' %}"></script>
+<script  src="{% static 'js/promotions/view-promotion.js' %}"></script>
+
+
+
+
+
+{% endblock %}
+
+
+

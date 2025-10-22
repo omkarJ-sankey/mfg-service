@@ -1,0 +1,54 @@
+.btn-notification-email-unsubscribe-navigation {
+    display: flex;
+    justify-content: left;
+    width: 82vw;
+    margin: 1.2rem auto;
+}
+
+.nav-btn {
+    border: none;
+    background-color: white;
+    box-shadow: 0px 0px 2px;
+    margin-right: 4px;
+}
+
+.add_user_plug_image {
+    height: 20px;
+    width: 20px;
+}
+
+td {
+    font-size: 75%;
+}
+
+.update-delete-icons {
+    display: flex;
+    justify-content: space-around;
+}
+
+#email-assigned-to {
+    margin-left: 30%;
+}
+
+#email-subject-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 1rem;
+}
+
+.view-email-notification-link {
+    text-decoration: none;
+    color: #444444;
+}
+
+.view-email-notification-link:hover {
+    text-decoration: none;
+    color: #444444;
+}
+
+#emails-delete-email-notification {
+    background: transparent;
+    border: none;
+    outline: none;
+}

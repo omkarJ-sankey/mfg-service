@@ -1,0 +1,395 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}User Management{% endblock %}
+{% load static %}
+
+{% block content %}
+<div>
+    <div id='userMan' class="user_container_man active_form">
+        <div class="Fields-container">
+                <div class="bigger_width_field">
+                    <label class="labels" for="cars">Search</label>
+                    <div class="search-box">
+                        <img src="{% static '/images/search-1.png' %}" alt="">
+                        <input id="search" type="text" onchange="filterFunction('search',this.value)"
+                            placeholder="E.g. OscarBrown" class="inputs"  />
+                    </div>
+                </div>
+                <div class="small_width_field">
+                    <label class="labels" for="cars">Role</label>
+                    <div class="select-box">
+                        <select onchange="filterFunction('role_id',this.value)" class="dropdown_input" id="rolef">
+                            <option value="All">All</option>
+                            {% for role in roles%}
+
+                            {% if role.role_name == 'Admin' %}
+                            <option value="Admin">{{role.role_name}}</option>
+                            {%else%}
+
+                            <option value="{{role.role_name}}">{{role.role_name}}</option>
+                            {% endif %}
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="small_width_field">
+                    <label class="labels" for="cars">Status</label>
+                    <div class="select-box">
+                        <select onchange="filterFunction('loginrecords',this.value)" class="dropdown_input" id="status">
+                            <option value="All">All</option>
+                            <option value="Active">Activated</option>
+                            <option value="Inactive">Deactivated</option>
+                        </select>
+                    </div>
+                </div>
+                
+                {% if users_available %}
+                    <div class="extra_small_width_field">
+                        <button class="bulk_upload"><a href="{% url 'usermanagement' %}?export=Yes{{update_url_param}}" class="export_link" onclick="afterBulkExportRefreshPage();showLoader(null,null)">Bulk <img src="{% static '/images/up_arrow.png' %}" alt=""></a></button>
+                    </div>
+                {% else %}
+                    
+                    <div class="extra_small_width_field user_management_bulk_upload">
+                        <button class="bulk_upload " onclick="showDownloadError();">Bulk <img src="{% static '/images/up_arrow.png' %}" alt=""></button>
+                    </div>
+                {% endif %}
+                <div class="extra_small_width_field">
+                    <button data-toggle="tooltip" title="Add New user" class="add_new_site"
+                        id="addButton"><img class="add_user_plus_image" src="{% static '/images/plus-sign@2x.png' %}" alt=""></button>
+                </div>
+        </div>
+        <div class="table_container">
+                    <table id="tableID" class="table" aria-describedby="usertable">
+                        <thead class="rounded-top">
+                            <tr>
+                                <th id="order_by_name_th" onclick="orderByFunction('order_by_name')"
+                                    class="table-heading" data-sortas="case-insensitive">
+                                    Name
+                                    {% if order_by_name == 'Descending' %}
+                                    <img id="order_by_name" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                                    {% else %}
+                                    <img id="order_by_name" src="{%static 'images/order-img.png'%}" alt="">
+                                    {% endif %}
+                                </th>
+                                <th id="order_by_email_th" onclick="orderByFunction('order_by_email')" class="table-heading">
+                                    Email
+                                    {% if order_by_email == 'Descending' %}
+
+                                    <img id="order_by_email" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                                    {% else %}
+
+                                    <img id="order_by_email" src="{%static 'images/order-img.png'%}" alt="">
+                                    {% endif %}
+                                </th>
+                                <th id="order_by_username_th" class="table-heading">Username</th>
+                                <th id="order_by_role_th" onclick="orderByFunction('order_by_role')" class="table-heading"
+                                    data-sortas="numeric">
+                                    Role
+                                    {% if order_by_role == 'Descending' %}
+
+                                    <img id="order_by_role" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                                    {% else %}
+
+                                    <img id="order_by_role" src="{%static 'images/order-img.png'%}" alt="">
+                                    {% endif %}
+                                </th>
+                                <th id="order_by_login_th" class="table-heading"> Last Login</th>
+                                <th id="order_by_status_th" class="table-heading"> Status</th>
+                                <th id="order_by_action_th"class="table-heading text-center"> Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchingMsg">
+                            <td colspan="7" class="white_bg_without_border">
+                                <strong ref={{isSearching}}> Searching....</strong>
+                            </td>
+                        </tbody>
+                        <tbody id="showUserDetails">
+                            {% for user in user_data %}
+                            <tr class="cursor-pointer" name="usersDetail" id={{ user.id}}>
+
+                                    <td class="name_align_center"
+                                        onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})">
+                                        <div class="username_cell">
+                                            {% if user.profile_picture %}
+                                            <img src="{{blob_root}}{{user.profile_picture}}"
+                                                onerror="this.onerror=null; this.src='{{user.profile_picture}}'"
+                                                class="table_avatar avatar usr_mng_avatar" alt="">
+
+                                            {% else %}
+                                            {% load initial_genrator %}
+                                            <div class="avatar avatar_letters avtar_table_css" id=avatar_text>
+                                                {{user.full_name |initial_genrator }}</div>
+
+                                            {% endif %}
+
+                                            <a class="table_user_name">&nbsp; {{user.full_name}}</a>
+                                        </div>
+                                    </td>
+                                    <td class="user_mgmt_table"
+                                        onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})">
+                                        {{user.email}}</td>
+                                    <td class="user_mgmt_table"
+                                        onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})">
+                                        {{user.user_name}}</td>
+                                    <td class="user_mgmt_table" onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})"
+                                        id='userrole'>{{user.role_id__role_name}}</td>
+                                    <td class="user_mgmt_table"
+                                        onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})">
+                                        {% load date_formater %}
+                                        {{user.loginrecords__updated_date |date_formater }}
+                                    </td>
+                                    {% if user.loginrecords__current_status == 'Active' %}
+                                    <td class="text-nowrap user_mgmt_table"
+                                        onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})">
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="3" stroke="green" stroke-width="1" fill="green">
+                                            </circle>
+                                        </svg>
+                                        Activated
+                                    </td>
+                                    {% else %}
+                                    <td class="text-nowrap user_mgmt_table"
+                                        onclick="openEdit({status:'{{user.loginrecords__current_status}}',email:'{{user.email}}',email:'{{user.email}}',id:'{{user.id}}',role:'{{user.role_id__role_name}}',fullName:'{{user.full_name}}',userName:'{{user.user_name}}',profileImage:'{{blob_root}}{{user.profile_picture}}',reqUserId:'{{request.user.id}}'})">
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="3" stroke="red" stroke-width="1" fill="red"></circle>
+                                        </svg>
+                                        Deactivated
+                                    </td>
+                                    {% endif %}
+                                    <td>
+                                        <div class="user_status_box " >
+                                            {% if request.user.id != user.id %}
+                                                <div class="dropdown-menu user_status_dropdown display-none-style-promotion-status"  id="dropdownMenuButton{{user.id}}" >                                
+                                                    {% if user.loginrecords__current_status == 'Active' %}
+                                                    <p class="dropdown-item" onclick="deactivate('{{user.id}}','Active');">
+                                                        Deactivate</p>
+                                                    {% else %}
+                                                    <p class="dropdown-item" onclick="deactivate('{{user.id}}','Inactive');">
+                                                        Activate</p>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <div class="dots"  onclick="changeUserStatus('{{user.id}}')" ><span></span><span></span><span></span></div>
+                                            {% endif %}
+                                        </div>
+                                        </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="7" class="white_bg">
+                                        <div class="pagination_div">
+                                            <div class="record_count">
+                                                {% if data_count is 0 %}
+                                                <p class="user_mgmt_records">No records</p>
+                                                {% else %}
+                                                <p class="user_mgmt_records"> <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong>
+                                                    of <strong>{{data_count}}</strong> records </p>
+
+                                                {% endif %}
+                                            </div>
+                                            <div class="pagination_buttons">
+                                                {% if data_count >= 10 %}
+
+                                                {% if prev %}
+                                                <a href="{% url 'usermanagement' %}?page={{prev}}{{update_url_param}}"><button
+                                                        class="pagination_button prev">Previous</button></a>
+                                                {% else %}
+
+                                                <button class="disabled_button prev">Previous</button>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% for i in pagination_num_list%}
+                                                
+                                                    {% if i is None %}
+
+                                                        <span>.</span>
+
+                                                    {% else %}
+                                                        {% if current_page == i%}
+                                                        <a href="#"><button class="active_pagination_button">{{i}}</button></a>
+                                                        {% else %}
+                                                        <a href="{% url 'usermanagement' %}?page={{i}}{{update_url_param}}"><button
+                                                                class="pagination_button">{{i}}</button></a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if data_count >= 10 %}
+
+                                                {% if next %}
+                                                <a href="{% url 'usermanagement' %}?page={{next}}{{update_url_param}}"><button
+                                                        class="pagination_button next">Next</button></a>
+                                                {% else %}
+
+                                                <button class="disabled_button next">Next</button>
+                                                {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id='foter'></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="formContainer" id="formContainer">
+        <div class="custom_dialouge" role="document">
+            <div class="">
+                <div>
+                    <div>
+                        <em id="backButton" class="arrow cursor-pointer left-arrow back_button_styl"></em>
+                        <a class="user_back_navigation">Add New User</a>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <div><a class="usr_detaile input_container">User Details</a></div>
+                            <div class="user_form_container">
+                                <form id="userform" class="form" method="">
+                                    {% csrf_token %}
+                                    <div class="input_container">
+                                        <label class="field_lable">First Name</label>
+                                        <input id="first_name"
+                                            autocomplete="name"
+                                            onkeyup="editValName('#userform',this.value,'#first_name_err')" type="text"
+                                            class="new_user_text_field" data-lpignore="true"/>
+                                        <p id='first_name_err' class='error'></p>
+                                    </div>
+                                    <div class="input_container">
+                                        <label class="field_lable">Last Name</label>
+                                        <input id="last_name" type="text"
+                                            onkeyup="editValName('#userform',this.value,'#last_name_err')"
+                                            class="new_user_text_field" data-lpignore="true"/>
+                                        <p id='last_name_err' class='error'></p>
+
+                                    </div>
+                                    <div class="input_container">
+                                        <label class="field_lable">Username</label>
+                                        <input  id="user_name" autocomplete="off"
+                                            onfocusout="checkUsername('#userform',this.value)"
+                                            onkeyup="empty('#userform',this.value,'#user_name_err')" type="text"
+                                            class="new_user_text_field" data-lpignore="true" />
+                                        <p id='user_name_err' class='error'></p>
+
+                                    </div>
+                                    <div class="input_container">
+                                        <label class="field_lable">Role</label>
+                                        <select id="role" class="dropdown_input_to">
+                                            {% for role in roles%}
+
+                                            {% if role.role_name == 'Admin' %}
+                                            <option value="{{role.role_name}}" selected>{{role.role_name}}</option>
+                                            {%else%}
+
+                                            <option value="{{role.role_name}}">{{role.role_name}}</option>
+                                            {% endif %}
+                                            {%endfor%}
+                                        </select>
+                                        <p id='rple_err' class='error'></p>
+
+                                    </div>
+                                    <div class="input_container">
+                                        <label class="field_lable">Email</label>
+                                        <input au id="email" onfocusout="emailCheck('#userform',this.value)"
+                                            onkeyup="emailV('#userform',this.value,'#email_err')" type="email"
+                                            class="new_user_text_field" autocomplete="off" data-lpignore="true"/>
+                                        <p id='email_err' class='error'></p>
+
+                                    </div>
+                                    <div class="input_container">
+                                        <label class="field_lable">Password</label>
+                                        <div class="pass_container">
+                                            <input autocomplete="current-password" type="password" id="password"
+                                                onkeyup="password_validator('#userform',this.value,'#password_err')"
+                                                class="txtbox1" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                                                required placeholder="Password">
+                                            <div class="img_container" id="toggle" onclick="showHidePassword();">
+                                                <img src="{% static '/images/password-eye-close.png' %}" alt="">
+                                            </div>
+                                        </div>
+                                        <p id='password_err' class='error'></p>
+                                    </div>
+                                </form>
+                                <div class="input_container">
+                                    <label class="field_lable">Profile Picture</label>
+                                    <div id="add_images_container">
+                                        <input type="file" id="i_file" name="filename" hidden accept=".jpeg,.jpg,.png"/>
+                                        <label for="i_file" class="add_images_label">Add Image</label>
+                                    </div>
+                                </div>
+                                <div id="user_form_errors">
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn_container">
+                            <button class="cancel" id="cancel">Cancel</button>
+                            <button class="new_user submit_new_user_data" onclick="createUser(event)" 
+                                id="done">Submit</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="formContainer" id="editScreen">
+
+    </div>
+    
+  <div class="modal fade" id="no_download_box"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content add_new_user_modal no-records-modal" >
+         
+        <div class="modal-body">
+            <h3 id="updated_status">No Users to export!</h3>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous">
+</script>
+
+
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'usermanagement'%}";
+    var token = '{{csrf_token}}';
+    var csrf_token = `{% csrf_token %}`;
+    var blob_root_url = '{{blob_root}}';
+
+    var prev_role = "{{prev_role}}"; 
+    var prev_status = "{{prev_status}}";
+    var prev_search = "{{prev_search}}";
+
+    var requsted_user_id = "{{request.user.id}}"
+    let update_user_url = "{% url 'updateuser' %}";
+    let newuser_url = "{% url 'newuser' %}";
+    let validate_email_url = "{% url 'validate-email' %}";
+    let validate_username_url = "{% url 'validate-username' %}";
+    let inactivate_user_url = "{% url 'inactivate' %}";
+    let activate_user_url = "{% url 'activate_user' %}";
+
+    let group_png_url ="{% static '/images/Group.png' %}";
+
+    
+    let role_list =[{% for role in roles %}
+                "{{role.role_name}}",
+            {% endfor %}
+            ]
+</script>
+
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static '/js/usermanagement/usermanagement.js' %}"></script>
+{% endblock content %}

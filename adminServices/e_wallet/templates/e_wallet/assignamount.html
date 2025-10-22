@@ -1,0 +1,165 @@
+{% load static %}
+<div class="modal fade" id="assignAmount"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="assignAmountLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content add_conf_modal">
+        <div class="modal-body">
+            <div class="heading ">
+                <h6 class="add_conf_heading">Assign Voucher</h6>
+                 <button type="button" class="btn-close"  data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="assignForm" class="d-flex flex-row flex-wrap justify-content-between">
+                <div class="w-50 ph-10">
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels wallet-input-labels">Email</label><br>                        
+                        <div id="autocomplete">
+                            <div class="d-flex justify-content-between align-items-center txtbox input-txt user-input-txt wallet-inputs">
+                                <input id="emailInput" oninput="checkSubmitButton()" 
+                                    class="border-0" placeholder="Enter user email"
+                                />
+                                <img
+                                    id="autocompleteSearchButton"
+                                    src="{% static '/images/search-1.png' %}"
+                                    class="p-2 h-100 w-auto wallet-search"
+                                    alt=""
+                                    onclick="searchUserDetailsByEmail()"
+                                >
+                            </div>
+                            <div id="autocomplete-container">
+                                <ul id="autocomplete-box" class="autocomplete-list"></ul>
+                            </div>
+                        </div>                          
+                    </div>
+                </div> 
+                
+                <div class="w-50 ph-10">
+                    <div id="receiver"  class="mr-tp">
+                      
+                        <label for="receiver" class="labels wallet-input-labels">Receiver</label><br>                        
+
+                        <input oninput="checkSubmitButton()" disabled type="text" id="usernameInput" 
+                            class="txtbox input-txt wallet-inputs" name="sorting_order"
+                            placeholder=""
+                        >
+                        <input hidden disabled type="text" id="userIdInput" 
+                            class="txtbox input-txt" name="sorting_order"
+                        >
+                        <div id="drvzLoader" class="loader" ></div>
+                        </div>
+                </div> 
+                <div class="w-50 ph-10">
+                    <div id="amount"  class="mr-tp">
+                      
+                        <label for="amount" class="labels wallet-input-labels">Amount</label><br>                        
+
+                        <input oninput="checkSubmitButton()" type="number" min="0" id="amountInput" 
+                            class="txtbox input-txt user-input-txt wallet-inputs" name="sorting_order"
+                            placeholder="Enter amount">
+                    </div>
+                </div> 
+                <div class="w-50 ph-10">
+                    <div id="drivze"  class="mr-tp">
+                      
+                        <label for="drivze" class="labels wallet-input-labels">Driivz ID</label><br>                        
+
+                        <input oninput="checkSubmitButton()" disabled type="text" id="driivzInput" 
+                            class="txtbox input-txt wallet-inputs" name="sorting_order"
+                            placeholder="">
+                        <div id="drvzLoader" class="loader" ></div>
+                    </div>
+                </div> 
+                <div class="w-50 ph-10">
+                    <div id="description"  class="mr-tp">
+                        <label for="description" class="labels wallet-input-labels">Description</label><br>                        
+
+                        <input  oninput="checkSubmitButton()" type="text" id="descriptionInput" 
+                            class="txtbox input-txt user-input-txt wallet-inputs" name="sorting_order"
+                            placeholder="Enter description">
+                    </div>
+                </div> 
+                <div class="w-50 ph-10">
+                    <div id="expiryDays"  class="mr-tp">
+                        <label for="description" class="labels wallet-input-labels d-flex flex-row align-items-center"><div>Expiry</div><div class="wallet-popup-muted-text ml-1">(Currently not in use)</div></label>                        
+
+                        <input  oninput="checkSubmitButton()" type="number" id="expiryDaysInput" min="0"
+                            class="txtbox input-txt user-input-txt wallet-inputs" name="sorting_order"
+                            placeholder="Enter voucher expiry (In days)">
+                    </div>
+                </div> 
+                
+            </div>
+       
+        </div>
+        <div id="confirmSubmit" class="modal-footer modal_footer_padding" >
+            <button type="button"  class="btn btn-light" onclick="onCancelConfirm()" data-dismiss="modal">Cancel</button>
+            <button type="submit" disabled="true" id="assign_btn" class="btn btn-danger" onclick="makeConfirm()">Done</button>
+        </div>
+        <div id="finalSubmit" style="display:None;" class="modal-footer modal_footer_padding" >
+            <button type="button" class="btn btn-light" onclick="discardConfirm()">No</button>
+            <button type="submit" id="assign_bt" class="btn btn-danger" onclick="submitForm()">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+<script>
+    let autocompleteBox = document.getElementById('autocomplete-box');
+    const emailBox = $("#autocomplete");
+    const emailBoxInput = emailBox.find('input');
+    const setAutoCompleteBoxStyleToNone = () => {
+        autocompleteBox.classList.remove('active');
+        autocompleteBox.innerHTML = '';
+    }
+    const searchUserDetailsByEmail = () => {
+        let emailFieldValue = document.getElementById('emailInput').value;
+        
+        if(emailBoxInput.length > 0 && emailBoxInput[0].value === ''){
+            emailBox.find("span").remove();
+            emailBox.style="border-color:red;";
+            emailBox[0].appendChild(errorMsg("email not valid", 'emailError'));
+            return null
+        }else{
+            emailBoxInput[0].style="border-color:#0000003d;";
+            emailBox.find("span").remove();
+        }
+        $("#drvzLoader").attr("data-loading", true);
+        fetch("/administrator/wallet/list-email?search="+emailFieldValue, { 
+            method: "GET",
+        }).then(response => response.json()).then(data => {
+            autocompleteBox.classList.add('active');
+            if (data.data.length){
+                autocompleteBox.innerHTML = `
+                <li>
+                    <div class="ev-snippet" onclick="getUserDetail(${data.data[0].user_id},'${data.data[0].username}')">
+                        ${data.data[0].email}
+                    </div>
+                </li>`;
+                emailBoxInput[0].style="border-color:#0000003d;";
+                emailBox.find("span").remove();
+            }else{
+                emailBox.find("span").remove();
+                emailBox.style="border-color:red;";
+                emailBox[0].appendChild(errorMsg("Email not found", 'emailError'));
+            }
+            
+            $("#drvzLoader").attr("data-loading", false);
+        })
+    }
+    const getUserDetail = (user_id, username) => {
+        autocompleteBox.classList.remove('active');
+        $("#drvzLoader").attr("data-loading", true);
+        fetch("/administrator/wallet/receiver-data?user_id="+ user_id, { 
+            method: "GET",
+        }).then(response => response.json()).then(data => {
+            $("#driivzInput").val(data.driivz_account_number);
+            $("#usernameInput").val(username);
+            $("#userIdInput").val(user_id);
+            $("#drvzLoader").attr("data-loading", false);
+            checkSubmitButton();
+            validateOtherData();
+        }).catch(() => {
+        $("#drvzLoader").attr("data-loading", false)
+            validateOtherData();
+        })
+    }
+</script>

@@ -1,0 +1,14 @@
+{
+  "appService.deploySubpath": ".",
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django",
+    "--disable=django-not-configured",
+    "--disable=bare-except",
+    "--django-settings-module=backendServices.settings.py.settings",
+    "--django-settings-module=adminServices.settings.py.settings",
+  ],
+  "python.linting.pylintUseMinimalCheckers": false,
+  "python.formatting.provider": "black",
+}

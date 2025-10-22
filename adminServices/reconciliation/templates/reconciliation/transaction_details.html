@@ -1,0 +1,103 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Transaction detail page{% endblock %}
+
+
+<div class="transaction_container">
+
+    <div class="add_new_site_link"><div class="flex-text"><div class="rotated_square"></div> <p class="transaction_back_link" onclick="Previous()">Transaction Detail View</p></div></div>
+    <p class="site_details">Transaction Details</p>
+        
+    <div class="transaction_container_content">
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Transaction Id</p>
+            <h6 class="transaction_value">{{transaction.order_id}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Date</p>
+            <h6 class="transaction_value">{{transaction.transaction_timestamp.date}} at {{transaction.transaction_timestamp.time}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Station Id</p>
+            <h6 class="transaction_value">{{transaction.station_id__station_id}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Station name</p>
+            <h6 class="transaction_value">{{transaction.station_id__station_name}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Transaction Source</p>
+            <h6 class="transaction_value">{{transaction.transaction_source}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Transaction Amount</p>
+            <h6 class="transaction_value">{{transaction.transaction_amount}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Settlement Amount</p>
+            <h6 class="transaction_value">{{transaction.settlement_amount}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Status</p>
+            <h6 class="transaction_value">{{transaction.status}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Payment Method</p>
+            <h6 class="transaction_value">{{transaction.payment_method}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Card Type</p>
+            <h6 class="transaction_value">Consumer Debit</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Account</p>
+            <h6 class="transaction_value">465942******6588</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Issuing Bank</p>
+            <h6 class="transaction_value">{{transaction.issuing_bank}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Network</p>
+            <h6 class="transaction_value">{{transaction.network}}</h6>
+        </div>
+        <div class="transaction_container_content_field">
+            <p class="transaction_heading">Transaction Currency</p>
+            <h6 class="transaction_value">{{transaction.transaction_currency}}</h6>
+        </div>
+        <div class="transaction_container_content_field comment" >
+
+            <div class="comment_heading">
+                <div class="left-part">
+                    <p class="transaction_heading_comment">Comments</p> 
+                    <img class="table_buttons transaction_details_ation_buttons" id="transaction_edit_button" onclick="displayCommentBox();" src="{% static '/images/pencil-2.png' %}" alt="">
+                </div>
+                <div class="right-part hide" id="comment_action_box">
+                    <img class="table_buttons"  onclick="displayCommentBox();" src="{% static '/images/cross-1.png' %}" alt="">
+                    <img class="table_buttons"  onclick="displayCommentBox('tick');" src="{% static '/images/tick-3.png' %}" alt="">
+               
+                </div>
+            </div>
+            <div class="comment_value" >
+                <h6 class="transaction_value" id="comment_text">{{transaction.comments}}</h6>
+                
+                <input type="text" id="comment_text_box" class="comment_input hide" placeholder="please enter your comment" >
+            </div>
+        </div>
+    </div>
+</div>
+{% load static %}
+{% endblock %}
+
+
+{% block js %}
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    var token = '{{csrf_token}}';
+    let do_comment_url = "{% url 'do_comment' %}";
+    var transaction_id = "{{transaction.id}}";
+</script>
+<script src="{% static 'js/reconciliation/transaction_details.js'%}"></script>
+
+{% endblock %}

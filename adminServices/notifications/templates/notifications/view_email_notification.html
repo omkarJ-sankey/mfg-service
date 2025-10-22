@@ -1,0 +1,214 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Email Notifications{% endblock %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/notifications/email_notifications/view_email_notification.css'%}">
+{% endblock %}
+{% block content %}
+<div class="details-parent-container" id="details-parent-container">
+    <div class="header-div-update-btn">
+        <div class="back-navigator-to-email-list">
+            <div>
+                <a href="{% url 'email_list' %}"><img src="{% static 'images/arrow-5.png' %}" alt=""></a>
+            </div>
+            <div id="email-overview-heading">
+                <a href="{% url 'email_list' %}" class="view_email_back_btn">
+                    <p id="back-nav-notification-view">Email Overview</p>
+                </a>
+            </div>
+        </div>
+        <div class="update-email-notification-btn-container opacity-if-delivered" id="update-email-div">
+            <a href="{% if email_notification_object.status != 'Delivered' %}{% url 'update_email_notification' email_notification_object.id %} {% endif %}"
+                class="update-email-notification-btn" id="update-email-notification-btn">
+                <img src="{% static 'images/pencil.png' %}" alt="">
+            </a>
+        </div>
+    </div>
+    <div>
+        <p>Email Details</p>
+    </div>
+    <div class="email-notification-details-div">
+        <div>
+            <p class="details-div-label">Assign To</p>
+            <pre class="details-div-value">{{email_notification_object.assign_to}}</pre><br>
+            {% if email_notification_object.assign_to == "Specific Users" %}
+            <p class="details-div-label">Recipients</p>
+            <pre class="details-div-value">{% for email in user_list %}{{email}}{% if email != user_list|last %},{% endif %}{% endfor %}</pre><br>
+            {% endif %}
+            {% if email_notification_object.assign_to == "Postcode Specific" %}
+            <p class="details-div-label">Postcode</p>
+            <pre class="details-div-value">{{email_notification_object.postcode}}</pre><br>
+            {% endif %}
+            <p class="details-div-label">Preference</p>
+            <pre class="details-div-value">{{email_notification_object.email_preference}}</pre><br>
+            <p class="details-div-label">Subject</p>
+            <pre class="details-div-value" id="view-subject">{{email_notification_object.subject}}</pre>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <p>Attachments</p>
+    </div>
+    <div class="email-notification-attachment-div" id="email-notification-attachment-div">
+
+    </div>
+    <hr>
+    <div class="view-email-preview" id="view-email-preview">
+        <div class="email-body-header">
+            <img class="marketing-email-heading-image" src="{% static '/images/marketing_email_header_img.png' %}"
+                alt="">
+        </div>
+        <div>
+            <p>Hi first_name</p>
+        </div>
+        <div class="email-custom-body">
+            {{ email_notification_object.description | safe}}<br>
+        </div>
+        <div class="email-body-footer">
+            <p>
+                If you have any queries, please contact Motor Fuel Group by email:
+                CustomerCare@motorfuelgroup.com or call our helpline on +44 (0) 1727 898890
+            </p>
+            <p>
+                Regards,<br>
+                <span class="company-name-bold">Motor Fuel Group</span>
+            </p>
+            <p>
+                MFG Group of Companies includes
+            </p>
+            <p>
+                ©<span class="footer-year"></span> All rights reserved Motor Fuel Limited - 10 Bricket Road, Marlborough
+                Court,St Albans, Hertfordshire, AL1 3JX
+            </p>
+            <p>
+                ©<span class="footer-year"></span> All rights reserved MFG EV Power Limited - 10 Bricket Road,
+                Marlborough Court,St Albans, Hertfordshire, AL1 3JX
+            </p>
+            <p>
+                Registered in England & Wales:
+            </p>
+            <p>
+                Motor Fuel Limited: 05206547 VAT Number: 123414161
+            </p>
+            <p>
+                MFG EV Power Limited: 13353242 VAT Number: 123414161
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div>
+      <p>Status Details</p>
+  </div>
+  <div class="email-status-div">
+    <div class="notification_status_view">
+      <div>
+          <p class="details-div-status">Status</p>
+          <pre class="details-div-value">{{email_notification_object.status}}</pre><br>
+      </div>
+      <div class="delivered_div">
+          <p class="details-div-delivered-time">Delivered Time</p>
+          {% if email_notification_object.delivered_time %}
+                        <pre class="details-div-value">{% load offers_date_formater %}{{email_notification_object.delivered_time | offers_date_formater}}</pre><br>
+                        {%else%}
+                        <p class="details-div-value">Not Delivered</p><br>
+                        {% endif %}
+      </div>
+  </div>
+</div>
+
+    <div class="bottom-navigation-btn-container">
+        <div class="cancel-btn-container" id="cancel-btn-container">
+            <button class="cancel-btn opacity-if-delivered" id="cancel-email-notification" data-toggle="modal"
+                data-target="{% if email_notification_object.status not in status_to_restrict_navigation %} #cancel-notifications-modal {% endif %}">Cancel</button>
+        </div>
+        <div class="preview-done-button-container" id="draft-schedule-send-div">
+            <a id="view-email-save-as-draft"
+                href="{% if email_notification_object.status not in status_to_restrict_navigation %}{% url 'draft_email_notification' email_notification_object.id %}{% endif %}"><button
+                    class="view-email-save-as-draft opacity-if-delivered">Save as draft</button></a>
+            <button class="schedule-btn opacity-if-delivered" id="schedule-btn" data-toggle="modal"
+                data-target="{% if email_notification_object.status not in status_to_restrict_navigation %} #scheduling-time-modal {% endif%}">Schedule</button>
+            <a id="send-email-now-view-page"
+                href="{% if email_notification_object.status not in status_to_restrict_navigation %} {% url 'send_email_notification_now' email_notification_object.id %} {% endif %}"><button
+                    class="send-now-btn opacity-if-delivered" id="done-btn">Send Now</button></a>
+        </div>
+    </div>
+</div>
+
+<!-- modal for cancel warning -->
+<div class="modal show fade" id="cancel-notifications-modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby=""
+    aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content cancel-email-notification-content">
+            <div class="modal-body">
+                <div class="heading ">
+                    <h6 class="cancle_notification">Cancel Notification</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="confirm-msg-div">
+                    <p class="confirm-msg-para" id="confirm-msg-para"></p>
+                </div>
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <button type="button" class="btn btn-light view-email-notification-btns"
+                    data-dismiss="modal">No</button>
+                <a href="{% url 'delete_email_notification' email_notification_object.id %}"><button id=""
+                        class="btn btn-danger view-email-notification-btns">Yes</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for scheduling email time -->
+<div class="modal show fade" id="scheduling-time-modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby=""
+    aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content schedule-email-notification-content">
+            <div class="modal-body">
+                <div class="heading schedule-time-header">
+                    <h6 class="">Schedule Time</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="Schedule-date-time-div">
+                    <p id="label-for-date-time">Select Date</p>
+                    <div class="schedule-date-container" onclick="showToDatePicker()">
+                        <input type="text" value="" placeholder="Select date" id="schedule-date" class="schedule-date">
+                    </div>
+                    <div class="schedule-date-container time-picker">
+                        <input class="time-input" id="schedule-time" type="time">
+                    </div>
+                </div>
+                <p class='error-messages' id='date-time-error'></p>
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <a href="#"><button class="btn btn-danger view-email-notification-btns"
+                        id="view-email-notification-schedule-btn">Schedule</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    let files_list = JSON.parse("{{json_files_list|escapejs}}")
+    let pdf_icon = "{% static 'images/pdf_icon.png' %}";
+    let excel_icon = "{% static 'images/excel_icon.png' %}";
+    let image_icon = "{% static 'images/image_icon.png' %}";
+    let document_icon = "{% static 'images/document_icon.png' %}";
+    let ppt_icon = "{% static 'images/ppt_icon.png' %}";
+    let common_filetype_icon = "{% static 'images/common_filetype_icon.png' %}";
+    let list_of_email_notification_url = "{% url 'email_list' %}"
+    let schedule_email_notification_url = "{% url 'schedule_email_notification' email_notification_object.id %}"
+    let email_status;
+    {% if "{{email_notification_data}}" %}
+    email_status = "{{email_notification_object.status}}"
+    {% else %}
+    email_status = ''
+    {% endif %}
+</script>
+
+<script src="{% static '/js/notifications/view-email-notification.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{
+    "data" : {
+        "station_id": "",
+        "station_name": "",
+        "station_images":[
+            "urls"
+        ],
+        "longitude":"",
+        "latitude":"",
+        "owner": "",
+        "addrres":"",
+        "station_type":"",
+        "timing":{},
+        "contact": {
+            "phone":"",
+            "email":"",
+            "website":""
+        },
+        "payment_method":[],
+        "devices":[
+            {
+            "device_name":"",
+            "device_id":"", 
+            "connectors": [
+                {
+                    "coonector_type":"",
+                    "connector_charge_type":"",
+                    "power":"",
+                    "cost":""
+                }
+            ]
+            }
+        ],
+        "promotions": [
+            {
+                "promotion_id":"",
+                "image":""
+            }
+        ],
+        "bookmark_status": "Boolean",
+        "open_now_status": "",
+        "stores":[
+            {
+                "image_url":""
+            }
+        ],
+        "amenities":[
+            {
+                "image_url":"",
+                "name":""
+            }
+        ],
+        "reviews":[
+            {
+                "review_id":"",
+                "review":"",
+                "date":"",
+                "likes":"",
+                "dislikes":"",
+                "user_name":"",
+                "user_image":"",
+                "review_image": ""
+
+            }
+        ]
+
+
+    }
+
+}

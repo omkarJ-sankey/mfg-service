@@ -1,0 +1,362 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Session Transaction details{% endblock %}
+{% load static %}
+{%block css%}
+<link rel="stylesheet" href="{% static '/css/session_transaction/transaction.css' %}" />
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="transaction_container">
+  <div class="actions_box">
+    <div class="add_new_site_link" onclick="Previous()">
+      <div class="flex-text">
+        <div class="rotated_square">
+        </div>
+        <p class="transaction_back_link">Payment Details View</p>
+      </div>
+    </div>
+
+    <div class="pre_auth_message_container" id="preauth_status_message"></div>
+
+    <button id="preauth_button"
+      class="{% if enable_pre_auth %} delete_button {%else%} delete_button_disable {%endif%}" "{% if  enable_pre_auth %} onclick="
+      executePreAuth()"{%endif%}">
+      Collect Preauth
+    </button>
+
+    <!-- <div class="preauth_container">
+      <button id="preauth_button"
+        class="{% if enable_pre_auth %} delete_button {%else%} delete_button_disable {%endif%}" "{% if  enable_pre_auth %} onclick="
+        executePreAuth()"{%endif%}">
+        Collect Preauth
+      </button>
+      {% if session.payment_id == "wallet_transaction"%}
+      <span class="attachment-info-message">Cannot collect preauth for <b>Voucher transaction</b></span>
+      {% endif %}
+    </div> -->
+  </div>
+
+  <p class="site_details mt-3">Status Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Session status</p>
+      <h6 class="transaction_value">
+        {% if session.session_status %}
+        {{session.session_status.capitalize}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment Status</p>
+      <h6 class="transaction_value" id="payment_status">
+        {% if session.paid_status %}
+        {{session.paid_status.capitalize}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Mail Status</p>
+      <h6 class="transaction_value">
+        {% if session.mail_status %}
+        {{session.mail_status.capitalize}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+  </div>
+
+  <p class="site_details mt-3">Session Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Session ID</p>
+      <h6 class="transaction_value">
+
+        {% if session.session_id %}
+          {{ session.session_id }}
+        {% else %}
+          {{ session.emp_session_id }}
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Charge Point ID</p>
+      <h6 class="transaction_value">
+        {% if "charge_point_id" in session_data and session_data.charge_point_id != None %}
+        {{ session_data.charge_point_id }}
+        {% else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Evse UID</p>
+      <h6 class="transaction_value">
+        {% if "evse_uid" in session_data and session_data.evse_uid != None %}
+        {{ session_data.evse_uid }}
+        {% else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">OCPI Connector ID</p>
+      <h6 class="transaction_value">
+        {% if "ocpi_connector_id" in session_data and session_data.ocpi_connector_id != None %}
+        {{ session_data.ocpi_connector_id }}
+        {% else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Back Office</p>
+      <h6 class="transaction_value">
+        {%if session.back_office%}
+        {{session.back_office.capitalize}}
+        {%else%}
+        Not available
+        {%endif%}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Start time</p>
+      <h6 class="transaction_value">
+        {% if "start_on" in session_data and session_data.start_on != None %}
+        {% load offers_date_formater %}{{session_data.start_on | offers_date_formater}}
+        {%else%}
+        Not available
+        {%endif%}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">End time</p>
+      <h6 class="transaction_value">
+        {% if "stop_on" in session_data and session_data.stop_on != None %}
+        {% load offers_date_formater %}{{session_data.stop_on | offers_date_formater}}
+        {%else%}
+        Not available
+        {%endif%}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Duration</p>
+      <h6 class="transaction_value">
+        {% if "session_duration" in session_data and session_data.session_duration != None %}
+        {{session_data.session_duration}}
+        {%else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Power consumed</p>
+      <h6 class="transaction_value">
+        {% if "total_energy" in session_data and session_data.total_energy != None %}
+        {{session_data.total_energy}} kWh
+        {%else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Station Name</p>
+      <h6 class="transaction_value">
+        {% if session.station_id %}
+        {{session.station_id.station_name}}
+        {% else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+  </div>
+
+  <p class="site_details mt-3">Payment Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">CDR ID</p>
+      <h6 class="transaction_value">
+        {% if session.cdr_id %}
+        {% if session.back_office_cdr_id|length >= 20 %}
+        {{session.cdr_id_sub_parts.0}}<br>{{session.cdr_id_sub_parts.1}}
+        {% else %}
+        {{session.back_office_cdr_id}}
+        {% endif %}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment ID</p>
+      <h6 class="transaction_value">
+        {% if session.payment_id|length >= 20 %}
+        {{session.payment_id_sub_parts.0}}<br>{{session.payment_id_sub_parts.1}}
+        {% else %}
+        {{session.payment_id}}
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Type of payment</p>
+      <h6 class="transaction_value">
+        {% if session.payment_method %}
+        {{session.payment_method.capitalize}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Amount</p>
+      <h6 class="transaction_value">
+        {% if "total_amount" in session_data and session_data.total_amount != None %}
+        £ {{session_data.total_amount}}
+        {%else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    {% if session.payment_completed_at%}
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment Time</p>
+      <h6 class="transaction_value">
+        {% load offers_date_formater %}{{session.payment_completed_at | offers_date_formater}}
+      </h6>
+    </div>
+    {% endif %}
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment Initiated By</p>
+      <h6 class="transaction_value">
+        {{session.is_reviewed}}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Square payment status</p>
+      <h6 class="transaction_value">
+        {% if square_payment_status != "" %}
+        {{square_payment_status.capitalize}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+
+
+    {% if session.payment_time %}
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment initiated at</p>
+      <h6 class="transaction_value">
+        {% load offers_date_formater %}{{session.payment_time | offers_date_formater}}
+      </h6>
+    </div>
+    {% endif %}
+  </div>
+
+
+  <p class="site_details mt-3">User Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">User Email</p>
+      <h6 class="transaction_value">
+        {% if decrypted_email %}
+        {{decrypted_email}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Account Number</p>
+      <h6 class="transaction_value">
+        {% if session.user_account_number %}
+        {{session.user_account_number}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <!-- <div class="transaction_container_content_field">
+      <p class="transaction_heading">Driivz Account Number</p>
+      <h6 class="transaction_value">
+        {% if user_profile_details.driivz_account_number %}
+        {{user_profile_details.driivz_account_number}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6> 
+    </div>-->
+  </div>
+
+
+  <p class="site_details mt-3">Reviews</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Ratings</p>
+      <h6 class="transaction_value">
+        {% if session.rating %}
+        {{session.rating}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Feedback</p>
+      <h6 class="transaction_value">
+        {% if session.feedback %}
+        {{session.feedback}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <strong class="form-text">* Explanation of session states -</strong>
+    <ul>
+      <li><small id="passwordHelpBlock" class="form-text text-muted"><strong>Started</strong> (User have started session
+          from the app)</small></li>
+      <li><small id="passwordHelpBlock" class="form-text text-muted"><strong>Running</strong> (The session is currently
+          running)</small></li>
+      <li><small id="passwordHelpBlock" class="form-text text-muted"><strong>Closed</strong> (The session is completed
+          and transaction mail is sent to the user)</small></li>
+
+      <li><small id="passwordHelpBlock" class="form-text text-muted"><strong>Rejected</strong> (The user has initiated
+          the session from the app but did not connect the charger)</small></li>
+
+      <li><small id="passwordHelpBlock" class="form-text text-muted"><strong>Forbidden</strong> (The user does not have
+          access to the session)</small></li>
+      <li><small id="passwordHelpBlock" class="form-text text-muted"><strong>Not available</strong> (The session state
+          is not available)</small></li>
+
+    </ul>
+  </div>
+</div>
+<br>
+{% load static %}
+{% endblock %}
+
+
+{% block js %}
+<script src="{% static 'js/session_transactions/session_transcation_details.js' %}"></script>
+<script>
+  let collect_pre_auth_url = "{% url 'collect_pre_auth' session.id%}"
+  let is_ocpi = "{{session.is_ocpi}}"
+</script>
+{% endblock %}

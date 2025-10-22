@@ -1,0 +1,342 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Session Transaction details{% endblock %}
+{% load static %}
+{%block css%}
+<link rel="stylesheet" href="{% static '/css/session_transaction/transaction.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="hold_payment_message_container" id="hold_payment_message"></div>
+<div class="transaction_container">
+  <div class="actions_box">
+    <div class="add_new_site_link">
+      <div class="flex-text">
+        <a href="{% url 'hold_payment_list' %}"><div class="rotated_square">
+        </div></a>
+        <a href="{% url 'hold_payment_list' %}"><p class="transaction_back_link">Payment Details View</p></a>
+      </div>
+    </div>
+    <div class="action-buttons-main-container">
+      <div class="btn_container-screening ml-auto">
+        <button class="approve-btn" id="approve-btn-id" data-bs-toggle="modal" data-bs-target="#approve-hold-payment-modal" data-toggle="modal"> Approve </button>
+      </div>
+      <div class="btn_container-screening ml-auto">
+        <button class="edit-btn" id="edit-btn-id" data-bs-toggle="modal" data-bs-target="#edit-hold-payment-modal" data-toggle="modal" data-target="#addConnector"> <img src="{% static 'images/pencil.png' %}" alt=""> </button>
+      </div>
+    </div>
+  </div>
+  <p class="site_details mt-3">Status Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Session status</p>
+      <h6 class="transaction_value">
+        {{status_details.session_status.capitalize}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment Status</p>
+      <h6 class="transaction_value" id="payment-status-screening">
+        {{status_details.payment_status.capitalize}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Mail Status</p>
+      <h6 class="transaction_value">
+        {{status_details.mail_status.capitalize}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Driivz Amount</p>
+      <h6 class="transaction_value">
+        {{status_details.driivz_amount}}
+      </h6>
+    </div>
+  </div>
+
+  <p class="site_details mt-3">Session Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Session ID</p>
+      <h6 class="transaction_value">
+        {{session_details.session_id}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Charge Point ID</p>
+      <h6 class="transaction_value">
+        {{ session_details.charge_point_id }}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Back Office</p>
+      <h6 class="transaction_value">
+        {{session_details.back_office.capitalize}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Start time</p>
+      <h6 class="transaction_value">
+        {% if session_details.start_time == 'Not available' %}
+        {{session_details.start_time}}
+        {%else%}
+        {% load offers_date_formater %}{{session_details.start_time | offers_date_formater}}
+        {%endif%}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">End time</p>
+      <h6 class="transaction_value">
+        {% if session_details.end_time == 'Not available' %}
+        {{session_details.end_time}}
+        {%else%}
+        {% load offers_date_formater %}{{session_details.end_time | offers_date_formater}}
+        {%endif%}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Duration</p>
+      <h6 class="transaction_value">
+        {{session_details.duration}}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Power consumed</p>
+      <h6 class="transaction_value">
+        {{session_details.power_consumed}} kWh
+      </h6>
+    </div>
+
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Station Name</p>
+      <h6 class="transaction_value">
+        {{session_details.station_name}}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Evse UID</p>
+      <h6 class="transaction_value">
+        {% if "evse_uid" in session_details and session_details.evse_uid != None %}
+        {{ session_details.evse_uid }}
+        {% else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">OCPI Connector ID</p>
+      <h6 class="transaction_value">
+        {% if "ocpi_connector_id" in session_details and session_details.ocpi_connector_id != None %}
+        {{ session_details.ocpi_connector_id }}
+        {% else%}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+
+  </div>
+
+  <p class="site_details mt-3">Payment Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">CDR ID</p>
+      <h6 class="transaction_value">
+        {% if session_details.cdr_id %}
+        {% if session_details.cdr_id|length >= 20 %}
+        {{session_details.cdr_id_sub_parts.0}}<br>{{session_details.cdr_id_sub_parts.1}}
+        {% else %}
+        {{session_details.cdr_id}}
+        {% endif %}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment ID</p>
+      <h6 class="transaction_value">
+        {% if charging_session.payment_id|length >= 20 %}
+        {{payment_details.payment_id.0}}<br>{{payment_details.payment_id.1}}
+        {% else %}
+        {{charging_session.payment_id}}
+        {% endif %}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Type of Payment</p>
+      <h6 class="transaction_value">
+        {{payment_details.type_of_payment}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Card Brand</p>
+      <h6 class="transaction_value">
+        {{payment_details.card_brand}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Amount</p>
+      <h6 class="transaction_value" id="hold-payment-amount-to-be-paid">
+        {{payment_details.amount}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading" >Payment Time</p>
+      <h6 class="transaction_value" id="hold-payment-payment-time">
+        {% if payment_details.payment_time == 'Not available' %}
+        {{payment_details.payment_time}}
+        {%else%}
+        {% load offers_date_formater %}{{payment_details.payment_time | offers_date_formater}}
+        {%endif%}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Payment Initiated By</p>
+      <h6 class="transaction_value">
+        {{payment_details.payment_initiated_by}}
+      </h6>
+    </div>
+  </div>
+
+
+  <p class="site_details mt-3">User Details</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">User Email</p>
+      <h6 class="transaction_value">
+        {% if decrypted_email %}
+        {{decrypted_email}}
+        {% else %}
+        Not available
+        {% endif %}
+      </h6>
+    </div>
+
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Account Number</p>
+      <h6 class="transaction_value">
+        {{session_details.user_account_number}}
+      </h6>
+    </div>
+    <!-- <div class="transaction_container_content_field">
+      <p class="transaction_heading">Driivz Account Number</p>
+      <h6 class="transaction_value">
+        {{user_details.driivz_account_number}}
+      </h6>
+    </div> -->
+  </div>
+
+
+  <p class="site_details mt-3">Reviews</p>
+  <div class="transaction_container_content">
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Ratings</p>
+      <h6 class="transaction_value">
+        {{reviews.rating}}
+      </h6>
+    </div>
+    <div class="transaction_container_content_field">
+      <p class="transaction_heading">Feedback</p>
+      <h6 class="transaction_value">
+        {{reviews.feedback}}
+      </h6>
+    </div>
+  </div>
+</div>
+<br>
+<!--Approve hold payment modal -->
+<div class="modal fade" id="approve-hold-payment-modal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content station_list_delete_site_modal_styl">
+
+            <div class="modal-body">
+                <div class="heading">
+                    <h5>Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="emails_list_delete_email_modal_styl_content modal_action_container" id="delete-modal-content">
+                    <div class="approve-hold-payment-details">
+                        <div class="hold-payment-driivz-amount-container">
+                          <p class="hold-payment-details-label">Driivz Amount</p>
+                          <p class="hold-payment-details-value">{{status_details.driivz_amount.capitalize}}</p>
+                        </div>
+                        <div class="hold-payment-power-consumed-container">
+                          <p class="hold-payment-details-label">Power Consumed</p>
+                          <p class="hold-payment-details-value">{{session_details.power_consumed}} kWh</p>
+                        </div> 
+                        <div class="hold-payment-session-rate-container">
+                          <p class="hold-payment-details-label">Session Rate</p>
+                          <p class="hold-payment-details-value">{{charging_session.session_tariff}} /kWh</p>
+                        </div>
+                    </div>
+                    <div class="google_maps_submit_buttons modal_action_container">
+                      <div class="google_maps_container_buttons">
+                          <button class="cancle_button" id="cancle-button-hold-payment" data-bs-dismiss="modal">Cancel</button>
+                          &nbsp;
+                          <button class="done_button" onclick="ApproveHoldPayment('Approve')">Done</button>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Edit hold payment modal -->
+<div class="modal fade" id="edit-hold-payment-modal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content station_list_delete_site_modal_styl">
+            <div class="modal-body">
+                <div class="heading">
+                    <h5>Edit Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="emails_list_delete_email_modal_styl_content modal_action_container" id="delete-modal-content">
+                    <div class="approve-hold-payment-details">
+                        <div class="hold-payment-driivz-amount-container">
+                          <p class="hold-payment-details-label">Driivz Amount</p>
+                          <p class="hold-payment-details-value">{{status_details.driivz_amount.capitalize}}</p>
+                        </div>
+                        <div class="hold-payment-power-consumed-container">
+                          <p class="hold-payment-details-label">Power Consumed</p>
+                          <p class="hold-payment-details-value">{{session_details.power_consumed}} kWh</p>
+                        </div> 
+                        <div class="hold-payment-session-rate-container">
+                          <p class="hold-payment-details-label">Session Rate</p>
+                          <p class="hold-payment-details-value">{{charging_session.session_tariff}} /kWh</p>
+                        </div>
+                  </div>
+                  <div>
+                    <div class="hold-payment-driivz-amount-container">
+                      <p class="hold-payment-details-label">Suggested Amount{% if calculated_session_amount is not none %}({{ session_details.power_consumed }} * {{ formatted_session_tariff }} = <b>{{calculated_session_amount}}</b>){% endif %}</p>
+                      <input type="number" class="inputs edit_hold_payment_input" id="edit_hold_payment_input" placeholder="Enter Amount" >
+                      <p class="error_field hold_payment_error" id="hold_payment_error"></p>
+                    </div>
+                  </div>
+                  <div class="google_maps_submit_buttons modal_action_container">
+                    <div class="google_maps_container_buttons">
+                        <button class="cancle_button" id="cancle-button-hold-payment" data-bs-dismiss="modal">Cancel</button>
+                        &nbsp;
+                        <button class="done_button" onclick="ApproveHoldPayment('Edit')">Done</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/session_transactions/hold_payments_details.js' %}"></script>
+<script>
+  let approve_hold_payment_url = "{% url 'hold_payment_details' charging_session.id%}?is_ocpi={{charging_session.is_ocpi}}"
+</script>
+{% endblock %}

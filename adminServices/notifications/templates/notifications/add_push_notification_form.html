@@ -1,0 +1,317 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Push Notification{% endblock %}
+{% block stylesheet %}
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/notifications/notifications/add_new_push_notification.css'%}">
+{% endblock %}
+{% block content %}
+
+<div class="side_modal" id="side_modal_id">
+    <div class="background_manager">
+    </div>
+    <div class="side_modal_content">
+        <div id="dynamic_content_container">
+            <div class="content_of_modal">
+                <div class="side_modal_heading">
+                    <a>Assign Image</a>
+                    <button class="close_button" onclick="toggleModal();">X</button>
+                </div>
+                <div class="side_modal_heading1">
+                    <p>00 added</p>
+
+                    <p class="add_images" onclick="limitImages()">Add Images</p>
+                </div>
+                <div class="hor_line"></div>
+            </div>
+            <div class="add_images_button_cotainer">
+                <button class="cancel_image_button">Cancel</button>
+                <button class="assign_image">Assign</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="formContainer add-email-notification" id="formContainer">
+    <div class="custom_dialouge sub-main">
+        <div class="content-div">
+            <div>
+                <div>
+                    <a href="{% url 'notifications_list' %}"><em id="backButton"
+                            class="arrow cursor-pointer left-arrow back_button_styl"></em></a>
+                    <a href="{% url 'notifications_list' %}" class="user_back_navigation">
+                        {{page_name}}
+                    </a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <div><a class="usr_detaile input_container notification-details-title">Notification Details</a></div>
+                        <div class="user_form_container">
+                            <div class="add-email-notification-form" id="">
+                                {% csrf_token %}
+                                <div class="input_container">
+                                    <label class="field_lable">Title</label>
+                                    <input oninput="previewSubject(this)" type="text" id="subject-input"
+                                        class="subject-input text_data" value="{{push_notification_data.subject}}" onkeyup="charCountSubject(this)" maxlength="60">
+                                        <div class="error_and_count" >
+                                            <div>
+                                                <p class='error-messages' id='subject-error'></p>
+                                            </div>
+                                            <div class="text-count">
+                                                <span id="text-count-for-subject">60</span> characters remaining
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="input_container">
+                                    <label class="field_lable">Description</label>
+                                    <input oninput="previewDescription(this)" type="text" id="description-input"
+                                        class="subject-input" value="{{push_notification_data.description}}" onkeyup="charCountDescription(this)" maxlength="100">
+                                        <div class="error_and_count" >
+                                            <div>
+                                                <p class='error-messages' id='description-error'></p>
+                                            </div>
+                                            <div class="text-count">
+                                                <span id="text-count-for-description" >100</span> characters remaining
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="input_container" id="subject-data-container">
+                                    <label class="field_lable">Screens</label>
+                                    <select class="select-field" name="template_type" id="screens">
+                                        <option value="Default Notification Screen" id="screen_dropdown">Default Notification Screen</option>
+                                        {% for screen in list_of_screens %}
+                                        {% if screen == push_notification_data.screens %}
+                                        <option value="{{screen}}" id="category_dropdown" selected>{{screen}}</option>
+                                        {% else %}
+                                        <option value="{{screen}}" id="screen_dropdown">{{screen}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <p class='error-messages' id='link-error'></p>
+                                </div>
+                                <div class="input_container">
+
+                                    <div class="input_container_div">
+                                        <div class="input_container_inrow">
+                                            <label class="field_lable">Category</label>
+                                            <select class="select-field" name="template_type" id="category">
+                                                <option value="Select" id="category_dropdown">Select</option>
+                                                {% for i in list_of_category %}
+                                                {% if i == push_notification_data.category %}
+                                                <option value="{{i}}" id="category_dropdown" selected>{{i}}</option>
+                                                {% else %}
+                                                <option value="{{i}}" id="category_dropdown">{{i}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            <p class='error-messages' id='category-error'></p>
+                                        </div>
+
+                                        <div class="input_container_inrow">
+                                            <label class="field_lable">Assign To</label>
+                                            <select class="select-field" onchange="regionList()" name="template_type"
+                                                id="assign_to">
+                                                <option value="Select">Select</option>
+                                                {% for i in list_of_assign_to %}
+                                                {% if i == push_notification_data.assign_to %}
+                                                <option value="{{i}}" selected>{{i}}</option>
+                                                {% else %}
+                                                <option value="{{i}}">{{i}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            <p class='error-messages' id='assign-to-error'></p>
+                                        </div>
+                                        <div class="input_container_inrow" id="region-data-container">
+                                            <label class="labels">Regions</label>
+                                            <div class="station_select-box checkbox_select_box">
+                                                <div class="multiselect">
+                                                    <div class="selectBox" onclick="showCheckboxes(6)">
+                                                        <select class="select-field" name="template_type"
+                                                            id="regions_region">
+                                                            <option id="regions-list">Select</option>
+                                                        </select>
+                                                        <div class="overSelect"></div>
+                                                    </div>
+                                                    <div class="checkboxes" id="checkbosx6">
+                                                        <div id="checkbosx6_loader"></div>
+                                                        <label>
+                                                            {% for i in list_of_regions %}
+                                                            {% if i in region_list %}
+
+                                                            <label>
+                                                                <input type="checkbox" value="{{i}}" checked
+                                                                    id="region_list" name="type" selected
+                                                                    onchange="displayRegions()" />{{i}}</label>
+                                                            {%else%}
+                                                            <label><input type="checkbox" value="{{i}}" id="region_list"
+                                                                    name="type"
+                                                                    onchange="displayRegions()" />{{i}}</label>
+
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class='error-messages' id='regions-to-error'></p>
+                                        </div>
+                                        <div class="input_container_inrow" id="domain-data-container">
+                                            <label class="labels">Domain</label>
+                                            <select class="select-field" name="template_type" id="domain">
+                                                <option value="Select">Select</option>
+                                                {% for domain in user_domain %}
+                                                {% if domain == push_notification_data.domain %}   
+                                                <option value="{{domain}}" selected>{{domain}}</option>
+                                                {% else %}
+                                                <option value="{{domain}}">{{domain}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            <p class='error-messages' id='domain-error'></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input_container">
+                                    <div class="checkbox_error">
+                                        <label class="field_lable">Select Type Of Notification</label>
+                                    </div>
+                                    <form>
+                                        <div class="input_container_div">
+                                            <div class="checkbox">
+                                                {% if push_notification_status == "true" %}
+                                                <input type="radio" checked class="checkbox_input"
+                                                    id="push_notification" name="push_notification">
+                                                {% else %}
+                                                <input type="radio" class="checkbox_input" id="push_notification"
+                                                    name="push_notification">
+                                                {% endif %}
+                                                <label for="push_notification">Push Notification</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                {% if inapp_notification_status == "true" %}
+                                                <input type="radio" checked class="checkbox_input"
+                                                    id="in_app_notification" name="push_notification">
+                                                {% else %}
+                                                <input type="radio" class="checkbox_input" id="in_app_notification"
+                                                    name="push_notification">
+                                                {% endif %}
+                                                <label for="in_app_notification">In-App Notification</label>
+                                            </div>
+                                        </div>
+                                        <p class='error-messages' id='dropdown-error'></p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <!-- Image -->
+                    <div>
+                        <div class="upper_collapsibles page-section promotion-details-popup" id="image_section">
+                            <p class="site_details images_p" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">Image   <img class="i_icon"
+                                    src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('image')"
+                                    onmouseout="hide_info_box('image')" alt=""><span id='show_tooltip_image'
+                                    class="icon-popup image_popup">Click Assign to add images</span>
+                            </p>
+                            <button class="assign_button" onclick="toggleModal(1)" id="assign_btn">Assign</button>
+                        </div>
+
+                        <div class="content1 collapse show" id="collapseImage">
+                            <div id="images_container">
+                                {% if push_notification_data.image %}
+                                <img src="{{get_push_notification_image}}" id="output_image">
+                                {% else %}
+                                <img src="{% static '/images/notification-logo.png' %}" id="output_image">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="cancel-preview-done-btn-container" id="cancel-preview-done-btn-container">
+                        <div class="cancel-btn-container">
+                            <a href="{% url 'notifications_list' %}"><button class="cancel-btn">Cancel</button></a>
+                        </div>
+                        <div class="preview-done-button-container">
+                            <button class="preview-btn opacity-if-delivered" data-toggle="modal"
+                                data-target="#preview-push-notifications-modal" id="preview-btn">Preview</button>
+                            <button class="done-btn" id="done-btn" onclick="sendPushData()">Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+<!-- preview modal -->
+<div class="modal show fade" id="preview-push-notifications-modal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal_main_div">
+        <div class="modal-content preview-push-notification-content">
+            <div class="modal-body">
+                <div class="heading ">
+                    <h6 class="heading-text">App Preview</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="device_div">
+                    <div class="device_screen">
+                        <div class="notifications_display">
+                            {% if push_notification_data.image or get_push_notification_image %}
+                            <div class="image_div" id="image_div">
+                            </div>
+                            {% else %}
+                            <div class="image_div" id="image_div">
+                            </div>
+                            {% endif %}
+                            <div>
+                                <p class="subject_of_notification text_data" id="preview_subject">
+                                    {{push_notification_data.subject}}</p>
+                                <p class="description_of_notification" id="preview_description">
+                                    {{push_notification_data.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    var token = '{{csrf_token}}';
+    let default_image = "{% static '/images/notification-logo.png' %}";
+    var image123 = "{{push_notification_data.image}}";
+    {% if push_notification_data %}
+    var image_update = "{{get_push_notification_image}}"
+    {% else %}
+    var image_update = "{% static '/images/notification-logo.png' %}";
+    {% endif %}
+
+    {% if key == 'update url' %}
+    var add_new_push_notification = "{% url 'update_push_notification' push_notification_data.id %}"
+    {% else %}
+    var add_new_push_notification = "{% url 'add_new_push_notification' %}"
+    {% endif %}
+
+</script>
+<script src="{% static 'js/notifications/push-notifications.js' %}"></script>
+
+{% endblock %}

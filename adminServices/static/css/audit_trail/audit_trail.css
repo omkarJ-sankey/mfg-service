@@ -1,0 +1,298 @@
+.audit_trail_details_buttons_container {
+    margin-top: 2rem;
+}
+
+.audit_details_action_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.audit_details_action_box .flex-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+.audit_details_action_box .rotated_square {
+    height: 0.625rem;
+    width: 0.625rem;
+    margin: 3px;
+    margin-top: 7px;
+    border-left: 2px solid #888888;
+    border-bottom: 2px solid #888888;
+    transform: rotate(45deg);
+}
+
+.audit_details_action_box .audit_trail_details_buttons {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.audit_details_action_box .audit_trail_details_buttons .mark_as_reviewed_box {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.mark_as_review_text {
+    letter-spacing: 0.14px;
+    color: #666666;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 6px;
+    margin-bottom: 0;
+}
+
+.mark_as_review_text.mark_as_review_link_text {
+    color: #0076BC;
+    text-decoration: underline;
+}
+
+.updated_by_details_box {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mark_as_review_light_text {
+    letter-spacing: 0.14px;
+    color: #999999;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 6px;
+    margin-bottom: 0;
+}
+
+.audit_details_action_box .audit_trail_details_buttons .audit_prev_next_buttons {
+    background: #E2373F00 0% 0% no-repeat padding-box;
+    border: 1px solid #888888;
+    border-radius: 4px;
+    letter-spacing: 0.14px;
+    color: #888888;
+    font-size: 14px;
+    opacity: 1;
+    margin-left: 1.2rem;
+    padding: 8px 16px;
+}
+
+.audit_details_action_box .audit_trail_details_buttons .audit_prev_next_buttons:disabled {
+    border: 1px solid #e7e5e5;
+    color: #e2dfdf;
+}
+
+.audit_details_table {
+    margin: 0.7rem 0;
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+#detail_content {
+    margin-bottom: 1.8rem;
+}
+
+.audit_details_table .audit_table_heading_text,
+.normal_text {
+    width: 33%;
+    padding: 0.8rem 1.3rem;
+    border: 1px solid #D0D0D0;
+}
+
+.audit_details_table .audit_table_heading_text {
+    background: #335F90 0% 0% no-repeat padding-box;
+    letter-spacing: 0.14px;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.audit_details_table .audit_table_heading_text_with_white_shade {
+
+    background: #DDDDDD 0% 0% no-repeat padding-box;
+    letter-spacing: 0.14px;
+    color: #666666;
+    font-size: 14px;
+    font-weight: 400;
+    width: 33%;
+    padding: 0.8rem 1.3rem;
+    border: 1px solid #D0D0D0;
+}
+
+.audit_details_table .normal_text {
+    background: #fff;
+    border-radius: 4px 4px 0px 0px;
+    letter-spacing: 0.14px;
+    color: #444444;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.audit_details_table .bold_text {
+    font-weight: 600;
+}
+
+.audit_list_review_image {
+    width: 19px;
+    height: 14px;
+}
+
+.update_action {
+    font-weight: 600;
+    color: #29DB47;
+}
+
+.create_action {
+    font-weight: 600;
+    color: #0076BC;
+}
+
+.delete_action {
+    font-weight: 600;
+    color: #db3e29;
+}
+
+.not_reviewed_box {
+    width: 14px;
+    height: 0px;
+    border: 1px solid #666666;
+    opacity: 1;
+}
+
+.audit_details_table .values_changed_row {
+    background: #D1E2D7 0% 0% no-repeat padding-box;
+}
+
+.content_block_name {
+    font-size: 1.125rem;
+    letter-spacing: 0.18px;
+    color: var(--dark-gray);
+    margin: 1rem 0;
+    font-weight: 500;
+}
+
+.audit_sevices_comparison_box {
+    margin-top: 1.25rem;
+    width: 100%;
+    transition: .5s ease;
+    display: flex;
+    justify-content: space-between;
+}
+
+.audit_sevices_comparison_box .audit_content_container_with_text {
+    width: 49.5%;
+    border: 1px solid #CCCCCC;
+}
+
+.image_container_info_text {
+    font-size: 13px;
+    padding: 5px 10px;
+    color: #fafafa;
+    background: #335F90;
+
+}
+
+.audit_sevices_comparison_box .audit_images_container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.4rem;
+    background: var(--white) 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    opacity: 1;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    height: 6.25rem;
+    align-items: center;
+}
+
+.audit_sevices_comparison_box .audit_images_container.images_box {
+    height: 10rem;
+}
+
+.audit_sevices_comparison_box .audit_images_container.not_matched_data {
+    background: #D1E2D7 0% 0% no-repeat padding-box;
+}
+
+.audit_sevices_comparison_box .audit_images_container .audit_services_image {
+    height: 4.375rem;
+    width: 6.875rem;
+    background: #00000014;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.audit_sevices_comparison_box .audit_images_container .audit_services_image .servicesContent {
+    max-height: 3.75rem;
+    max-width: 6.25rem;
+    object-fit: contain;
+}
+
+.audit_sevices_comparison_box .audit_images_container.images_box .imageContent {
+    width: 13.75rem;
+    height: 7.6rem;
+    margin: 1rem 0.5rem;
+    border-radius: 2px;
+    object-fit: contain;
+}
+
+.audit_sevices_comparison_box .audit_images_container::-webkit-scrollbar {
+    height: 5px;
+}
+
+.audit_sevices_comparison_box .audit_images_container::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+.audit_sevices_comparison_box .audit_images_container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.auditTableImages {
+    max-width: 200px;
+    max-height: 150px;
+}
+
+.image-view {
+    height: 50px;
+}
+
+.stored-image-container {
+    width: 15%;
+    margin-right: 0.2rem;
+}
+
+.file-name-div {
+    width: 100%;
+}
+
+.file-name-para {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.stored-image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.module_id_overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100px;
+}

@@ -1,0 +1,348 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} Amenities{% endblock %}
+{% load static %}
+
+
+{%block css%}
+{%endblock%}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/configurations/conf.css'%}">
+<div class="configration-nav-container">
+
+    {% include "configurations/side_nav.html" %}
+
+    <!-- Amenities -->
+    <div class="form_container"  id="Amenities">
+        <div class="Fields-container configurations_fields_container">
+            <div class="bigger_width_field">
+                <label for="fname" class="labels">Search</label>
+                <div class="search-box">
+                    <img src="{% static '/images/search-1.png' %}" alt="">
+                    <input id="search-input" type="text" placeholder="E.g. Oscar Brown" class="inputs" />
+                </div>
+            </div>
+            <div class="btn_container ml-auto">
+                <button  class="add-btn" onclick="addConnector()" data-toggle="modal" data-target="#addAmenities">
+                 <img  data-toggle="tooltip" data-placement="bottom" title="Add"  src="{% static '/images/plus-sign.png' %}" alt=""></button>
+            </div>
+        </div>
+        <div class="table_container configurations_table_container" > 
+            <table class="table configurations_table" aria-describedby="configdesc" id="table-amenities">
+                <thead>
+                  <tr>
+                    <th scope="col" hidden>ID</th>
+                    <th scope="col" hidden>Path</th>
+                    <th scope="col"class="text-left  th_conf left_20px" >Name</th>
+                    <th scope="col" class="table-heading" onclick="configurationOrderByFunction('unique_identifier')">
+                        Sort Order 
+                        {% if prev_unique_identifier != 'Descending' %}
+                            <img id="unique_identifier" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                        {% else %}
+                            <img id="unique_identifier"  src="{%static 'images/order-img.png'%}" alt="">
+                        {% endif %}
+                    </th>
+                    <th scope="col" class="text-center">Image Without Text</th>
+                    <th scope="col" class="text-center">Image With Text</th>
+                    <th scope="col" class="text-right right_20px th_conf">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="listingTable">
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="7"  class="pagination_bx_background">
+                            <div class="pagination_div">
+                                <div class="record_count">
+                                    <span id="record_count"></span>
+                                </div>
+                                <div class="pagination_buttons d-flex justify-content-lg-start align-items-center" id="pagination_button_box">
+                                    <span class="pagination_button prev" id="button_prev">Previous</span>
+                                    <span id="page_number"></span>
+                                    <span class="pagination_button next" id="button_next">Next</span>
+                                </div>
+                        </div> 
+                        </td>
+                </tr></tbody>
+              </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- modal for add Amenities -->
+<div class="modal fade" id="addAmenities" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addAmenitiesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+     <div class="modal-content add_conf_modal" >
+        <div class="modal-body">
+            <div class="heading">
+                <h6 class="add_conf_heading">Add New Amenity</h6>
+                 <button type="button" class="btn-close"  data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex flex-column">
+                
+                {% csrf_token %}
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Name</label><br>
+                        <input type="text" id="service_name" class="txtbox input-txt" name="service_name" placeholder="">
+                    </div>
+                </div> 
+                
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                         aria-expanded="false" aria-controls="collapseImage">Unique ID 
+                         <img class="i_icon" src="{% static '/images/i_icon.png' %}" 
+                         onmouseover="show_info_box('unique_id_message')" 
+                         onmouseout="hide_info_box('unique_id_message')" alt="">
+                         <span id='show_tooltip_unique_id_message' class="icon-popup image_popup">
+                             Unique id must be unique.</span></p>
+                        
+                        <input type="text" id="add_unique_identifier" 
+                            class="txtbox input-txt" name="unique_identifier"
+                            placeholder="">
+                        <p id="add_amenity_unique_id_error"></p>
+                    </div>
+                </div> 
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Image Without text</label><br>
+                        <input type="text" id="image_path_src" hidden class="txtbox"  name="image_path" placeholder="">                    </div>
+                </div>
+                
+                <div id="add_images_container" class="add_images_conf_container">
+
+                    <div id="d-flex flex-column"  class="mr-tp">
+                    <input type="file" id="i_file"  name="filename" hidden accept=".jpeg,.jpg,.png"/>
+                    <label for="i_file" class="add_images_label"><strong class=" pick-img">Add Image</strong></label>
+                    </div>
+                </div>
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Image With text</label><br>
+                        <input type="text" id="image_path_w_text_src" hidden class="txtbox"  name="image_path" placeholder="">                    </div>
+                </div>
+                <div id="add_images_container_w_text" class="add_images_conf_container">
+
+                    <div id="d-flex flex-column"  class="mr-tp">
+                    <input type="file" id="i_file_w_text"  name="filename_w_text" hidden accept=".jpeg,.jpg,.png"/>
+                    <label for="i_file_w_text" class="add_images_label"><strong class=" pick-img">Add Image</strong></label>
+                    </div>
+                </div>
+
+            </div>
+       
+        </div>
+        <div class="modal-footer modal_footer_padding">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger" onclick="addAmenityDetails()" id="add_amenity_button">Submit</button>
+        </div>
+          </div>
+    </div>
+</div>
+
+<!-- modal for edit Amenities -->
+<div class="modal fade" id="editConnector"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="editConnectorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content edit_conf_modal" >
+         
+        <div class="modal-body">
+            <div class="heading heading-mar">
+                <h6 class="add_conf_heading">Edit Amenity</h6>
+                 <button type="button" class="btn-close" onclick="closeModal('#editConnector')"  data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex flex-column">
+                
+                <div>
+                    <div id="d-flex flex-column"  >
+                        <label for="email" class="labels">Name</label><br>
+                        <input type="text" id="conn_id" hidden name="type" placeholder="" value="Type 1">
+                        <input type="text" id="conn_type" class="txtbox input-txt" name="type" placeholder="" value="Type 1">
+                    </div>
+                </div> 
+
+
+                
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                         aria-expanded="false" aria-controls="collapseImage">Unique ID 
+                         <img class="i_icon" src="{% static '/images/i_icon.png' %}" 
+                         onmouseover="show_info_box('unique_id_message_update')" 
+                         onmouseout="hide_info_box('unique_id_message_update')" alt="">
+                         <span id='show_tooltip_unique_id_message_update' class="icon-popup image_popup">
+                             Unique id must be unique.</span></p>
+                        
+                        <input type="text" id="update_unique_identifier" 
+                            class="txtbox input-txt" name="unique_identifier"
+                            placeholder="">
+                        <p id="update_amenity_unique_id_error"></p>
+                    </div>
+                </div> 
+
+
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Image Without Text</label><br>
+                        <input type="text" id="conn_img" hidden class="txtbox input-txt" name="type" placeholder="" value="Type 1">               
+                    </div>
+                </div>
+                <div id="add_images_container1">
+                    <div class="profile_container">
+                        <div id='discard1' class='discard btn-close'></div>
+                        <img class="profile_image_ service_image" src="" alt="">
+                    </div>
+                </div> 
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Image With Text</label><br>
+                        <input type="text" id="conn_img_with_text" hidden class="txtbox input-txt" name="type" placeholder="" value="Type 1">               
+                    </div>
+                </div>
+                <div id="add_images_container1_with_text">
+                    <div class="profile_container">
+                        <div id='discard1_with_text' class='discard btn-close'></div>
+                        <img class="profile_image_ service_image profile_image_with_text" src="" alt="">
+                    </div>
+                </div> 
+            </div>
+       
+        </div>
+        <div class="modal-footer conf_modal_footer" >
+            <button type="button" class="btn btn-light"  onclick="closeModal('#editConnector')" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="update_amenity_button" onclick="updateAmenity()">Submit</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal for view Amenities details -->
+<div class="modal fade" id="viewAmenities"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewAmenitiesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content view_conf_details">
+         
+        <div class="modal-body">
+            <div class="heading heading-mar">
+                <h6 class="add_conf_heading">Amenity Details</h6>
+                 <button type="button" class="btn-close"  data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex flex-column">
+                
+                <div>
+                    <div id="d-flex flex-column" >
+                        <label for="email" class="labels">Name</label><br>
+                        <h6  class="view-con-typ conf-details-heading"></h6>
+                    </div>
+                </div> 
+                
+                <div>
+                    <div id="d-flex flex-column" >
+                        <label for="email" class="labels">Unique id</label><br>
+                        <h6 class="view-amenity-id  conf-details-heading" id="view_amenity_id"></h6>
+                    </div>
+                </div> 
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Image Without Text</label><br>
+                    </div>
+                </div> 
+
+                <div id="add_images_container add_images_conf_container">
+                    <div class="profile_container">
+                        <div id='discard' class='discard'></div>
+                        <img class="profile_image_ service_image view-con-img" src="{% static '/images/Group.png' %}" alt=""></div>
+                </div> 
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels">Image With Text</label><br>
+                    </div>
+                </div> 
+
+                <div id="add_images_container add_images_conf_container">
+                    <div class="profile_container">
+                        <div id='discard' class='discard'></div>
+                        <img class="profile_image_ service_image view-con-img-with-text" src="{% static '/images/Group.png' %}" alt=""></div>
+                </div> 
+
+            </div>
+       
+        </div>
+        <div class="modal-footer conf_modal_footer">
+            <button onclick="deleteConnector()" type="button" class="btn btn-light" data-dismiss="modal">
+                <img src="{% static '/images/delete.png' %}" class="delete-icn2" alt="">
+            </button>
+            <button onclick="switchToAmenityEditor()" type="button" class="btn btn-danger" data-dismiss="modal">
+                <img src="{% static '/images/pencil.png' %}" class="delete-icn2" alt="">
+            </button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal for delete Amenities -->
+<div class="modal fade" id="deleteAmenities" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteAmenitiesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content delete_modal_style">
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h6 class="add_conf_heading">Delete Amenity</h6>
+                 <button type="button" class="btn-close"  data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex flex-column">
+                
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels" id="del-con-msg">Are you sure you want to remove <strong>Type 1</strong> amenity?</label><br>
+                    </div>
+                </div> 
+
+            </div>
+       
+        </div>
+        <div class="modal-footer conf_modal_footer" >
+            <button type="button" class="btn btn-light" data-dismiss="modal">No
+            </button>
+            <button type="button" id="del-amen-itm" class="btn btn-danger">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+{% endblock%}
+
+
+<!-- javascript -->
+{% block js %}
+
+ 
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    var errors = ["{%for m in messages%}{{m}}{%endfor%}"];
+    is_error = "{% firstof messages%}";
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'amenities'%}";
+    var token = '{{csrf_token}}';
+    let add_amenity_url = "{% url 'amenities' %}";
+    let update_amenity_url = "{% url 'update_amenity' %}";
+    let check_service_id_availability_url = "{% url 'check_service_id_availability' %}";
+    let group_png_url ="{% static '/images/Group.png' %}";
+    let paginationObj = JSON.parse('{{json_data | escapejs }}');
+    
+    let pencilEditImage ="{% static '/images/pencil-2.png' %}";
+    let deleteRowImage ="{% static '/images/delete.png' %}";
+    let paginationCount = "{{pagination_count}}";
+    let paginationFor = "amenities";
+</script>
+
+<script src="{% static 'js/configurations/common-configurations-func.js' %}"></script>
+<script src="{% static 'js/configurations/amenities.js' %}"></script>
+<script src="{% static 'js/configurations/pagination.js' %}"></script>
+{% endblock %}

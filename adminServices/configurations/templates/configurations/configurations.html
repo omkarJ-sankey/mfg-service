@@ -1,0 +1,421 @@
+{% extends 'dashboard/base.html' %}
+
+{% load static %}
+
+{% block title %} Configurations{% endblock %}
+
+{%block stylesheet%}
+<link rel="stylesheet" href="{% static '/css/configurations/conf.css'%}">
+{%endblock%}
+
+
+{% block content %}
+<div class="configration-nav-container">
+    {% include "configurations/side_nav.html" %}
+    <!-- Connector View -->
+    <div class="form_container" id="Connector">
+        <div class="Fields-container configurations_fields_container">
+            <div class="bigger_width_field">
+                <label for="fname" class="labels">Search</label>
+                <div class="search-box">
+                    <img src="{% static '/images/search-1.png' %}" alt="">
+                    <input id="search-input" type="text" placeholder="E.g. Oscar Brown" class="inputs" />
+                </div>
+            </div>
+            <div class="btn_container ml-auto">
+                <button class="add-btn" onclick="addConnector()" data-toggle="modal" data-target="#addConnector"> <img
+                        data-toggle="tooltip" title="Add" src="{% static '/images/plus-sign.png' %}" alt=""></button>
+            </div>
+
+
+        </div>
+        <div class="table_container configurations_table_container">
+            <table class="table configurations_table" id="table-connector" aria-describedby="configuration">
+                <thead>
+                    <tr>
+                        <th scope="col" hidden>ID</th>
+                        <th scope="col" hidden>Path</th>
+                        <th scope="col" class="text-left th_conf left_20px">Type</th>
+                        <th scope="col" class="text-center th_conf">Name</th>
+                        <th scope="col" class="text-center table-heading"
+                            onclick="configurationOrderByFunction('sorting_order')">
+                            Sort Order
+                            {% if prev_sorting_order != 'Descending' %}
+                            <img id="sorting_order" class="order-by" src="{%static 'images/order-img.png'%}" alt="">
+                            {% else %}
+                            <img id="sorting_order" src="{%static 'images/order-img.png'%}" alt="">
+                            {% endif %}
+                        </th>
+                        <th scope="col" class="text-center th_conf">App Version</th>
+                        <th scope="col" class="text-center th_conf">Image</th>
+                        <th scope="col" class="text-center th_conf">Alternate Image</th>
+                        <th scope="col" class="text-right right_20px th_conf">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="listingTable">
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="pagination_bx_background">
+                            <div class="pagination_div">
+                                <div class="record_count">
+                                    <span id="record_count"></span>
+                                </div>
+                                <div class="pagination_buttons d-flex justify-content-lg-start align-items-center"
+                                    id="pagination_button_box">
+                                    <span class="pagination_button prev" id="button_prev">Previous</span>
+                                    <span id="page_number"></span>
+                                    <span class="pagination_button next" id="button_next">Next</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- modal for add connector -->
+<div class="modal fade" id="addConnector" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addConnectorLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content add_conf_modal">
+            <div class="modal-body">
+                <div class="heading ">
+                    <h6 class="add_conf_heading">Add New Connector</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column">
+
+                    {% csrf_token %}
+
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <label for="email" class="labels">Connector Type</label><br>
+                            <select name="connector_plug_type" id="connector_plug_type" class="txtbox input-txt ">
+                                <option value="">Select connector type</option>
+                                {% for connector in connectors_name_list %}
+                                    <option value="{{connector}}">{{connector}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">Sorting order
+                                <img class="i_icon" src="{% static '/images/i_icon.png' %}"
+                                    onmouseover="show_info_box('unique_id_message')"
+                                    onmouseout="hide_info_box('unique_id_message')" alt="">
+                                <span id='show_tooltip_unique_id_message' class="icon-popup image_popup">
+                                    Sorting order must be unique.</span>
+                            </p>
+
+                            <input type="text" id="add_sorting_order" class="txtbox input-txt" name="sorting_order"
+                                placeholder="">
+                            <p id="add_sorting_order_error"></p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">For app version
+                            </p>
+
+                            <input type="number" id="app_version" class="txtbox input-txt" name="app_version"
+                                placeholder="">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" >
+                            <label for="image_path_src" class="labels">Image</label><br>
+                            <input type="text" id="image_path_src" hidden class="txtbox" name="image_path"
+                                placeholder="">
+                        </div>
+
+                    <div id="add_images_container">
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <input type="file" id="i_file" name="image_path" hidden accept=".jpeg,.jpg,.png" />
+                            <label for="i_file" class="add_images_label"><strong class=" pick-img">Add
+                                    Image</strong></label>
+
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div id="d-flex flex-column" >
+                            <label for="alt_image_path_src" class="labels">Alternate image</label><br>
+                            <input type="text" id="alt_image_path_src" hidden class="txtbox" name="alt_image_path"
+                                placeholder="">
+                        </div>
+                    </div>
+                    
+                    <div id="add_alt_images_container">
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <input type="file" id="i_alt_file" name="alt_image_path" hidden accept=".jpeg,.jpg,.png" />
+                            <label for="i_alt_file" class="add_images_label"><strong class=" pick-img">Add
+                                    Image</strong></label>
+
+                        </div>
+                    </div>
+                    
+                </div>
+                </div>
+
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="add_connector_btn" class="btn btn-danger"
+                    onclick="addConnectorDetails()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for edit connector -->
+<div class="modal fade" id="editConnector" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editConnectorLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content add_conf_modal">
+
+            <div class="modal-body">
+                <div class="heading heading-mar">
+                    <h6 class="add_conf_heading">Edit Connector</h6>
+                    <button type="button" class="btn-close" onclick="closeModal('#editConnector')" data-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column">
+
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">Connector Type</label><br>
+                            <input type="text" id="conn_id" hidden name="type" placeholder="" value="Type 1">
+                            <select name="type" id="conn_type" class="txtbox input-txt ">
+                                <option value="null">Select connector type</option>
+                                {% for connector in connectors_name_list %}
+                                <option value="{{connector}}">{{connector}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">Sorting order
+                                <img class="i_icon" src="{% static '/images/i_icon.png' %}"
+                                    onmouseover="show_info_box('unique_id_message_update')"
+                                    onmouseout="hide_info_box('unique_id_message_update')" alt="">
+                                <span id='show_tooltip_unique_id_message_update' class="icon-popup image_popup">
+                                    Sorting order must be unique.</span>
+                            </p>
+
+                            <input type="text" id="update_sorting_order" class="txtbox input-txt" name="sorting_order"
+                                placeholder="">
+                            <p id="update_sorting_order_error"></p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">For app version
+                            </p>
+
+                            <input type="number" id="update_app_version" class="txtbox input-txt" name="app_version"
+                                placeholder="">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">Image</label><br>
+                            <input type="text" id="conn_img" hidden class="txtbox input-txt" name="type" placeholder=""
+                                value="Type 1">
+                        </div>
+                    </div>
+
+                    <div id="add_images_container1">
+                        <div class="profile_container">
+                            <div id='discard1' class='discard'>x</div>
+                            <img class="profile_image_ service_image" src="{% static '/images/Group.png' %}" alt="">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="alt_image_edit_path_src" class="labels">Alternate image</label><br>
+                            <input type="text" id="alt_image_edit_path_src" hidden class="txtbox input-txt" name="type" placeholder=""
+                                value="Type 1">
+                        </div>
+                    </div>
+
+                    <div id="add_alt_images_container2">
+                        <div class="profile_container">
+                            <div id='discard1' class='discard'>x</div>
+                            <img class="profile_image_ service_image" src="{% static '/images/Group.png' %}" alt="">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <button type="button" class="btn btn-light" onclick="closeModal('#editConnector')" data-dismiss="modal"
+                    aria-label="Close">Cancel</button>
+                <button type="button" id="update_connector_btn" class="btn btn-danger"
+                    onclick="updateConnector()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for view connector details -->
+<div class="modal fade" id="viewConnector" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewConnectorLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content add_conf_modal">
+
+            <div class="modal-body">
+                <div class="heading heading-mar">
+                    <h6 class="add_conf_heading">Connector Details</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column">
+
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">Connector Type</label><br>
+                            <h6 class="view-con-typ conf-details-heading"></h6>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">Sorting order</label><br>
+                            <h6 class="view-amenity-id  conf-details-heading" id="view_sorting_order"></h6>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">For app version</label><br>
+                            <h6 class="view-amenity-id  conf-details-heading" id="view_app_version"></h6>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <label for="email" class="labels">Image</label><br>
+                            <input type="text" id="image_path_src" hidden class="txtbox" name="image_path"
+                                placeholder="">
+                        </div>
+                    </div>
+
+                    <div id="add_images_container add_images_conf_container">
+                        <div class="profile_container">
+                            <div id='discard' class='discard'></div>
+                            <img class="profile_image_ service_image view-con-img"
+                                src="{% static '/images/Group.png' %}" alt="">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <label for="view_alt_image_path_src" class="labels">Alternate image</label><br>
+                            <input type="text" id="view_alt_image_path_src" hidden class="txtbox" name="image_path"
+                                placeholder="">
+                        </div>
+                    </div>
+
+                    <div id="add_images_container add_images_conf_container">
+                        <div class="profile_container">
+                            <div id='discard' class='discard'></div>
+                            <img class="profile_image_ service_image view-alt-con-img"
+                                src="{% static '/images/Group.png' %}" alt="">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer  modal_footer_padding">
+                <button onclick="deleteConnector()" type="button" class="btn btn-light" data-dismiss="modal">
+                    <img src="{% static '/images/delete.png' %}" class="delete-icn2" alt="">
+                </button>
+                <button type="button" onclick="openConnectorEditor()" class="btn btn-danger" data-dismiss="modal">
+                    <img src="{% static '/images/pencil-2.png' %}" class="delete-icn2" alt="">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for delete connector -->
+<div class="modal fade" id="deleteConnector" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteConnectorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content delete_modal_style">
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h6 class="add_conf_heading">Delete Connector</h6>
+                 <button type="button" class="btn-close"  data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex flex-column">
+                
+                <div>
+                    <div id="d-flex flex-column"  class="mr-tp">
+                        <label for="email" class="labels" id="del-con-msg">Are you sure you want to remove <strong>Type 1</strong> connector?</label><br>
+                    </div>
+                </div> 
+
+            </div>
+       
+        </div>
+        <div class="modal-footer conf_modal_footer" >
+            <button type="button" class="btn btn-light" data-dismiss="modal">No
+            </button>
+            <button type="button" id="del-con-itm" class="btn btn-danger">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock%}
+
+
+<!-- javascript -->
+{% block js %}
+
+
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    var errors = ["{%for m in messages%}{{m}}{%endfor%}"];
+    is_error = "{% firstof messages%}";
+    var token = '{{csrf_token}}';
+
+    let url_u = `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'connectors'%}";
+    let add_connector_url = "{% url 'connectors' %}";
+    let update_connector_url = "{% url 'update_connector' %}";
+    let check_service_id_availability_url = "{% url 'check_connector-sorting-order_availability' %}";
+    var connectors_names_list = [{% for i in connectors_name_list %}
+    "{{i}}",
+        {% endfor %}];
+    let group_png_url = "{% static '/images/Group.png' %}";
+    let paginationObj = JSON.parse('{{json_data | escapejs }}');
+
+    let pencilEditImage = "{% static '/images/pencil-2.png' %}";
+    let deleteRowImage = "{% static '/images/delete.png' %}";
+    let paginationCount = "{{pagination_count}}";
+    let paginationFor = "connectors";
+</script>
+
+<script src="{% static 'js/configurations/common-configurations-func.js' %}"></script>
+<script src="{% static 'js/configurations/configurations.js' %}"></script>
+<script src="{% static 'js/configurations/pagination.js' %}"></script>
+{% endblock %}

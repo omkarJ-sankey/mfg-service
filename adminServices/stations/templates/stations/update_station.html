@@ -1,0 +1,857 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} Edit site page{% endblock %}
+{% block css %}
+
+{% load static %}
+{% endblock %}
+{% block content %}
+
+
+
+
+{% load static %}
+<div class="side_modal" id="side_modal_id">
+    <div class="background_manager">
+
+    </div>
+    <div class="side_modal_content">
+        <div id="dynamic_content_container">
+            <div class="content_of_modal">
+                <div class="side_modal_heading">
+                    <a>Assign Images</a>
+                    <button class="close_button" onclick="toggleModal();">X</button>
+
+                </div>
+                <div class="side_modal_heading1">
+                    <p>00 added</p>
+                    <a href="" class="add_images">Add Images</a>
+                </div>
+                <div class="hor_line"></div>
+
+
+
+            </div>
+            <div class="add_images_button_cotainer">
+                <button class="cancel_image_button">Cancel</button>
+                <button class="assign_image">Assign</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="add_station_container">
+
+    <div class="side_content_indicator">
+        <p class="ptext active1" onclick="scrollPageFunction('formSection')">Site Details</p>
+        <p class="ptext" id="chargePointDetails" onclick="scrollPageFunction('charge_point_container')">Charge Point
+            Details</p>
+        <p class="ptext" onclick="scrollPageFunction('retail_section')">Retail</p>
+        <p class="ptext" onclick="scrollPageFunction('image_section')">Images</p>
+        <p class="ptext" onclick="scrollPageFunction('food_to_go_section')">Food To Go</p>
+        <p class="ptext" onclick="scrollPageFunction('amenity_section')">Amenities</p>
+        {% if station.valeting == "Yes" %}
+        <p class="ptext" id="valetingDetails" onclick="scrollPageFunction('valeting_terminals_container')">Valeting Details</p>
+        <p class="ptext" id="valetingMachinesDetails" onclick="scrollPageFunction('valeting_machines_container')">Valeting Machines</p>
+        {% endif %}
+    </div>
+    <div class="form_container">
+        <div class="add_new_site_link">
+            <div class="flex-text">
+                <div class="rotated_square" onclick="showLoader('');Previous();"></div>
+                <p class="user_back_navigation " onclick="showLoader('');Previous();">Edit Site</p>
+            </div>
+        </div>
+        <p class="site_details">Site Details</p>
+
+        <div class="forms page-section" id="formSection">
+            <div class="station_form">
+                <div class="station_fields">
+
+                    <label class="labels">Station ID</label>
+                    <input type="text" id="upload_Data1" class="inputs" value="{{station.station_id}}"
+                        onchange="updateUploadedDataSet(0, this.value);" placeholder="Enter station ID">
+                    <p class="error_field" id="error_field0"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Station Name</label>
+                    <input type="text" class="inputs" value="{{station.station_name}}"
+                        onchange="updateUploadedDataSet(1, this.value);" placeholder="Enter station name">
+                    <p class="error_field" id="error_field1"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Address Line 1</label>
+                    <input type="text" class="inputs" value="{{station.station_address1}}"
+                        onchange="updateUploadedDataSet(2, this.value);" placeholder="address line 1">
+                    <p class="error_field" id="error_field2"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Address Line 2</label>
+                    <input type="text" class="inputs" value="{{station.station_address2}}"
+                        onchange="updateUploadedDataSet(3, this.value);" placeholder="address line 2">
+                    <p class="error_field" id="error_field3"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Address Line 3</label>
+                    <input type="text" class="inputs" value="{{station.station_address3}}"
+                        onchange="updateUploadedDataSet(4, this.value);" placeholder="address line 3">
+                    <p class="error_field" id="error_field4"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Latitude</label>
+
+                    <button type="button" class="modal_button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <span id="lat-1">Latitude</span>
+                        <img src="{% static '/images/location.png' %}" class="location_image" alt="">
+                    </button>
+
+                    <p class="error_field" id="error_field12"></p>
+                </div>
+                <div class="station_fields">
+
+                    <label class="labels">Longitude</label>
+
+                    <button type="button" class="modal_button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <span id="lon-1">Longitude</span>
+                        <img src="{% static '/images/location.png' %}" class="location_image" alt="">
+                    </button>
+
+                    <p class="error_field" id="error_field13"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Town</label>
+
+                    <div class="station_select-box">
+                        <p id="town_container">Enter town</p>
+                    </div>
+                    <p class="error_field1" id="error_field5"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Postal Code</label>
+                    <div class="station_select-box">
+
+                        <p id="postal_code_container">Enter postal code</p>
+                    </div>
+                    <p class="error_field1" id="error_field6"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Country</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input"
+                            onchange="updateUploadedDataSet(7, this.value);">
+                            <!-- <option value="">
+                                select</option> -->
+                            {% for i in countries%}
+                            {% if i == station.country %}
+                            <option value="{{i}}" selected>
+                                {{i}}</option>
+                            {%else%}
+                            <option value="{{i}}">
+                                {{i}}</option>
+                            {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field7"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Working Hours</label>
+
+                    <button type="button" id="working_hours_id" class="modal_button modal-overflow-button"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                        <span class="working_hours_span">Select working hours</span><span
+                            class="working_hours_span"></span><span class="working_hours_span"></span>
+
+                    </button>
+                    <p class="error_field1" id="error_field_working_hours"></p>
+                </div>
+
+
+                <div class="station_fields">
+
+                    <label class="labels">Status</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input"
+                            onchange="updateUploadedDataSet(15, this.value);">
+                            <option value="">Select</option>
+                            {% for i in status_list %}
+                            {% if station.status == i%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                            {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endif %}
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field15"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Brand</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input"
+                            onchange="updateUploadedDataSet(8, this.value);">
+                            <option value="">Select</option>
+                            {% for brand in brands %}
+                            {% if brand %}
+                            {% if station.brand == brand %}
+                            <option value="{{brand}}" selected>{{brand}}</option>
+
+                            {%else%}
+                            <option value="{{brand}}">{{brand}}</option>
+                            {%endif%}
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field8"></p>
+                </div>
+
+
+                <div class="station_fields">
+
+                    <label class="labels">Owner</label>
+                    <div class="station_select-box">
+                        <select class="dropdown_input small_dropdown_input"
+                            onchange="updateUploadedDataSet(9, this.value);">
+                            <option value="">Select</option>
+                            {% for owner in owners %}
+                            {% if owner.owner %}
+                            {% if station.owner == owner.owner %}
+
+                            <option value="{{owner.owner}}" selected>{{owner.owner}}</option>
+                            {% else%}
+                            <option value="{{owner.owner}}">{{owner.owner}}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field9"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Email</label>
+                    <input type="text" value="{{station.email}}" class="inputs" placeholder="Enter email"
+                        onchange="updateUploadedDataSet(10, this.value);">
+
+                    <p class="error_field" id="error_field10"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Phone </label>
+                    <input type="text" value="{{station.phone}}" class="inputs" placeholder="Enter phone"
+                        onchange="updateUploadedDataSet(11, this.value);">
+
+                    <p class="error_field" id="error_field11"></p>
+                </div>
+
+                <div class="station_fields">
+                    <label class="labels">Station Type</label>
+                    <div class="station_select-box">
+                        <select name="cars" id="MFGEVSiteCheck" class="dropdown_input small_dropdown_input"
+                            onchange="checkingMFGSite();updateUploadedDataSet(17, this.value);">
+                            {% for i in station_type %}
+                            {% if station.station_type == i%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                            {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endif %}
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+
+                <div class="station_fields">
+                    <label class="labels">Payment Terminal</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes(0)">
+                                <select id="regions_region" class="dropdown_input small_dropdown_input">
+                                    <option id="terminal-list">Select</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="checkbosx0">
+                                <div id="checkbosx6_loader"></div>
+                                <label>
+                                    {% for payment_terminal in station_payment_terminals %}
+                                        {% if payment_terminal.1 in station_terminals %}
+                                            <label>
+                                                <input type="checkbox" value="{{payment_terminal.1}}" 
+                                                    class="payment-terminal-check" id='payment-terminal-{{ payment_terminal.0 }}' name="type"
+                                                    onchange="displayTerminals(this.value)" checked/>{{payment_terminal.0}}</label>
+                                        {%else%}
+                                            <label><input type="checkbox" value="{{payment_terminal.1}}" class="payment-terminal-check"
+                                                id='payment-terminal-{{ payment_terminal.0 }}' name="type"
+                                                    onchange="displayTerminals(this.value)"/>{{payment_terminal.0}}</label>
+                                        {% endif %}
+                                    {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <p class="error_field1" id="error_field29"></p>
+                </div>
+
+
+                <div class="station_fields">
+                    <label class="labels">Valeting</label>
+                    <div class="station_select-box">
+                        <select name="cars" id="ValetingCheck" class="dropdown_input small_dropdown_input"
+                            onchange="updateUploadedDataSet(28, this.value),checkIfValeting();">
+                            <!-- <option value="">Select</option> -->
+                            {% for i in valeting_status %}
+                            {% if station.valeting == i%}
+                            <option value="{{i}}" selected>{{i}}</option>
+                            {%else%}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endif %}
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field28"></p>
+                </div>
+
+                <div class="station_fields" id="driivz_site_id">
+
+                    <label class="labels">Driivz Site ID</label>
+                    <input type="text" id="upload_Data1" class="inputs" value="{{station.site_id}}"
+                        onchange="updateUploadedDataSet(27, this.value)" placeholder="Enter Driivz Site ID">
+                    <p class="error_field" id="error_field27"></p>
+                </div>
+
+
+                
+                <div class="station_fields rh-site-name-field" id="driivz_site_id">
+                    <label class="labels">RH Site Name</label>
+                    <input type="text" id="rh-site-name-input" class="inputs" value="{% if station.receipt_hero_site_name %}{{station.receipt_hero_site_name}}{% endif %}"
+                        onchange="updateUploadedDataSet(30, this.value)" placeholder="Enter RH Site Name">
+                    <p class="error_field1" id="error_field30"></p>
+                </div>
+                
+                <div class="station_fields" id="driivz_site_id">
+                    <label class="labels">Ampeco Site ID</label>
+                    <input type="text" id="ampeco-site-id-input" class="inputs" value="{{ station.ampeco_site_id|default:'' }}"
+                        onchange="updateUploadedDataSet(33, this.value)" placeholder="Enter Ampeco Site ID">
+                    <p class="error_field" id="error_field33"></p>
+                </div>
+                <div class="station_fields" id="driivz_site_id">
+                    <label class="labels">Ampeco Site Title</label>
+                    <input type="text" id="ampeco-site-title-input" class="inputs" value="{{ station.ampeco_site_title|default:'' }}"
+                        onchange="updateUploadedDataSet(34, this.value)" placeholder="Enter Ampeco Site Title">
+                    <p class="error_field" id="error_field34"></p>
+                </div>
+                <div class="station_fields">
+                    <label class="labels">Overstay Fee</label>
+                    <input type="number" class="inputs" value="{{station.overstay_fee}}"
+                        onchange="updateUploadedDataSet(31, this.value)" placeholder="Enter overstay fee">
+                    <p class="error_field" id="error_field31"></p>
+                </div>
+                <div class="station_fields" id="parking_detail_id">
+                    <label class="labels">Parking Details</label>
+                    <input type="text" id="parking-details-title-input" class="inputs" value="{{ station.parking_details|default:'' }}"
+                        onchange="updateUploadedDataSet(35, this.value)" placeholder="Enter Parking Details">
+                    <p class="error_field" id="error_field35"></p>
+                </div>
+            </div>
+            <!-- another form division -->
+            <div class="station_form" id="toggleOnSection">
+                <div class="station_fields">
+
+                    <label class="labels">Site Title</label>
+                    <input type="text" value="{{station.site_title}}" class="inputs" placeholder="Enter site title"
+                        onchange="updateUploadedDataSetSite(0, this.value);">
+
+                    <p class="error_field" id="error_field_site0"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Operation Region</label>
+
+                    <input type="text" value="{{station.operation_region}}" class="inputs"
+                        placeholder="Enter operation region" onchange="updateUploadedDataSetSite(1, this.value);">
+                    <p class="error_field1" id="error_field_site1"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Region</label>
+
+                    <input type="text" value="{{station.region}}" class="inputs" placeholder="Enter site region"
+                        onchange="updateUploadedDataSetSite(2, this.value);">
+                    <p class="error_field1" id="error_field_site2"></p>
+                </div>
+
+
+                <div class="station_fields">
+
+                    <label class="labels">Regional Manager</label>
+                    <input type="text" value="{{station.regional_manager}}" class="inputs"
+                        placeholder="Enter regional manager name" onchange="updateUploadedDataSetSite(3, this.value);">
+
+                    <p class="error_field" id="error_field_site3"></p>
+                </div>
+                <div class="station_fields">
+
+                    <label class="labels">Area</label>
+
+                    <input type="number" value="{{station.area}}" class="inputs" min="0" placeholder="Enter site area"
+                        onchange="updateUploadedDataSetSite(4, this.value);">
+                    <p class="error_field1" id="error_field_site4"></p>
+                </div>
+
+                <div class="station_fields">
+
+                    <label class="labels">Area Retail Manager</label>
+                    <input type="text" value="{{station.area_regional_manager}}" class="inputs"
+                        placeholder="Enter name of area retail manager"
+                        onchange="updateUploadedDataSetSite(5, this.value);">
+
+                    <p class="error_field" id="error_field_site5"></p>
+                </div>
+            </div>
+<!-- 
+            <p>If ended</p> -->
+            
+        
+
+            <!-- charging point details starts here -->
+            <div id="back_office_container">
+                <p class="station_back_offices">Back Office Details</p>
+                
+                <div id="backOfficeContainer" class="page-section">
+                </div>
+                
+                <!-- <div class="back_office_button_container">
+    
+                    <button class="add_back_office" id="addBackOfficeButton">Add Back Office</button>
+                    <p id ="append_back_office_error" class="error_field"></p>
+
+                </div> -->
+            </div>
+        </div>
+        <div class="horizontal-lines"></div>
+        <!-- jhw -->
+
+
+        <!-- charging point details starts here -->
+        <div id="charge_point_container">
+            <p class="site_details">Charge Point Details</p>
+            <div id="chargingPointContainer" class="page-section">
+            </div>
+            <div class="charge_point_button_container">
+
+                <button class="add_charge_point" id="addChargePointButton">Add Charge Point</button>
+
+            </div>
+        </div>
+
+        <div class="horizontal-lines"> </div>
+
+        <!-- Retail section starts here -->
+        <div class="upper_collapsibles page-section" id="retail_section">
+
+            <p class="site_details" data-toggle="collapse" data-target="#collapseRetail" aria-expanded="false"
+                aria-controls="collapseRetail">Retail</p>
+            <button class="assign_button" onclick="toggleModal(0);">Assign</button>
+        </div>
+        <div class="content1 collapse show" id="collapseRetail">
+            <div id="images_container0">
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="horizontal-lines"></div>
+
+        <!-- Images section -->
+
+        <div class="upper_collapsibles page-section" id="image_section">
+            <p class="site_details" data-toggle="collapse" data-target="#collapseImage" aria-expanded="false"
+                aria-controls="collapseImage">Images</p>
+            <button class="assign_button" onclick="toggleModal(1);">Assign</button>
+        </div>
+
+        <div class="content1 collapse show" id="collapseImage">
+            <div id="images_container">
+
+            </div>
+        </div>
+        <div class="horizontal-lines"></div>
+
+
+
+
+        <!-- Food to go section -->
+
+        <div class="upper_collapsibles page-section" id="food_to_go_section">
+            <p class="site_details" data-toggle="collapse" data-target="#collapseFood" aria-expanded="false"
+                aria-controls="collapseFood">Food To Go</p>
+            <button class="assign_button" onclick="toggleModal(2);">Assign</button>
+        </div>
+
+        <div class="content1 collapse show" id="collapseFood">
+            <div id="images_container2">
+
+            </div>
+        </div>
+        <div class="horizontal-lines"></div>
+
+
+
+
+
+
+        <!-- Amenities section -->
+
+        <div class="upper_collapsibles page-section" id="amenity_section">
+            <p class="site_details" data-toggle="collapse" data-target="#collapseAmenities" aria-expanded="false"
+                aria-controls="collapseAmenities">Amenities</p>
+            <button class="assign_button" onclick="toggleModal(3);">Assign</button>
+        </div>
+        <div class="content1 collapse show" id="collapseAmenities">
+            <div id="images_container3">
+
+            </div>
+        </div>
+        <div class="horizontal-lines"></div>
+
+        <!-- Valeting terminals details starts here -->
+
+        <div id="valeting_terminals_container">
+            <p class="site_details">Valeting Terminals Details</p>
+            <div id="valeting-terminals-container" class="page-section">
+                
+            </div>
+
+            <div class="valeting_terminals_button_container">
+
+                <button class="add_valeting_terminal" id="add_valeting_terminal_button">Add Valeting Terminal</button>
+
+            </div>
+            <div class="horizontal-lines"> </div>
+        </div>
+
+        <!-- Valeting machines details starts here -->
+        <div id="valeting_machines_container">
+            <p class="site_details">Valeting Machines Details</p>
+            <div id="valeting-machines-container" class="page-section">
+                
+            </div>
+
+            <div class="valeting_machines_button_container">
+                <button class="add_valeting_machine" id="add_valeting_machine_button">Add Valeting Machine</button>
+            </div>
+            <div class="horizontal-lines"></div>
+        </div>
+
+        <div class="submit_buttons">
+            <div class="container_buttons">
+                <button class="cancle_button" onclick="showCanclePopup();">Cancel</button>
+                <button class="done_button" onclick="submitStationData();">Submit</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="cancle_submit_warning_popup" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content promo_cancel_modal">
+
+            <div class="modal-body">
+                <h3 id="updated_status">Are you sure you want to cancel, all data will be lost after pressing yes?</h3>
+                <div class="google_maps_submit_buttons">
+                    <div class="google_maps_container_buttons">
+                        <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                        <button onclick="showLoader('');Previous();" class="done_button">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal for chargepoint and connctor delete confirmation -->
+<div class="modal fade" id="delete_chargepoint_confirmation_model" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content delete_chargepoint_confirmation_modal_styl">
+
+            <div class="modal-body" id="chargepoint_delete_modal_content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for valeting terminal delete confirmation -->
+<div class="modal fade" id="delete_valeting_terminal_confirmation_model" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content delete_chargepoint_confirmation_modal_styl">
+
+            <div class="modal-body" id="valeting_terminal_modal_content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for valeting machine delete confirmation -->
+<div class="modal fade" id="delete_valeting_machine_confirmation_model" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content google_maps_content delete_chargepoint_confirmation_modal_styl">
+            
+            <div class="modal-body" id="valeting_machine_modal_content">
+                <!-- Confirmation content will be inserted here dynamically -->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- modal for location -->
+<div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content cordinate_modal_style">
+
+            <div class="modal-body">
+                <div class="heading">
+                    <h5>Add Coordinates</h5>
+                    <button type="button" class="btn-close" onclick="assign_map_values(true);" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+
+                </div>
+                <div class="latitude_longitude_container">
+                    <div class="search_cords_cont">
+
+                        <label for="fname" class="labels">Search</label>
+                        <div class="search-box">
+
+                            <img src="{% static '/images/search-1.png' %}" alt="">
+                            <input type="text" class="inputs" value="{{prev_search}}" placeholder="E.g. Alton"
+                                onchange="findLocation(this.value);"><br><br>
+                        </div>
+                    </div>
+                    <div class="cords_info">
+                        <p>Latitude</p>
+                        <h6 id="lat-2">38.8951</h6>
+                    </div>
+                    <div class="cords_info">
+                        <p>Longitude</p>
+                        <h6 id="lon-2">38.8951</h6>
+                    </div>
+                </div>
+                <div id="map"></div>
+                <div class="google_maps_submit_buttons">
+                    <div class="google_maps_container_buttons">
+
+                        <button class="cancle_button" onclick="assign_map_values(true);"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button class="done_button" onclick="assign_map_values();" data-bs-dismiss="modal">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for Working days -->
+<div class="modal fade" id="staticBackdrop1" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content working_hours_content working_hours_modal_style">
+
+            <div class="modal-body">
+                <div class="heading">
+                    <h5>Add Working Hours</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+                <p class="wh-heading">Monday - Friday</p>
+                <div class="time_box">
+                    <button class="hours"
+                        onclick="timingSelection(0); updateUploadedDataSetWorkingHours(0,0, 'full_day');">24
+                        Hours</button>
+                    <div class="vertical_line"></div>
+                    <div class="time_select-box">
+                        <input type="time" class="selectt"
+                            onchange="updateUploadedDataSetWorkingHours(0,1, this.value);">
+                    </div>
+                    <div class="time_select-box">
+
+                        <input type="time" class="selectt"
+                            onchange="updateUploadedDataSetWorkingHours(0,2, this.value);">
+                    </div>
+                </div>
+
+
+                <p class="error_field2" id="monday_friday_error"></p>
+                <p class="wh-heading">Saturday</p>
+                <div class="time_box">
+                    <button class="hours"
+                        onclick="timingSelection(1); updateUploadedDataSetWorkingHours(1,0, 'full_day');">24
+                        Hours</button>
+                    <div class="vertical_line"></div>
+                    <div class="time_select-box">
+                        <input type="time" class="selectt"
+                            onchange="updateUploadedDataSetWorkingHours(1,1, this.value);">
+                    </div>
+                    <div class="time_select-box">
+
+                        <input type="time" class="selectt"
+                            onchange="updateUploadedDataSetWorkingHours(1,2, this.value);">
+                    </div>
+                </div>
+
+                <p class="error_field2" id="saturday_error"></p>
+                <p class="wh-heading">Sunday</p>
+                <div class="time_box">
+                    <button class="hours"
+                        onclick="timingSelection(2); updateUploadedDataSetWorkingHours(2,0, 'full_day');">24
+                        Hours</button>
+                    <div class="vertical_line"></div>
+                    <div class="time_select-box">
+                        <input type="time" class="selectt"
+                            onchange="updateUploadedDataSetWorkingHours(2,1, this.value);">
+                    </div>
+                    <div class="time_select-box">
+
+                        <input type="time" class="selectt"
+                            onchange="updateUploadedDataSetWorkingHours(2,2, this.value);">
+                    </div>
+
+                </div>
+
+                <p class="error_field2" id="sunday_error"></p>
+                <div class="submit_buttons">
+                    <div class="container_buttons">
+                        <button class="cancle_button" data-bs-dismiss="modal">Cancel</button>
+                        <button class="done_button" data-bs-dismiss="modal">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for back office delete confirmation -->
+<div class="modal fade" id="delete_backoffice_confirmation_model" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content delete_backoffice_confirmation_modal_styl">
+
+            <div class="modal-body" id="backoffice_delete_modal_content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+<!-- javascript -->
+{% block js %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+
+
+
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    var token = '{{csrf_token}}';
+    let plus_sign_icn_url = "{% static '/images/plus-sign.png' %}";
+    let cross_one_icn_url = "{% static '/images/cross-1.png' %}";
+    let clock_icn_url = "{% static '/images/clock.png' %}";
+    let calendar_icn_url = "{% static '/images/calendar-1.png' %}";
+
+    let submit_station_data_url = `{% url 'update_station' station.id %}`;
+    let connector_speed_types_list = [{% for i in connector_speed_types %}
+    ["{{i.0}}", "{{i.1}}"],
+        {% endfor %}
+    ];
+
+    var services_data1 = JSON.parse('{{tsjson | escapejs }}');
+    var services_data = JSON.parse('{{tsjson | escapejs }}');
+    let valeting_terminals = services_data.valeting_terminals
+    let valeting_machines = services_data.valeting_machines;
+    var back_offices_data = JSON.parse('{{back_offices_data | escapejs }}');
+    let countBackOffice = '{{back_offices_count}}'
+    let backoffice_list = JSON.parse('{{ back_offices_data | escapejs }}');
+    let backoffice_keys = Object.keys(backoffice_list);
+    let available_back_offices = JSON.parse('{{available_back_offices |escapejs }}')
+    let validate_ocpi_location_url = "{% url 'validate_location' %}";
+    let total_back_offices = JSON.parse('{{total_back_offices |escapejs }}')
+
+    let connector_type_list = [{% for i in plug_types %}
+    "{{i.connector_plug_type}}",
+        {% endfor %}]
+    let connector_type_html = `
+    
+        {% for connector_type in plug_types%}
+                                                
+            <option value="{{connector_type.connector_plug_type}}">{{connector_type.connector_plug_type}}</option>
+        {% endfor %}
+    `;
+
+    var query_params_str_edit_station = "{{query_params_str|safe}}";
+
+    var prev_station_id = "{{station.station_id}}";
+    // let backoffice_list = JSON.parse('{{ back_offices_data|escapejs }}');
+
+
+    // let backOfficeCount = 0;
+
+</script>
+
+<script src="{% static '/js/stations/add-update-common-code.js' %}"></script>
+<script src="{% static '/js/stations/update-station.js' %}"></script>
+<script src="{% static '/js/stations/add-update-validations.js' %}"></script>
+<script src="{% static '/js/stations/maps.js' %}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{map_api_key}}&callback=initMap&libraries=places"
+    async></script>
+{% endblock %}

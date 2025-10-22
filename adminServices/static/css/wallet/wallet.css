@@ -1,0 +1,81 @@
+.wallet-search{
+    background: #cccccc;
+}
+#autocomplete-container{
+    position: relative;
+}
+#emailInput{
+    width: 76%;
+}
+.autocomplete-list{
+    position: absolute;
+    top: 0;
+    display: none;
+}
+.autocomplete-list.active{
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.12);
+    padding: 0;
+    box-sizing: border-box;
+    max-height: 296px;
+    overflow-y: auto;
+    background: #fff;
+    list-style: none;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 16%);
+}
+.input-txt {
+    width: 100%;
+    border: 1px solid #0000003d;
+    border-radius: 4px;
+    height: 2.2rem;
+    padding-left: 10px;
+}
+.w-50{
+    width: 50%;
+}
+.ph-10{
+    padding-right: 0.8rem;
+    padding-left: 0.8rem;
+}
+.ev-snippet{
+    color: #666;
+    font-size: 1rem;
+}
+li:has(> div.ev-snippet){
+    background-image:none;
+    padding: .8rem;
+}
+
+.formError{
+    font-size: 0.8rem;
+    color: red !important;
+}
+
+.loader[data-loading=true] {
+    content: "";
+    border: 3px solid rgba(0,0,0,.12);
+    border-right-color: rgba(0,0,0,.48);
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 35px;
+    top: 63%;
+    transform: translateY(-50%);
+    animation: rotate 1s linear infinite;
+}
+.detailLabels{
+    text-align: left;
+    font: normal normal normal 14px/19px Roboto;
+    letter-spacing: 0.14px;
+    color: #666666;
+    opacity: 1;
+    font-size: .9rem;
+}
+
+.create-gift-cards-btn{
+    background: #003875 0% 0% no-repeat padding-box;
+    color: #fafafa;
+    border: none;
+    outline: none;
+}

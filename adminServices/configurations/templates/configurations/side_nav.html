@@ -1,0 +1,41 @@
+
+    <!-- Side Bar -->
+    <div class="side_content_indicator2">
+        <div  class="shadow side-bar-nav bg-white rounded">
+            <div id="conn" class="text-left p-2 menu-option" onclick='selectOption(`{% url "connectors" %}`)'>
+                <div class="m-itm">
+                    Connectors
+                </div>
+            </div>
+            <div id="amen" class="text-left p-2 menu-option" onclick='selectOption(`{% url "amenities" %}`)'>
+                <div class="m-itm">
+                    Amenities
+                </div>
+            </div>
+            <div id="shop" class="text-left p-2 menu-option" onclick='selectOption(`{% url "shops" %}`)'>
+                <div class="m-itm">
+                    Shops
+                </div>
+            </div>
+            <div id="map_indicator" class="text-left p-2 menu-option" onclick='selectOption(`{% url "addMarkers" %}`)'>
+                <div class="m-itm">
+                    Map indicators
+                </div>
+            </div>
+            <div id="ocpi_configuration" class="text-left p-2 menu-option" onclick='selectOption(`{% url "addOCPIConfigurations" %}`)'>
+                <div class="m-itm">
+                    OCPI Configuration
+                </div>
+            </div>
+            <div id="base_configuration" class="text-left p-2 menu-option" onclick='selectOption(`{% url "addBaseConfigurations" %}`)'>
+                <div class="m-itm">
+                    Base configuration
+                </div>
+            </div>
+            <div id="default_brand_img" class="text-left p-2 menu-option" onclick='selectOption(`{% url "addDefaultImages" %}`)'>
+                <div class="m-itm">
+                    Default Brand image
+                </div>
+            </div>
+        </div>
+    </div>

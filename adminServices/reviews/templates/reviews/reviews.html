@@ -1,0 +1,260 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Reviews{% endblock %} 
+
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/dashboard/reviews.css'%}">
+{% endblock %}
+{% block content %}
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <div  class="Fields-container" >
+        <div class="bigger_width_field" >
+            <label class="field_lable" for="">Search</label>
+            <div class="search-box">
+                <img src="{% static '/images/search-1.png' %}" alt="">
+                <input 
+                    id="search" 
+                    type="text" 
+                    value='{{prev_search}}' 
+                    onchange="filterFunction('search',this.value)" 
+                    placeholder="E.g. FS324, Halewood"  
+                    class="inputs" />
+        </div>
+        </div>
+            <div class="small_width_field">
+                <label class="field_lable" for="">From Date</label>
+                <div class="date_container" onclick="showFromDatePicker()">
+            
+                    <input disabled type="text" id="post_date_from"  value="{{prev_from_date}}" placeholder="From date" onchange="filterFunction('from_date',this.value);" class="datepicker" >
+                  
+                </div>
+            </div>
+            <div class="small_width_field">
+                <label class="field_lable" value="new Date()" for="">To Date</label>
+                <div class="date_container" onclick="showToDatePicker()">
+            
+                    <input disabled type="text"  id="post_date_to" value="{{prev_to_date}}" placeholder="To date"  onchange="filterFunction('to_date',this.value);" class="datepicker" >
+                
+                </div>
+            </div>
+            <div class="small_width_field">
+                <label class="field_lable" for="">Status</label>
+                <div class="select-box">
+                    <select class="dropdown_input" onchange="filterFunction('status',this.value);" id="status">
+                        <option value="All">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Disapproved">Disapproved</option>
+                    </select>
+                </div>
+            </div>
+            <div class="small_width_field">
+                <label class="field_lable" for="">Flagged</label>
+                <div class="select-box">
+                    <select class="dropdown_input" id="flag" onchange="filterFunction('flag',this.value);" id="statusN">
+                        <option value="All">All</option>
+                        <option value="True">Yes</option>
+                        <option value="False">No</option>
+
+                    </select>     
+                </div>
+            </div>
+    </div>
+    <div class="table_container">
+        <table id="tableID" class="table" aria-describedby="reviewstable">
+            <thead class="rounded-top">
+                <tr>
+                    <th id="review_station_id" class="table_header round-top-left">
+                        Station ID
+                    </th>
+                    <th id="review_station_name" class="table_header">Station Name</th>
+                    <th id="review_id" class="table_header" >Review ID</th>
+                    <th id="review_date" class="table_header"> Date</th>
+                    <th id="review_heading"class="table_header"> Review</th>
+                    <th id="review_flag"class="table_header text-center round-top-right">Flagged</th>
+                    <th id="review_action" class="table_header text-center round-top-right"> 
+                        <div class="dropdown float-right-style">
+                            <a class="reviewDropbtn review_drop_down_button_style" onclick="dropdownFunction()" data-toggle="dropdown">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="4" viewBox="0 0 18 4">
+                                    <defs>
+                                        <style>
+                                            .an {
+                                                fill: rgb(255, 255, 255);
+                                            }
+                                        </style>
+                                    </defs>
+                                    <g transform="translate(-1154 -359)">
+                                        <circle class="an" cx="2" cy="2" r="2" transform="translate(1154 359)"></circle>
+                                        <circle class="an" cx="2" cy="2" r="2" transform="translate(1161 359)"></circle>
+                                        <circle class="an" cx="2" cy="2" r="2" transform="translate(1168 359)"></circle>
+                                    </g>
+                                </svg>
+                            </a>
+                            <div id="reviewDropdownId" class="dropdown-content-items align-initial-style">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#approveModal" onclick="selectAll()" href="#">Approve All</a>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#approveModal" href="#">Approve Selected</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item"data-toggle="modal" data-target="#dapproveModal" onclick="selectAll()" href="#">Decline All</a>
+                                <a class="dropdown-item"data-toggle="modal"  data-target="#dapproveModal" href="#">Decline Selected</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item " onclick="deselectAll()" href="#">Deselect All</a>
+                            </div>
+                        </div>
+
+                    </th>
+                </tr>
+                
+            </thead>
+            <tbody class="review_table">                        
+                {% for review in reviews_data %}
+
+                    <tr>
+                        <td class="review_td reviews_table"><strong>{{review.station_id}}</strong></td>
+                        <td class="review_td reviews_table">{{review.station_id.station_name}}</td>
+                        <td class="review_td reviews_table">{{review.id}}</td>
+                        {% load date_formater %}
+                        <td class="review_td reviews_table">{{review.post_date | date_formater}}</td>
+                        <td class="reviewData review_td reviews_table" onclick="ecRow(event)">{{review.review}}</td>
+                        {% if  review.flag == 'Yes' %}
+                        <td class="text-center reviews_table    "><svg xmlns="http://www.w3.org/2000/svg" width="14.667" height="16" viewBox="0 0 14.667 16"><defs><style>.a{fill:#e2373f;}</style></defs><path class="a" d="M1.667,0A.669.669,0,0,0,1,.667V15.333a.667.667,0,0,0,1.333,0v-6.7A6.339,6.339,0,0,1,7.687,8.1c4.307,1.307,7.753-3.773,7.893-3.987a.5.5,0,0,0-.547-.76,8.552,8.552,0,0,1-6.58-1.26A9.2,9.2,0,0,0,2.333.7V.667A.669.669,0,0,0,1.667,0Z" transform="translate(-1)"/></svg></td>
+                        {% elif review.status == "pending" %}
+                        <td class="text-center reviews_table_hyphen">-</td>
+                        {% else %}
+                        <td class="text-center reviews_table_hyphen">-</td>
+                        {% endif %}
+                        <td class="text-center reviews_table" >
+                            {% if  review.flag and review.status == "pending" %}
+                            <div class="form-check checkbox_container" >
+                                <input class="form-check-input checkbox_css" type="checkbox" value="" onchange="selectRow(event)" id="{{review.id}}" >
+                            </div>
+                            {% elif  review.status == "Approved" %}
+                            <div class="form-check checkbox_container" >
+                                <input class="form-check-input checkbox_css approved_check approve_checkbox_styl" type="checkbox" value="" onchange="selectRow(event)" checked disabled>
+                            </div>
+                            {% elif review.status == "Disapproved" %}
+                            <div class="form-check checkbox_container" >
+                                <input class="form-check-input checkbox_css disapprove_checkbox_styl" type="checkbox" value="" onchange="selectRow(event)" checked disabled>
+                            </div>
+                            {% else %}
+                            <div class="form-check checkbox_container" >
+                                <input class="form-check-input checkbox_css" type="checkbox" value="" onchange="selectRow(event)" id="{{review.id}}" >
+                            </div>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                {% endfor %} 
+                <tr>
+                    <td colspan="7" class="white_bg">
+                        <div class="pagination_div">
+                            <div class="record_count">
+                                {% if data_count is 0 %}
+                                    <p class="reviews_table">No records</p>
+                                {% else %}
+                                    <p class="reviews_table">   <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of <strong>{{data_count}}</strong> records </p>
+                            
+                                {% endif %}
+                            </div>
+                                <div class="pagination_buttons">
+                                {% if data_count >= 10 %}
+
+                                    {% if prev  %}
+                                        <a href="{% url 'reviews' %}?page={{prev}}{{update_url_param}}" ><button class="pagination_button prev" >Previous</button></a>
+                                    {% else %}
+                                        
+                                        <button class="disabled_button prev">Previous</button>
+                                    {% endif %} 
+                                    {% endif %} 
+                                    {% for i in pagination_num_list%}
+                                    
+                                        {% if i is None %}
+
+                                            <span>.</span>
+
+                                        {% else %}
+                                            {% if current_page == i%}
+                                                <a href="#"  ><button class="active_pagination_button">{{i}}</button></a>
+                                            {% else %}
+                                                <a href="{% url 'reviews' %}?page={{i}}{{update_url_param}}" ><button class="pagination_button">{{i}}</button></a>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% if data_count >= 10 %}
+
+                                    {% if next  %}
+                                        <a href="{% url 'reviews' %}?page={{next}}{{update_url_param}}" ><button class="pagination_button next">Next</button></a>
+                                    {% else %}
+                                        
+                                        <button class="disabled_button next">Next</button>
+                                    {% endif %}
+                                {% endif %}
+                                </div>
+                        </div>  
+                    
+                    </td>
+                    </tr>
+            </tbody>
+        </table>
+        <div id='footer'></div>
+        </div>
+    </div>
+    <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="approveModal">Confirmation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <strong>accept</strong> all the reviews?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="cancel" id='no' onclick="deselectAll()" data-dismiss="modal">No</button>
+              <button type="button" id='yes' onclick="updatestatu(true);" class="new_user">Yes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal fade" id="dapproveModal" tabindex="-1" role="dialog" aria-labelledby="dapproveModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="dapproveModal">Confirmation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <strong>Decline</strong> all the reviews?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="cancel" id='no' onclick="deselectAll()" data-dismiss="modal">No</button>
+              <button type="button" id='yes' onclick="updatestatu(false);" class="new_user">Yes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    let url_u= `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'reviews'%}";
+
+    let updatestatus_url = "{% url 'updatestatus' %}";
+    let decline_url = "{% url 'decline' %}";
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+    
+    var token = '{{csrf_token}}';
+    var prev_flag = "{{prev_flag}}";
+    var prev_status = "{{prev_status}}";
+    var prev_date_from = "{{prev_date_from}}";
+    var prev_date_to = "{{prev_date_to}}";
+
+</script>
+<script src="{% static '/js/common.js' %}"></script>
+<script src="{% static '/js/reviews/review.js' %}"></script>
+{%endblock%}

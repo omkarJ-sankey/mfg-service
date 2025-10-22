@@ -1,0 +1,9 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{page_heading}}{% endblock %}
+{% block content %}
+<form method="post" enctype="multipart/form-data" action="">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit">
+</form>
+{% endblock content %}

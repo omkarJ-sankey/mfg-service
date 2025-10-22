@@ -1,0 +1,267 @@
+/* side modal styling */
+.side_modal{
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+}
+.promotion-details-popup{
+    position: relative;
+}
+.side_modal .background_manager{
+    height: 100%;
+    width: 70%;
+    background: var(--black) 0% 0% no-repeat padding-box;
+    opacity: 0.3;
+    z-index: 150;
+    position:absolute;
+
+}
+.side_modal .side_modal_content .content_of_modal{
+    background:var(--white);
+    width: 100%;
+    padding: 1rem;
+    height: 88vh;
+    overflow-y: scroll;
+}
+.side_modal .side_modal_content .content_of_modal .side_modal_heading .close_button{ 
+    background:transparent;
+    border:none;
+    outline: none;
+    color:#888888;
+    opacity: 1;
+}
+.side_modal .side_modal_content{
+    background: var(--white);
+    min-width: 16rem;
+    box-shadow: -6px 8px 10px #0000001F;
+    z-index: 10000;
+    height: 100%;
+    width:40%;
+    opacity: 1;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right:0;
+    transition: .5s ease;
+ }
+.side_modal.active{
+    width: 100vw;
+}
+
+.side_modal_heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 97%;
+}
+.side_modal_heading p{
+    margin: 0;
+}
+.side_modal_heading1{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    height: 0.625rem;
+    margin: 0.625rem 0;
+    width: 97%;
+}
+.side_modal .side_modal_content .content_of_modal .side_modal_heading p{
+    font: normal normal medium var(--font-14);
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.2px;
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+   
+.side_modal .side_modal_content .content_of_modal .side_modal_heading1  p{
+    font: normal normal normal .8rem;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.16px;
+    color: var(--light-gray);
+}  
+
+.side_modal .side_modal_content .content_of_modal .side_modal_heading1  .add_images{
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.14px;
+    color: var(--dark-blue);
+    background: transparent;
+    border:  none;
+    outline: none;
+} 
+.hor_line{
+    width: 98%;
+    height:1px;
+}
+.side_modal_content .add_images_button_cotainer{
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white) 0% 0% no-repeat padding-box;
+    box-shadow: 0px -2px 8px #0000001a;
+    flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    padding: 0.6rem;
+}
+.side_modal_content .add_images_button_cotainer .cancel_image_button{
+    background: #E2373F00 0% 0% no-repeat padding-box;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+    outline: none;
+    font-size: var(--font-14);
+    letter-spacing: 0.14px;
+    color: hsl(0, 0%, 53%);
+    height: 2.2rem;
+    width: 48%;
+
+}
+.side_modal_content .add_images_button_cotainer .assign_image{
+    background: var(--mfg-red) 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    border: 1px solid var(--mfg-red);
+    outline: none;
+    font-size: var(--font-14);
+    letter-spacing: 0.14px;
+    color: var(--white);
+    height: 2.2rem;
+    width: 48%;
+}
+.add_images_label{
+    font-size: 0.75rem;
+    letter-spacing: 0.14px;
+    color: var(--dark-blue);
+    background: transparent;
+}
+
+#dynamic_content_container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#add_images_container{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    height: 80%;
+    justify-content: space-between;
+    vertical-align: top;
+    overflow-y:scroll ;
+    overflow-x: hidden;
+}
+#add_images_container::-webkit-scrollbar {
+    width: 0.313rem;
+}
+#add_images_container::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  /* Handle on hover */
+#add_images_container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+#add_images_container .text_container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#add_images_container .text_container .text_for_images{
+    height: 10%;
+}
+
+#add_images_container .text_container .text_for_images p{
+    font: normal normal normal var(--font-14);
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    color: #999999;
+}
+#add_images_container img{
+    width: 48%;
+    height: 6.25rem !important;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    background-color: #F8F8F9 !important;
+    object-fit: contain;
+    
+}
+
+#add_services_container{
+    height: 90%;
+    width: 100%;
+    padding-right: 3%;
+    overflow-y:scroll ;
+    overflow-x: hidden;
+}
+#add_services_container::-webkit-scrollbar {
+    width: 0.313rem;
+}
+#add_services_container::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+#add_services_container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+#add_services_container .sub_services_data{
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+#add_services_container .sub_services_data .services_img_container{
+    height: 3.13rem;
+    width: 5.625rem;
+    background: #00000014;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+#add_services_container .sub_services_data .services_img_container img{
+    max-height: 2.2rem;
+    max-width: 5rem;
+    object-fit: contain;
+}
+#add_services_container .sub_services_data .sub_service_data{
+    width: 60%;
+}
+#add_services_container .sub_services_data .sub_service_data p{
+    width: 95%;
+    text-align: left;
+    font: normal normal normal 14px;
+    font-family: 'Roboto',serif;
+    letter-spacing: 0.14px;
+    color: #666666;
+    margin-top: 0.62rem;
+    margin-bottom: 0.2rem;
+    padding:   0 0.37rem ;
+}
+#add_services_container .sub_services_data .sub_service_data .set_availability{
+    border:none;
+    outline:none;
+    text-align: left;
+    font: normal normal medium;
+    font-family: 'Roboto',serif;
+    background: transparent;
+    font-size: 0.75rem;
+    letter-spacing: 0.12px;
+    color: var(--dark-blue);
+    
+}
+#add_services_container .sub_services_data .services_ckeckbox{
+    height: 1rem;
+    width: 1rem;
+    
+}
+#add_services_container .sub_services_data .services_ckeckbox:checked{
+    color: var(--dark-blue);
+}

@@ -1,0 +1,887 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} View Loyalty Details{% endblock %}
+{% block css %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/promotions/app_preview.css'%}">
+<link rel="stylesheet" href="{% static '/css/loyalty/view-loyalty.css'%}">
+<style type="text/css">
+    
+  </style>
+{% endblock %}
+{% block content %}
+
+{% load static %}
+<div class="add_station_container">
+
+    <div class="side_content_indicator">
+        <p class="ptext active1" onclick="scrollPageFunction('formSection')">Loyalty Details</p>    
+        <p class="ptext active1" onclick="scrollPageFunction('LoyaltyProductContainer')">Loyalty Products Details</p>
+        <p class="ptext active1" onclick="scrollPageFunction('redemptionFormSection')">Redemption Details</p>
+        <p class="ptext" onclick="scrollPageFunction('view-assign-promotions-section')">Assign Loyalty</p>
+        <p class="ptext" onclick="scrollPageFunction('image_section')">Images</p>
+        <p class="ptext" onclick="scrollPageFunction('reward_image_section')">Reward Image</p>
+        {% if loyalty.loyalty_type == 'Costa Coffee' or loyalty.loyalty_type == 'Free' %}
+            <p class="ptext" onclick="scrollPageFunction('notifications-view-container')" >Notifications</p>
+        {% endif %}
+    </div>
+    
+    <div class="form_container">
+        <div class="actions_box">
+            <div class="add_new_site_link"><div class="flex-text" ><a class="link_no_margin" href="{% url 'loyalties_list' %}{{query_params_str}}" onclick="showLoader();"><div class="rotated_square"></div></a><a class="link_no_margin text_no_margin" href="{% url 'loyalties_list' %}{{query_params_str}}" onclick="showLoader();"><p class="user_back_navigation" >Loyalty Details View</p></a></div></div>
+            <div class="action_buttons">
+                <button  class="delete_button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{% static '/images/delete.png' %}"></button>
+                <a href="{% url 'edit_loyalties' loyalty.id %}{{query_params_str}}" class="edit_button"><img src="{% static '/images/pencil.png' %}"></a>
+            </div>
+        
+        </div>
+        <p class="site_details">Loyalty Details</p>
+        
+        <div class="forms page-section" id="formSection">
+            <div class="station_form">
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Loyalty Title</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.loyalty_title}}</p>
+                    </div>
+                </div>
+
+                <div class="station_fields promotions">
+                
+                    <label class="labels">Offer Type</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.offer_type}}</p>
+                    </div>
+                </div>
+
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Unique Code</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.unique_code}}</p>
+                    </div>
+                </div>
+    
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Category</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.category}}</p>
+                    </div>
+                </div>
+    
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Bar Code Std</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.bar_code_std}}</p>
+                    </div>
+                </div>
+                
+                
+                {% if loyalty.transaction_count_for_costa_kwh_consumption %}
+
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Count of Transaction</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.transaction_count_for_costa_kwh_consumption}}</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Start Date</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{% load offers_date_formater %}{{loyalty.valid_from_date | offers_date_formater}}</p>
+                    </div>
+                        
+                </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">End Date</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{% load offers_date_formater %}{{loyalty.valid_to_date | offers_date_formater}}</p>
+                    </div>
+                </div>
+                {% if loyalty.offer_type != 'Generic Offers' and loyalty.loyalty_type != 'Free' %}
+                    <div class="station_fields promotions">
+                        <label    class="labels">User Cycle Duration (In days)</label>
+                        <div class="view_details__box">
+                            <p class=".promotions_p">{{loyalty.cycle_duration}}</p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="station_fields promotions">
+                    <label    class="labels">Status</label>
+                    <div class="station_select-box view_part">
+                        <div class="view_details__box">
+                            <p class=".promotions_p view_part_p_tag">{{loyalty.status}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {%if loyalty.offer_type != 'Generic Offers' %}
+
+                    <div class="station_fields promotions">
+                        <label    class="labels">Redeem Type</label>
+                        <div class="view_details__box">
+                            <p class=".promotions_p">{{loyalty.redeem_type}}</p>
+                        </div>
+                    </div>
+
+                    <div class="station_fields promotions">
+                        <label    class="labels">Loyalty Type</label>
+                        <div class="view_details__box">
+                            <p class=".promotions_p">{{loyalty.loyalty_type}}</p>
+                        </div>
+                    </div>
+
+                    {% if loyalty.loyalty_type == 'Costa Coffee' or loyalty.loyalty_type == 'Free' %}
+
+                        <div class="station_fields promotions">
+                            <label    class="labels">Number Of Issuances</label>
+                            <div class="view_details__box">
+                                <p class=".promotions_p">{{loyalty.number_of_total_issuances}}</p>
+                            </div>
+                        </div>
+
+                        <div class="station_fields promotions">
+                            <label    class="labels">Number Of Issued Vouchers</label>
+                            <div class="view_details__box">
+                                <p class=".promotions_p">{% if loyalty.number_of_issued_vouchers == None %} 0 {% else %} {{loyalty.number_of_issued_vouchers}} {% endif %}</p>
+                            </div>
+                        </div>
+                        
+                        {% if loyalty.loyalty_type != 'Free' %}
+
+                            <div class="station_fields promotions">
+                                <label    class="labels">Voucher Issuance Trigger Value</label>
+                                <div class="view_details__box">
+                                    <p class=".promotions_p">{{loyalty.number_of_paid_purchases}}</p>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <div class="station_fields promotions">
+                            {% if loyalty.redeem_type == 'Amount'%}
+                                <label    class="labels">Total Amount</label>
+                            {%else%}
+                                <label    class="labels">Number of purchases</label>
+                            {%endif%}
+                            <div class="view_details__box">
+                                <p class=".promotions_p">{{loyalty.number_of_paid_purchases}}</p>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                    <div class="station_fields promotions">
+                        <label    class="labels">QR Code Expiry (In mins.) </label>
+                        <div class="view_details__box">
+                            <p class=".promotions_p">{{loyalty.qr_refresh_time}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="station_fields promotions">
+                        <label    class="labels">Set Occurrences</label>
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{{loyalty.occurance_status}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="station_fields promotions">
+                        <label    class="labels">Loyalty List Footer Message</label>
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{% if loyalty.loyalty_list_footer_message %} {{loyalty.loyalty_list_footer_message}} {% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="station_fields promotions">
+                        <label    class="labels">Car Wash</label>
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{{loyalty.is_car_wash}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                {%endif%}
+                <div class="station_fields promotions">
+                    <label    class="labels">Offer Visibility</label>
+                    <div class="station_select-box view_part">
+                        <div class="view_details__box">
+                            <p class=".promotions_p view_part_p_tag">{{loyalty.visibility}}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="station_fields promotions">
+                    <label    class="labels">Display On Charging Screen</label>
+                    <div class="station_select-box view_part">
+                        <div class="view_details__box">
+                            <p class=".promotions_p view_part_p_tag">{{loyalty.display_on_charging_screen}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="station_form">
+                <div class="station_fields big promotion-details-popup">
+                    <label class="labels">Offer Details <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('offer')" onmouseout="hide_info_box('offer')"><span id='show_tooltip_offer' class="icon-popup">Please limit offer details upto 1000 characters.</span></label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.offer_details}}</p>
+                    </div>
+                </div>
+                <div class="station_fields big">
+                    <label class="labels">Terms And Conditions</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.terms_and_conditions}}</p>
+                    </div>
+                </div>
+                
+                <div class="station_fields big">
+                    <label class="labels">Steps to redeem</label>
+                    <div class="view_details__box">
+                        <p class=".promotions_p">{{loyalty.steps_to_redeem}}</p>
+                    </div>
+                </div>
+                {% if loyalty.offer_type == 'Loyalty Offers' %}
+
+                <div class="station_fields big">
+                    <label class="labels">Detail Site Check</label>
+
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox"
+                            disabled
+                            style="width:16px; height:16px; margin:0;"
+                            {% if loyalty.detail_site_check %}checked{% endif %} />
+                        <span class="checkbox-description">
+                            This is the trigger which will check if the nearest site is in the stations list so the details of the loyalties should be shown.
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+
+               
+            </div>
+        </div>
+        
+        
+        {% if loyalty.occurrences|length > 0 and loyalty.occurance_status == 'Yes' %}
+        <div class="horizontal-lines"></div> 
+            <div id="occurrences_container">
+                <p class="site_details">Occurrence Details</p>
+                <div id="LoyaltyOccurrenceContainer" class="page-section">
+                    {% for occurrence in loyalty.occurrences %}
+                        <div class="occurrence_details">
+                            <div class="charge_point_heading collapsible">
+                                <div class="chargepoint_heading_container">
+                                    <span>Occurrence {{forloop.counter}}</span>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <div class="charge_point_form">                                                                                                                                                                                              
+                                    <div class="charge_point_fields">
+                                        <label  class="labels">Id</label>
+                                        <div class="station_select-box view_part">
+                                            <div class="view_details__box">
+                                                <p class=".promotions_p view_part_p_tag">{{occurrence.id}}</p>
+                                            </div>
+                                        </div>
+                                    </div>                                                                                                                                                                                              
+                                    <div class="charge_point_fields">
+                                    
+                                        <label    class="labels">date</label>
+                                        
+                                        <div class="station_select-box view_part">
+                                            <div class="view_details__box">
+                                                <p class=".promotions_p view_part_p_tag">{{occurrence.date}}</p>
+                                            </div>
+                                        </div>
+                                    </div>                                                                                                                                                                                            
+                                    <div class="charge_point_fields">
+                                        <label    class="labels">Start time</label>
+                                        <div class="station_select-box view_part">
+                                            <div class="view_details__box">
+                                                <p class=".promotions_p view_part_p_tag">{{occurrence.start_time}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                                                                                                
+                                    <div class="charge_point_fields">
+                                        <label    class="labels">End time</label>
+                                        <div class="station_select-box view_part">
+                                            <div class="view_details__box">
+                                                <p class=".promotions_p view_part_p_tag">{{occurrence.end_time}}</p>
+                                            </div>
+                                        </div>
+                                    </div>                                                                                                                          
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="horizontal-lines"></div>
+        {% if loyalty.loyalty_products|length > 0 %}
+            {%if loyalty.offer_type != 'Generic Offers' %}
+                <div id="loaylty_products_container">
+                    <p class="site_details">Loyalty Products Details</p>
+                    <div id="LoyaltyProductContainer" class="page-section">
+                        {% for loyalty_product in loyalty.loyalty_products %}
+                            <div class="occurrence_details">
+                                <div class="charge_point_heading collapsible">
+                                    <div class="chargepoint_heading_container">
+                                        <span>Product {{forloop.counter}}</span>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="charge_point_form">                                                                                                                                                                                              
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Product PLU</label>
+
+                                            <div class="station_select-box view_part">
+                                                <div class="view_details__box">
+                                                    <p class=".promotions_p view_part_p_tag">{{loyalty_product.product_plu}}</p>
+                                                </div>
+                                            </div>
+                                        </div>                                                                                                                                                                                              
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Product code</label>
+
+                                            <div class="station_select-box view_part">
+                                                <div class="view_details__box">
+                                                    <p class=".promotions_p view_part_p_tag">{{loyalty_product.product_bar_code}}</p>
+                                                </div>
+                                            </div>
+                                        </div>                                                                                                                                                                                            
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Product</label>
+                                            <div class="station_select-box view_part">
+                                                <div class="view_details__box">
+                                                    <p class=".promotions_p view_part_p_tag">{{loyalty_product.desc}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Price</label>
+                                            <div class="station_select-box view_part">
+                                                <div class="view_details__box">
+                                                    <p class=".promotions_p view_part_p_tag">{{loyalty_product.price}}</p>
+                                                </div>
+                                            </div>
+                                        </div>                                                                                                   
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Price After Promotion</label>
+                                            <div class="station_select-box view_part">
+                                                <div class="view_details__box">
+                                                    <p class=".promotions_p view_part_p_tag">{{loyalty_product.redeem_product_promotion_price}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Status</label>
+                                            <div class="station_select-box view_part">
+                                                <div class="view_details__box">
+                                                    <p class=".promotions_p view_part_p_tag">{{loyalty_product.status}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        {% endfor %}  
+                    </div>
+                </div>
+            
+            <div class="horizontal-lines"></div>
+            {%endif%}
+        <p class="site_details">Redemption Details</p>
+            
+            <div class="forms page-section" id="redemptionFormSection">
+                <div class="station_form promotion_add_form">
+                    
+                    <div class="station_fields mb-2 promotions">
+                    
+                        <label    class="labels">Product code</label>
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{{loyalty.redeem_product_code}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="station_fields mb-2 promotions">
+                    
+                        <label    class="labels">Product</label>
+                        
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{{loyalty.redeem_product}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="station_fields mb-2 promotions">
+                    
+                        <label    class="labels">Promotional barcode</label>
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{{loyalty.redeem_product_promotional_code}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="station_fields mb-2 promotions">
+                    
+                        <label    class="labels">Cooldown / Expiry (In Days)</label>
+                        
+                        <div class="station_select-box view_part">
+                            <div class="view_details__box">
+                                <p class=".promotions_p view_part_p_tag">{{loyalty.expiry_in_days}}</p>
+                            </div>
+                        </div>
+                    </div> 
+                   
+                </div>
+            </div>
+            <div class="horizontal-lines"></div>
+        {% endif %}
+
+
+        <p class="site_details">Assign Promotions</p>
+
+        <div class="assign_promotions_form page-section" id="view-assign-promotions-section">
+
+            <div class="station_fields promotions">
+                
+                <label    class="labels">Shop</label>
+                    
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('shop-checkboxes')">
+                          <select class="select-dropdown-arrow">
+                            <option >
+                            {% if shops|length == 0%}
+                                No shops added
+                            {% else %}
+                                {% for shop in shops %}
+                                    {% if forloop.last %}
+                                        
+                                        {{shop}}.
+                                    {% else %}
+                                        
+                                        {{shop}},
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% endif %}
+
+                            </option>
+                          </select>
+                          <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="shop-checkboxes">
+                            {% for shop in shops %}
+                                <p class=".promotions_p">{{shop}}</p>
+                       
+                            {% endfor %}
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="station_fields promotions">
+                
+                <label    class="labels">Amenities</label>
+                    
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('amenity-checkboxes')">
+                          <select class="select-dropdown-arrow">
+                            <option >
+                            {% if amenities|length == 0%}
+                                No Amenities added
+                            {% else %}
+                                {% for shop in amenities %}
+                                    {% if forloop.last %}
+                                        
+                                        {{shop}}.
+                                    {% else %}
+                                        
+                                        {{shop}},
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            </option>
+                          </select>
+                          <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="amenity-checkboxes">
+                            {% for shop in amenities %}
+                                <p class=".promotions_p">{{shop}}</p>
+                    
+                            {% endfor %}
+                        </div>
+                      </div>
+                </div>
+            </div>
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Operation Regions</label>
+                    
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('ops-region-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    
+                                
+                                {% for ops in loyalty.operation_regions  %}
+                                    {% if forloop.last %}
+                                        
+                                        {{ops}}.
+                                    {% else %}
+                                        
+                                        {{ops}},
+                                    {% endif %}
+                        
+                                {% endfor %}
+
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="ops-region-checkboxes">
+                                {% for ops in loyalty.operation_regions %}
+                                 <p class=".promotions_p">{{ops}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Regions</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('region-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    
+                                {% for region in loyalty.regions  %}
+                                    {% if forloop.last %}
+                                        
+                                        {{region}}.
+                                    {% else %}
+                                        
+                                        {{region}},
+                                    {% endif %}
+                        
+                                {% endfor %}
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="region-checkboxes">
+                                {% for region in loyalty.regions %}
+                                <p class=".promotions_p">{{region}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Areas</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('area-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    
+                                    
+                                {% for area in loyalty.area  %}
+                                    {% if forloop.last %}
+                                        
+                                        {{area}}.
+                                    {% else %}
+                                        
+                                        {{area}},
+                                    {% endif %}
+                        
+                                {% endfor %}
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="area-checkboxes">
+                                {% for area in loyalty.area %}
+                                <p class=".promotions_p">{{area}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+
+                
+                <div class="station_fields promotions">
+                
+                    <label    class="labels">Stations</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('station-checkboxes')">
+                              <select class="select-dropdown-arrow">
+                                <option >
+                                    {% for station in loyalty.station_ids  %}
+                                        {% if forloop.last %}
+                                            
+                                            {{station}}.
+                                        {% else %}
+                                            
+                                            {{station}} ; 
+                                        {% endif %}
+                            
+                                    {% endfor %}
+                                </option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="station-checkboxes">
+                                {% for station in loyalty.station_ids %}
+                                <p class=".promotions_p">{{station}}</p>
+                        
+                                {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                {% if loyalty.loyalty_type == 'Costa Coffee' and loyalty.trigger_sites %}
+<div class="station_fields promotions">
+    <label class="labels">Trigger Sites</label>
+    <div class="station_select-box checkbox_select_box">
+        <div class="multiselect">
+            <div class="selectBox" onclick="showCheckboxes('trigger-sites-checkboxes')">
+                <select class="select-dropdown-arrow">
+                    <option>
+                        {% for site in loyalty.trigger_sites %}
+                            {% if forloop.last %}
+                                {{site}}.
+                            {% else %}
+                                {{site}} ;
+                            {% endif %}
+                        {% endfor %}
+                    </option>
+                </select>
+                <div class="overSelect"></div>
+            </div>
+            <div class="checkboxes" id="trigger-sites-checkboxes">
+                {% for site in loyalty.trigger_sites %}
+                    <p class=".promotions_p">{{site}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+               
+        </div>
+
+
+    
+    <div class="horizontal-lines"></div>
+
+
+<!-- Assign promotions section -->
+
+
+    <!-- Images section -->
+
+<div class="upper_collapsibles page-section" id="image_section">
+    <p class="site_details">Images</p>
+</div>
+
+<div class="content1">
+    <div id="images_container">
+        {% if loyalty.image %}
+            <img src="{{loyalty.image}}">
+            {%else %}
+            <div class="empty_box_text"><p>Image not assigned</p></div>
+        {% endif %}
+    </div>
+</div>
+<div class="horizontal-lines"></div>
+
+
+<div class="upper_collapsibles page-section" id="reward_image_section">
+    <p class="site_details">Reward Image</p>
+</div>
+
+<div class="content1">
+    <div id="images_container">
+        {% if loyalty.reward_image %}
+            <img src="{{loyalty.reward_image}}">
+        {%else %}
+            <div class="empty_box_text"><p>Image not assigned</p></div>
+        {% endif %}
+    </div>
+</div>
+{% if loyalty.loyalty_type == 'Costa Coffee' or loyalty.loyalty_type == 'Free' %}
+    <div
+        id="notifications-view-container"
+    > 
+        <p class="site_details">Reward Activated Notification Details</p>
+
+        <div class="assign_promotions_notifications_form page-section "> 
+            
+            <div class="loyalty_input_container">
+                <label class="labels">Reward Activated Notification Title</label>
+                <p class=".promotions_p">{{loyalty.reward_activated_notification_title}}</p>
+            </div>
+            <div class="loyalty_input_container">
+                <label class="labels">Reward Activated Notification Description</label>
+                <p class=".promotions_p">{{loyalty.reward_activated_notification_description}}</p>
+            </div>
+            
+            <div class="loyalty_input_container">
+                <div class="station_fields loyalty_notification_fields">
+                    <label class="labels">Notification Expiry (In hours)</label>
+                    <p class=".promotions_p">{{loyalty.reward_activated_notification_expiry}}</p>
+                </div>
+            </div>
+            <div class="loyalty_input_container" id="subject-data-container">
+                <label class="labels">Screens</label>
+                <p class=".promotions_p">{{loyalty.reward_activated_notification_screen}}</p>
+            </div>
+            <div class="loyalty_input_container">
+                <label class="labels">Select Type Of Notification</label>
+                <p class=".promotions_p">{{ loyalty.reward_activated_notification_type_of_notification }}</p>
+            </div>
+            
+        </div>
+        
+        <div class="upper_collapsibles page-section">
+            <p class="site_details">Image</p>
+        </div>
+        <div class="content1 collapse show" id="collapseImage">
+            <div class="loyalty_images_container" id="reward_activated_notificaton_image_container">
+                {% if loyalty.reward_activated_notification_image %}
+                    <img src="{{loyalty.reward_activated_notification_image}}">
+                {%endif%}
+            </div>
+        </div>
+        
+        <div class="horizontal-lines"></div>
+        <p class="site_details">Reward Expiration Notification Details</p>
+
+        <div class="assign_promotions_notifications_form page-section"> 
+            
+            <div class="loyalty_input_container">
+                <label class="labels">Reward Expiration Notification Title</label>
+                <p class=".promotions_p">{{loyalty.reward_expiration_notification_title}}</p>
+            </div>
+            <div class="loyalty_input_container">
+                <label class="labels">Reward Expiration Notification Description</label>
+                <p class=".promotions_p">{{loyalty.reward_expiration_notification_description}}</p>
+            </div>
+            
+            <div class="loyalty_input_container display_row">
+                <div class="station_fields loyalty_notification_fields">
+                    <label class="labels">Notification Expiry (In hours)</label>
+                    <p class=".promotions_p">{{loyalty.reward_expiration_notification_expiry}}</p>
+                </div>
+                <div class="station_fields loyalty_notification_fields">
+                    <label class="labels">Trigger Notification Before x number of days</label>
+                    <p class=".promotions_p">{{loyalty.expire_reward_before_x_number_of_days}}</p>
+                </div>
+                <div class="station_fields loyalty_notification_fields">
+                  <label class="labels">Notification Expiry Time</label>
+                  <p class=".promotions_p">{{loyalty.reward_expiry_notification_trigger_time}}</p>
+              </div>
+            </div>
+            <div class="loyalty_input_container" id="subject-data-container">
+                <label class="labels">Screens</label>
+                <p class=".promotions_p">{{loyalty.reward_expiration_notification_screen}}</p>
+            </div>
+            <div class="loyalty_input_container">
+                <label class="labels">Select Type Of Notification</label>
+                <p class=".promotions_p">{{ loyalty.reward_expiration_notification_type_of_notification}}</p>
+            </div>
+            
+        </div>
+
+        <div class="upper_collapsibles page-section">
+            <p class="site_details">Image</p>
+        </div>
+
+        <div class="content1 collapse show" id="collapseImage">
+            <div class="loyalty_images_container" id="reward_expiration_notificaton_image_container">
+                {% if loyalty.reward_expiration_notification_image %}
+                    <img src="{{loyalty.reward_expiration_notification_image}}">
+                {%endif%}
+            </div>
+        </div>
+        <div class="horizontal-lines"></div>
+
+    </div>
+{% endif %}
+
+<div class="horizontal-lines"></div>
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promotion_modal_styling" >
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h5>Delete Promotion</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <p class="delete-modal-text">Are you sure you want to remove <strong>{{loyalty.loyalty_title}}</strong>?</p>
+          <div class="google_maps_submit_buttons">
+            <div class="google_maps_container_buttons">
+                
+                <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                <a href="{% url 'delete_loyalties' loyalty.id %}"><button class="done_button">Yes</button></a>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+{% endblock %}
+
+
+{% block js %}
+
+<script  src="{% static 'js/promotions/view-promotion.js' %}"></script>
+
+
+
+{% endblock %}

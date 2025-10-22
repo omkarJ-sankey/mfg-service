@@ -1,0 +1,711 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} View site page{% endblock %}
+{% block css %}
+
+{% load static %}
+{% endblock %}
+{% block content %}
+
+
+{% load static %}
+
+<div class="add_station_container">
+
+    <div class="side_content_indicator">
+            <p class="ptext active1" onclick="scrollPageFunction('formSection')">Site Details</p>
+            {% if station.station_type != 'MFG Forecourt' %}
+            <p class="ptext" onclick="scrollPageFunction('chargingPointContainer')">Charge Point Details</p>
+            {% endif %}
+            <p class="ptext" onclick="scrollPageFunction('images_container0')">Retail</p>
+            <p class="ptext" onclick="scrollPageFunction('images_container')">Images</p>
+            <p class="ptext" onclick="scrollPageFunction('images_container2')">Food To Go</p>
+            <p class="ptext" onclick="scrollPageFunction('images_container3')">Amenities</p>
+            {% if station.valeting == "Yes" %}
+            <p class="ptext" onclick="scrollPageFunction('valetingContainer')">Valeting Details</p>
+            <p class="ptext" onclick="scrollPageFunction('valetingMachineContainer')">Valeting Machines</p>
+            {% endif %}
+    </div>
+    
+    <div class="form_container">
+        <div class="actions_box">
+            
+        <div class="add_new_site_link"><div class="flex-text" ><a class="link_no_margin" href="{% url 'station_list' %}{{query_params_str}}" onclick="showLoader();"><div class="rotated_square"></div></a><a class="link_no_margin text_no_margin" href="{% url 'station_list' %}{{query_params_str}}" onclick="showLoader();"><p class="user_back_navigation" >Site Detail View</p></a></div></div>
+            <div class="action_buttons">
+                <button  class="delete_button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{% static '/images/delete.png' %}" alt=""></button>
+                <a href="{% url 'update_station' station.id  %}{{query_params_str}}" class="edit_button"><img src="{% static '/images/pencil.png' %}" alt=""></a>
+            </div>
+        
+        </div>
+        <p class="site_details">Site Details</p>
+        
+        <div class="forms page-section" id="formSection" >
+            <div class="station_form">
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Station ID</label>
+                    <p class="view_detail">{{ station.station_id }}</p>
+                </div>
+    
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Station Name</label>
+                    <p class="view_detail">{{ station.station_name }}</p>
+                </div>
+    
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Address Line 1</label>
+                    <p class="view_detail">{{ station.station_address1 }}</p>
+                </div>
+    
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Address Line 2</label>
+                    <p class="view_detail">{{ station.station_address2 }}</p>
+                </div>
+    
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Address Line 3</label>
+                    <p class="view_detail">{{ station.station_address3 }}</p>
+                </div>
+
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Latitude</label>
+                    <p class="view_detail">{{ station.latitude }}</p>
+                </div>
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Longitude</label>
+                    <p class="view_detail">{{ station.longitude }}</p>
+                </div>
+
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Town</label>
+                    <p class="view_detail">{{ station.town }}</p>
+                </div>
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Postal Code</label>
+                    <p class="view_detail">{{ station.post_code }}</p>
+                </div>
+
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Country</label>
+                    <p class="view_detail">{{ station.country }}</p>
+                </div>
+
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Working Hours</label>
+                    <p class="view_detail">Mon - Fri : {{working_hours.monday_friday}},</p><br>
+                    <p class="view_detail">Sat : {{working_hours.saturday}},</p>
+                    <p class="view_detail">Sun : {{working_hours.sunday}}</p>
+                </div>
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Status</label>
+                    
+                    <p class="view_detail">{{station.status}}</p>
+                </div>
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Brand</label>
+                    <p class="view_detail">{{ station.brand }}</p>
+                </div>
+
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Owner</label>
+                    <p class="view_detail">{{ station.owner }}</p>
+                </div>
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Email</label>
+                    <p class="view_detail">{{ station.email}}</p>
+                </div>
+
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Phone  </label>
+                    <p class="view_detail">{{ station.phone }}</p>
+                </div>
+                               
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Station Type</label>
+                    
+                    <p class="view_detail">{{station.station_type}}</p>
+                </div>
+                <div class="station_fields_view">
+                    <label    class="labels">Payment Terminal</label>
+                    <p class="view_detail">{{station_terminals}}</p>
+                </div>
+                <div class="station_fields_view">
+                    <label    class="labels">Valeting</label>
+                    <p class="view_detail">{{station.valeting}}</p>
+                </div>
+                {% if 'Worldline' in station_terminal %}
+                <div class="station_fields_view">
+                    <label    class="labels">RH Site Name</label>
+                    <p class="view_detail">{{station.receipt_hero_site_name}}</p>
+                </div>
+                {%endif%}
+                {% if  station.station_type == 'MFG EV' or station.station_type == 'MFG EV plus Forecourt' %}
+                <div class="station_fields_view" id="driivz_site_id">
+                
+                    <label    class="labels">Driivz Site ID</label>
+                    {% if station.site_id == "" or station.site_id == None %}
+                    <p class="view_detail">Not Added</p>
+                    {%else%}
+                    <p class="view_detail">{{station.site_id}}</p>
+                    {%endif%}
+                </div>
+                <div class="station_fields_view" id="ampeco_site_id">
+                    <label class="labels">Ampeco Site ID</label>
+                    {% if station.ampeco_site_id == "" or station.ampeco_site_id == None %}
+                    <p class="view_detail">Not Added</p>
+                    {%else%}
+                    <p class="view_detail">{{station.ampeco_site_id}}</p>
+                    {%endif%}
+                </div>
+                <div class="station_fields_view" id="ampeco_site_title">
+                    <label class="labels">Ampeco Site Title</label>
+                    {% if station.ampeco_site_title == "" or station.ampeco_site_title == None %}
+                    <p class="view_detail">Not Added</p>
+                    {%else%}
+                    <p class="view_detail">{{station.ampeco_site_title}}</p>
+                    {%endif%}
+                </div>
+                {%endif%}
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Overstay Fee</label>
+                    
+                    <p class="view_detail">{{station.overstay_fee}}</p>
+                </div>
+
+                <div class="station_fields_view">
+
+                    <label    class="labels">Parking Details</label>
+
+                    <p class="view_detail">{{station.parking_details}}</p>
+                </div>
+
+            </div>
+            
+            {% if  station.station_type == 'MFG EV' or station.station_type == 'MFG Forecourt' or station.station_type == 'MFG EV plus Forecourt' %}
+            <div class="station_form" id="toggleOnSection">
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Site Title</label>
+                    
+                    <p class="view_detail">{{station.site_title}}</p>
+                </div>
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Operation Region</label>
+                    
+                    <p class="view_detail">{{station.operation_region}}</p>
+                </div>
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Region</label>
+                    
+                    <p class="view_detail">{{station.region}}</p>
+                </div>
+                
+                
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Regional Manager</label>
+                    
+                    <p class="view_detail">{{station.regional_manager }}</p>
+                </div>
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Area</label>
+                    
+                    <p class="view_detail">{{station.area}}</p>
+                </div>
+
+                <div class="station_fields_view">
+                
+                    <label    class="labels">Area Retail Manager</label>
+                    
+                    <p class="view_detail">{{station.area_regional_manager}}</p>
+                </div>
+            </div>
+
+            {% endif %}
+
+            <!-- charging point details starts here -->
+            {% if station.station_type != 'MFG Forecourt' and back_offices_data.items|length > 0 %}
+                <p class="site_details back_office_header">Back Office Details</p>
+                <div id="backOfficeContainer" class="page-section">
+                    {% for key, value in back_offices_data.items %}
+                        <div class="charge_point_details station_back_office_details">
+                            <div class="back_office_heading collapsible">
+                            Back Office
+                            </div>
+                            <div class="content">                                
+                                <div class="charge_point_form"> 
+                                    <div class="charge_point_fields">
+                                        <label class="labels">Back Office Name</label>
+                                        <p>{{key}}</p>
+                                        <!-- <p>Driivz</p> -->
+                                    </div>
+                                    <div class="charge_point_fields">
+                                        <label class="labels">Location ID</label>
+                                        <p>{{value}}</p>
+                                        <!-- <p>Driivz</p> -->
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="horizontal-lines"></div>
+        <!-- jhw -->
+
+
+<!-- charging point details starts here -->
+        {% if station.station_type != 'MFG Forecourt' %}
+        <p class="site_details">Charge Point Details</p>
+        <div id="chargingPointContainer" class="page-section">
+
+                {% for i in chargepoints %}
+                        
+                    <div class="charge_point_details">
+
+                        <div class="charge_point_heading collapsible">
+                        Charge Point {{forloop.counter}}
+                        </div>
+                        <div class="content">
+                            {% for j in i %}
+                                {% if forloop.counter == 1 %}   
+                                
+                                    <div class="charge_point_form"> 
+                                        <div class="charge_point_fields">
+                                    
+                                            <label    class="labels">Charge Point ID</label>
+                                            <p>{{j.charger_point_id}}</p>
+                                        </div>                                                                                                                                                                                              
+                                        <div class="charge_point_fields">
+                                        
+                                            <label    class="labels">Charge Point Name</label>
+                                            <p>{{j.charger_point_name}}</p>
+                                        </div>
+                
+                                        <div class="charge_point_fields">
+                                        
+                                            <label class="labels">Status</label>
+                                            <p>{{j.charger_point_status}}</p>
+                                        </div>
+                                    
+                                        <div class="charge_point_fields">
+                                        
+                                            <label class="labels">Device id</label>
+                                            <p>{{j.device_id}}</p>
+                                        </div>
+                                        <div class="charge_point_fields">
+                                        
+                                            <label class="labels">Payter terminal id</label>
+                                            {% if j.payter_terminal_id  %}
+                                                <p>{{j.payter_terminal_id}}</p>
+                                            {% else %}
+                                                <p>Not provided</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="charge_point_fields">
+                                            <label class="labels">Worldline Terminal ID</label>
+                                            <p>{{ j.worldline_terminal_id|default:"Not provided" }}</p>
+                                        </div>
+
+                                        <div class="charge_point_fields">
+                                            <label class="labels">Ampeco Charge Point ID</label>
+                                            <p>{{j.ampeco_charge_point_id|default:'Not provided'}}</p>
+                                        </div>
+                                        <div class="charge_point_fields">
+                                            <label class="labels">Ampeco Charge Point Name</label>
+                                            <p>{{j.ampeco_charge_point_name|default:'Not provided'}}</p>
+                                        </div>
+                                    </div>
+
+                                {%else%}
+                                        {% for k in j %}
+                                            <!-- connector fields -->
+                                            <div id="ConnectorContainer${clicked}">
+                                                <div class="connectors_box" >
+                                                    <div class="connector_heading collapsible1">
+                                                        <div>
+                                                            <div class="connector_current_status_box">
+                                                                <span>Connector {{forloop.counter}} </span>
+                                                                <span class="connector_status_separator"></span>
+                                                                {% if k.current_status == "Not available"%}
+                                                                    <div class="connector_current_status_indicator not_available_indicator_color">
+                                                                {% elif k.current_status == "Available" %}
+                                                                    <div class="connector_current_status_indicator available_indicator_color">
+                                                                {% elif k.current_status == "Charging" and k.current_status == "Preparing" and k.current_status == "Finishing" %}
+                                                                    <div class="connector_current_status_indicator charging_indicator_color">
+                                                                {% elif k.current_status == "Out of service" and k.current_status == "Faulted" and k.current_status == "Unavailable" %}
+                                                                    <div class="connector_current_status_indicator unknown_indicator_color">
+                                                                {% elif k.current_status == "Reserved" %}
+                                                                    <div class="connector_current_status_indicator reserved_indicator_color">
+                                                                {% elif k.current_status == "New" %}
+                                                                    <div class="connector_current_status_indicator new_indicator_color">
+                                                                {% elif k.current_status == "Occupied" %}
+                                                                <div class="connector_current_status_indicator new_indicator_color">
+                                                                {%else%}
+                                                                    <div class="connector_current_status_indicator not_available_indicator_color">
+                                                                {% endif %}
+                                                                    {{k.current_status}} 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="charge_point_form">                                                                                                                                                                                              
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Connector Type</label>
+                                                                <p>{{k.connector_type}}</p>
+                                                            </div>
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Connector ID</label>
+                                                                <p>{{k.connector_id}}</p>
+                                                            </div>
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Connector Name</label>
+                                                                <p>{{k.connector_name}}</p>
+                                                            </div>
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Status</label>
+                                                                <p>{{k.status}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="charge_point_form">                                                                                                                                                                                              
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label    class="labels">Plug Type Name</label>
+                                                                <p>{{k.plug_type_name}}</p>
+                                                            </div>                                                                                                                                                                                              
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label    class="labels">Maximum Charge Rate</label>
+                                                                <p>{{k.max_charge_rate}}</p>
+                                                            </div>
+                                                        <div class="charge_point_fields tooltip-container">
+                                                            <label class="labels">Tariff Amount</label>
+                                                            <p>{{k.tariff_amount}}</p>
+                                                            <div class="tooltip">
+                                                              <table class = "tooltip-table">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Amount</th>
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {% if tariffs|length == 0 %}
+                                                                    <tr>
+                                                                        <td title="">Not Available</td>
+                                                                        <td>Not Available</td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                                {% for data_connector in k.station_connectors.all %}
+                                                                    {% for key, value in tariffs.items %}
+                                                                        {% if key in data_connector.tariff_ids %}
+                                                
+                                                                            <tr>
+                                                                                <td title="{{key}}">{{key}}</td>
+                                                                                <td>{{value}}</td>
+                                                                            </tr>
+                                                                    
+                                                                        {%endif%}
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                                
+                                                                </tbody>
+                                                              </table>
+                                                            </div>
+                                                          </div>  
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Tariff Currency</label>
+                                                                <p>{{k.tariff_currency}}</p>
+                                                                
+                                                            </div>
+                                                            <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Connector Sort Order</label>
+                                                                <p>{{k.connector_sorting_order}}</p>
+                                                                
+                                                            </div>
+                                                            <!-- <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Back Office</label>
+                                                                <p>{{k.back_office}}</p>
+                                                                
+                                                            </div> -->
+                                                            <!-- <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Evse Uid</label> -->
+                                                                <!-- <p>{{k.station_connectors.evse_id.uid}}</p> -->
+                                                                {% for data_connector in k.station_connectors.all %}
+                                                                    {% if data_connector.evse_id.location_id.country_code == k.country_code and data_connector.evse_id.location_id.party_id == k.party_id%}
+                                                                    <div class="charge_point_fields">
+                                                                        <label class="labels">Evse UID</label>
+                                                                        <p>{{ data_connector.evse_id.uid }}</p>
+                                                                    </div>
+                                                                    <div class="charge_point_fields">
+                                                                        <label class="labels">Ocpi Connector ID</label>
+                                                                        <p>{{data_connector.connector_id}}</p>
+                                                                    </div>
+                                                                    {%endif%}
+                                                                {% endfor %}
+                                                                
+                                                            <!-- </div> -->
+                                                            <!-- <div class="charge_point_fields">
+                                                            
+                                                                <label class="labels">Ocpi Connector ID</label>
+                                                                <p>{{k.station_connectors.connector_id}}</p>
+                                                                
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endfor %}
+                                    
+                                {%endif%}
+                            {% endfor %}                                                                                                                                                                                             
+                                
+                        </div>
+            
+                    </div>
+                {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="horizontal-lines"> </div>
+
+<!-- Retail section starts here -->
+<div class="upper_collapsibles page-section">
+    
+    <p class="site_details">Retail</p>
+</div>
+<div class="content1">
+    <div id="images_container0">
+        {% for r in retail %}
+         
+        <div class="services_image"><img src={{r.image_path}} alt=""></div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+        
+<div class="horizontal-lines"></div>
+
+    <!-- Images section -->
+
+<div class="upper_collapsibles page-section">
+    <p class="site_details">Images</p>
+</div>
+
+<div class="content1">
+<div id="images_container">
+{% for image in images %}
+    <img src="{{blob_root}}{{image.image}}" alt="">
+{% endfor %}
+</div>
+</div>
+<div class="horizontal-lines"></div>
+<div class="upper_collapsibles page-section">
+    <p class="site_details">Promotions</p>
+</div>
+
+<div class="content1">
+<div id="promotion_images_container">
+    {% for promotion in station_promotions %}
+        <div class="promotion_detail_image_container">
+                <img src={{promotion.image}} alt="">
+                <p>{{promotion.title}}</p>
+
+        </div>
+    
+    {% endfor %}
+</div>
+</div>
+<div class="horizontal-lines"></div>
+
+
+
+
+    <!-- Food to go section -->
+
+<div class="upper_collapsibles page-section">
+    <p class="site_details">Food To Go</p>
+</div>
+
+<div class="content1">
+    <div id="images_container2">
+        {% for f in foods %}
+         
+        <div class="services_image"><img src={{f.image_path}} alt=""></div>
+        {% endfor %}
+    </div>
+</div>
+<div class="horizontal-lines"></div>
+
+
+
+
+
+
+    <!-- Amenities section -->
+
+<div class="upper_collapsibles page-section">
+    <p class="site_details">Amenities</p>
+</div>
+<div class="content1">
+    <div id="images_container3">
+        {% for a in amenities %}
+         
+        <div class="services_image"><img src={{a.image_path}} alt=""></div>
+        {% endfor %}
+    </div>
+</div>
+<div class="horizontal-lines"></div>
+
+<!-- valeting -->
+{% if station.valeting == "Yes" %}
+<p class="site_details">Valeting Terminal Details</p>
+<div id="valetingContainer" class="page-section">
+    {% for valeting_terminal in valeting_terminals %}
+    <div class="valeting_terminals_details">
+        <div class="valeting_terminal_heading collapsible">
+        Valeting Terminal {{forloop.counter}}
+        </div>
+        <div class="content">
+            <div class="valeting_terminal_form"> 
+                <div class="valeting_terminal_fields">
+                    <label    class="labels">Payter Serial Number</label>
+                    <p>{{valeting_terminal.payter_serial_number}}</p>
+                </div> 
+                <div class="valeting_terminal_fields">
+                    <label    class="labels">Status</label>
+                    <p>{{valeting_terminal.status}}</p>
+                </div> 
+                <div class="valeting_terminal_fields">
+                    <label    class="labels">Valeting Amenities</label>
+                    <p>{% for amenity in valeting_terminal.amenities %}
+                            {% for station_amenity in amenities %}
+                                {% if station_amenity.id == amenity %}
+                                    {{station_amenity.service_name}}
+                                    {% if amenity != amenities|last %}
+                                    ,
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+        <div class="horizontal-lines"></div>
+        {% if station.valeting == "Yes" %}
+        <p class="site_details">Valeting Machines</p>
+        <div id="valetingMachineContainer" class="page-section">
+            {% for valeting_machine in valeting_machines %}
+            <div class="valeting_machines_details">
+                <div class="valeting_machine_heading collapsible">
+                Valeting Machine {{forloop.counter}}
+                </div>
+                <div class="content">
+                    <div class="valeting_machine_form"> 
+                        <div class="valeting_machine_fields">
+                            <label class="labels">Machine ID</label>
+                            <p>{{valeting_machine.machine_id}}</p>
+                        </div> 
+                        <div class="valeting_machine_fields">
+                            <label class="labels">Machine Name</label>
+                            <p>{{valeting_machine.machine_name}}</p>
+                        </div> 
+                        <div class="valeting_machine_fields">
+                            <label class="labels">Machine Number</label>
+                            <p>{{valeting_machine.machine_number|default:"-"}}</p>
+                        </div>
+                        <div class="valeting_machine_fields">
+                            <label class="labels">Status</label>
+                            <p>{% if valeting_machine.is_active %}Active{% else %}Inactive{% endif %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content station_list_delete_site_modal_styl" >
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h5>Delete Site</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <p class="delete-modal-text">Are you sure you want to remove <strong>{{station.station_id}}</strong>, <strong>{{station.station_name}}</strong>?</p>
+          <div class="google_maps_submit_buttons">
+            <div class="google_maps_container_buttons">
+                
+                <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                <a href="{% url 'delete_station' station.id  %}"><button class="done_button">Yes</button></a>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+<!-- javascript -->
+{% block js %}
+<script>
+    let chargepoints = "{{chargepoints|escapejs}}"
+</script>
+<script src="{% static 'js/stations/view-station.js' %}"></script>
+{% endblock %}

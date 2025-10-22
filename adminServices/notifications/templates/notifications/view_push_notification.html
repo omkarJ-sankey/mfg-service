@@ -1,0 +1,197 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Push Notifications{% endblock %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/notifications/notifications/view_push_notification.css'%}">
+<link rel="stylesheet" href="{% static '/css/notifications/email_notifications/view_email_notification.css'%}">
+
+{% endblock %}
+{% block content %}
+<div class="details-parent-container" id="details-parent-container">
+    <div class="header-div-update-btn">
+        <div class="back-navigator-to-email-list">
+            <div>
+                <a href="{% url 'notifications_list' %}"><img src="{% static 'images/arrow-5.png' %}" alt=""></a>
+            </div>
+            <div>
+                <a href="{% url 'notifications_list' %}" class="view_email_back_btn">
+                    <p id="back-nav-notification-view">Notification Overview</p>
+                </a>
+            </div>
+        </div>
+        <div class="update-email-notification-btn-container opacity-if-delivered" id="update-email-notification-btn-div">
+            <a href="{% if push_notification_data.status != 'Delivered' %}{% url 'update_push_notification' push_notification_data.id %}{% endif %}"
+                class="update-email-notification-btn" id="update-email-notification-btn">
+                <img src="{% static 'images/pencil.png' %}" alt="">
+            </a>{% if push_notification_data.status != 'Delivered' %}{% endif %}
+        </div>
+    </div>
+    <div>
+        <p>Notifications Details</p>
+    </div>
+    <div class="email-notification-details-div">
+        <div>
+            <p class="details-div-label">Title</p>
+            <pre class="details-div-value" id="view-subject">{{push_notification_data.subject}}</pre><br>
+            <p class="details-div-label">Description</p>
+            <pre class="details-div-value">{{push_notification_data.description}}</pre><br>
+            <p class="details-div-label">Screen</p>
+            <pre class="details-div-value">{{push_notification_data.screens}}</pre><br>
+            <div class="notification_details_view">
+                <div class="div_category">
+                    <p class="details-div-label">Category</p>
+                    <pre class="details-div-value">{{push_notification_data.category}}</pre><br>
+                </div>
+                <div class="div_assign_to">
+                    <p class="details-div-label">Assign To</p>
+                    <pre class="details-div-value">{{push_notification_data.assign_to}}</pre><br>
+                </div>
+                {% if push_notification_data.assign_to == "Regions Specific" %}
+                <div class="div_assign_to">
+                    <p class="details-div-label">Regions</p>
+                    <pre class="details-div-value">{{push_notification_data.regions}}</pre><br>
+                </div>
+                {% elif push_notification_data.assign_to == "Domain Specific" %}
+                <div class="div_assign_to">
+                    <p class="details-div-label">Domain</p>
+                    <pre class="details-div-value">{{push_notification_data.domain}}</pre><br>
+                </div>
+                {% endif %}
+            </div>
+            <p class="details-div-label">Type Of Notification</p>
+            {% if push_notification_data.inapp_notification == "true" %}
+            <p class="details-div-value">IN APP NOTIFICATION</p>
+            {% endif %}
+            {% if push_notification_data.push_notification == "true" %}
+            <p class="details-div-value">PUSH NOTIFICATION</p>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    <div>
+        <p>Images</p>
+    </div>
+    <div class="push-notification-attachment-div" id="email-notification-attachment-div">
+        {% if push_notification_data.image %}
+        <img class="image_block" src="{{get_push_notification_image}}">
+        {% else %}
+        <img class="image_block">
+        <p>No Image Selected</p>
+        {% endif %}
+    </div>
+    <hr>
+    <div>
+      <p>Status Details</p>
+  </div>
+  <div class="push-notification-status-div">
+    <div class="notification_status_view">
+      <div>
+          <p class="details-div-status">Status</p>
+          <pre class="details-div-value">{{push_notification_data.status}}</pre><br>
+      </div>
+      <div class="delivered_div">
+          <p class="details-div-delivered-time">Delivered Time</p>
+          {% if push_notification_data.delivered_time %}
+                        <pre class="details-div-value">{% load offers_date_formater %}{{push_notification_data.delivered_time | offers_date_formater}}</pre><br>
+                        {%else%}
+                        <p class="details-div-value">Not Delivered</p><br>
+                        {% endif %}
+      </div>
+  </div>
+
+      <!-- {% if push_notification_data.image %}
+      <img class="image_block" src="{{get_push_notification_image}}">
+      {% else %}
+      <img class="image_block">
+      <p>No Image Selected</p>
+      {% endif %} -->
+  </div>
+    <div class="bottom-navigation-btn-container" id="cancel-bttn-div">
+        <div class="cancel-btn-container" id="cancel-btn-div" >
+            <button class="cancel-btn opacity-if-delivered" id="cancel-email-notification" data-toggle="modal"
+                data-target="{% if push_notification_data.subject != 'Delivered' %} #cancel-notifications-modal {% endif %}">Cancel</button>
+        </div>
+        <div class="preview-done-button-container" id="send-schedule-draft-div">
+            <a id="view-email-save-as-draft"
+                href="{% if push_notification_data.status != 'Delivered' %}{% url 'draft_push_notification' push_notification_data.id %}{% endif %}"><button
+                    class="view-email-save-as-draft opacity-if-delivered">Save as draft</button></a>
+            <button class="schedule-btn opacity-if-delivered" id="schedule-btn" data-toggle="modal"
+                data-target="{% if push_notification_data.status != 'Delivered' %} #scheduling-time-modal {% endif%}">Schedule</button>
+            <a id="send-email-now-view-page"
+                href="{% if push_notification_data.status != 'Delivered' %} {% url 'send_push_notification_now' push_notification_data.id %} {% endif %}"><button
+                    class="send-now-btn opacity-if-delivered" id="done-btn">Send Now</button></a>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal for cancel warning -->
+<div class="modal show fade" id="cancel-notifications-modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby=""
+    aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content cancel-email-notification-content">
+            <div class="modal-body">
+                <div class="heading ">
+                    <h6 class="cancle_notification">Cancel Notification</h6>
+                    <button type="button" class="btn-close cancel-button" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="confirm-msg-div">
+                    <p class="confirm-msg-para" id="confirm-msg-para"></p>
+                </div>
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <button type="button" class="btn btn-light view-email-notification-btns"
+                    data-dismiss="modal">No</button>
+                <a href="{% url 'delete_push_notification' push_notification_data.id %}"><button id=""
+                        class="btn btn-danger view-email-notification-btns">Yes</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for scheduling email time -->
+<div class="modal show fade" id="scheduling-time-modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby=""
+    aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content schedule-email-notification-content">
+            <div class="modal-body">
+                <div class="heading schedule-time-header">
+                    <h6 class="">Schedule Time</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="Schedule-date-time-div">
+                    <p id="label-for-date-time">Select Date</p>
+                    <div class="schedule-date-container" onclick="showToDatePicker()">
+                        <input type="text" value="" placeholder="Select date" id="schedule-date" class="schedule-date">
+                    </div>
+                    <div class="schedule-date-container time-picker">
+                        <input class="time-input" id="schedule-time" type="time">
+                    </div>
+                </div>
+                <p class='error-messages' id='date-time-error'></p>
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <a href="#"><button class="btn btn-danger view-email-notification-btns"
+                        id="view-push-notification-schedule-btn">Schedule</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    let schedule_push_notification_url = "{% url 'schedule_push_notification' push_notification_data.id %}"
+    let list_of_push_notification_url = "{% url 'notifications_list' %}"
+
+    {% if "{{push_notification_data}}" %}
+    push_notification_status = "{{push_notification_data.status}}"
+    {% else %}
+    push_notification_status = ''
+    {% endif %}
+</script>
+<script src="{% static '/js/notifications/view-push-notification.js' %}"></script>
+<script src="{% static '/js/notifications/push-notification.js' %}"></script>
+
+{% endblock %}

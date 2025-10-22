@@ -1,0 +1,32 @@
+.unsubscribe-email-notifications-main-container {
+    background-color: #FAFAFA;
+    padding: 1px;
+}
+
+.unsubscribe_bulk {
+    width: 6rem;
+    margin-left: 85%;
+}
+
+.unsubscribe-main {
+    padding: 0px 100px 100px 100px !important;
+}
+
+.unsubscribe-form-container {
+    padding: 0px 0px 10px;
+}
+
+.unsubscribe-email-input {
+    width: 50%;
+    padding-left: 18px;
+}
+
+.unsubscribe-modal-dialog {
+    max-width: 500px !important;
+}
+
+#unsubscibe_user_confirmation_text {
+    color: #666666;
+    margin-top: 20px;
+
+}

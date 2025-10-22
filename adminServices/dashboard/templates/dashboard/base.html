@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% url 'dashboard' as dashboard %}
+{% url 'usermanagement' as usermanagement %}
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <meta http-equiv="Content-Security-Policy">
+  <title>{% block title %}Dashboard{% endblock %}</title>
+  <link rel="shortcut icon" href="{% static '/images/mfg_ev_fav.ico' %}" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static '/css/dashboard/nav_bar.css'%}">
+  <link rel="stylesheet" href="{% static '/css/dashboard/side_bar.css'%}">
+  <link rel="stylesheet" href="{% static '/css/common.css'%}">
+  <link rel="stylesheet" href="{% static '/css/common/color.css'%}">
+  <link rel="stylesheet" href="{% static '/css/dashboard/chart.css'%}">
+  <link rel="stylesheet" href="{% static '/css/dashboard/alert.css'%}">
+  <link rel="stylesheet" href="{% static '/css/dashboard/user_mang.css'%}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static '/css/stations/station_lists.css'%}">
+  <link rel="stylesheet" href="{% static '/css/stations/add_stations.css'%}">
+  <link rel="stylesheet" href="{% static '/css/stations/location_and_time.css'%}">
+  <link rel="stylesheet" href="{% static '/css/stations/side_modal.css'%}">
+  <link rel="stylesheet" href="{% static '/css/reconciliation/reconciliation_css.css'%}">
+  <link rel="stylesheet" href="{% static '/css/audit_trail/audit_trail.css'%}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="{% static '/table/jquery.min.js' %}"></script>
+  <script src="{% static '/table/table-sortable.js' %}"></script>
+  <script src="{% static '/js/service.js' %}"></script>
+  <script src="{% static '/js/alert.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha256-x3YZWtRjM8bJqf48dFAv/qmgL68SI4jqNWeSLMZaMGA=" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"integrity="sha256-ecWZ3XYM7AwWIaGvSdmipJ2l1F4bN9RXW6zgpeAiZYI=" crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  {% block stylesheet %}{% endblock %}
+
+
+  {%block css%}{% endblock %}
+  <!-- HERE -->
+</head>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+<script>
+  function hrefg(a) {
+    location.href = a.split(' ').join('').toLowerCase();
+  }
+
+  $('#container .navbar-nav a').on('click', function () {
+    $('#container .navbar-nav').find('li.active').removeClass('active');
+    $(this).parent('li').addClass('active');
+  });</script>
+
+<body>
+  <div id="loader_for_mfg_ev_app">
+    <div id="loader_gif">
+      <img class="loader_gif_img" src="{% static 'images/Loader_1.gif' %}" alt="">
+    </div>
+  </div>
+  {% block body %}
+  <!-- HERE -->
+  <!--Navbar Starts Here-->
+  <div class="alert_c hide-custom">
+    <span class="fas"></span>
+    <span class="msg_calert"></span>
+    <div class="close-btn-custom">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+  <div  class="header_container ">
+    <div id="container"class="navbar_header ">
+      <button class="toggle-button" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a href="/">
+        <img src="{% static '/images/logo-black.png' %}" class="mfg_logo" alt="">
+      </a>
+      <div class="right_part">
+        {% if request.user.profile_picture %}
+        <img src="{{request.user.get_profile_picture}}" onclick="showUpdatePictureModal()"
+          onerror="this.onerror=null; this.src='{{request.user.profile_picture}}'" class="avatar" alt="">
+
+        {% else %}
+        <div class="avatar avatar_letters" onclick="showUpdatePictureModal()" id=avatar_text></div>
+
+        {% endif %}
+        <div class="user_container">
+          <a class="user_name" id="user_full_name">{{request.user.full_name}}</a>
+          <a class="role">{{request.user.role_id.role_name}} </a>
+        </div>
+        <div class="arrow_log down_log" onclick="toggleDropdown();"></div>
+        <div class="logout-button dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-part-container">
+
+          <a class="dropdown-item" href="{% url 'logoutUser' %}">Logout</a>
+        </div>
+      </div>
+    </div >
+    <nav class="navbar navbar-expand-lg navbar-light bg-white navbar-custom">
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav justify-content-between nav-item-container">
+          {% for o in data %}
+            <li class="nav-item {{o.state}} nav-item-styl">
+              <a class="nav-link nav-link-custom" href="{{o.url}}" onclick="showNavLoader(null,'{{o.url}}');"
+                onkeyup="hideLoader();">{{o.name}} <span class="sr-only">(current)</span></a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </nav>
+
+
+  </div>
+
+  <!--Navbar Ends-->
+
+  <div class="modal fade" id="profile_picture_popup" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content profile_picture_modal_styl">
+
+        <div class="modal-body">
+          <div class="heading">
+            <h5>Profile Picture</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+          </div>
+          <div class="change_picture_container">
+            {% if request.user.profile_picture %}
+            <p onclick="removeProfilePicture()" class="remove_profile_pic_icn">x</p>
+            <img class="profile_pic" src="{{request.user.get_profile_picture}}"  alt=""/>
+            {%else%}
+            <div class="text_container_one" id="avatar_text_one"></div>
+            {%endif %}
+            <label class="change_profile_picture" for='selectPicture'>Change picture</label>
+            <input id='selectPicture' onchange="uploadProfilePicture()" type="file" hidden>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {% block content %}
+  {% endblock content %}
+  {% endblock body %}
+
+  <!-- AND HERE -->
+  <footer class="footer position-relative zindex-footer mt-auto">
+    <div class="container">
+      <div class="row footer__top py-50">
+
+        <div class="col-12 col-md-6 col-lg-3 footer__column footer-contact mb-40 mb-lg-0 fg-color-white">
+          <h6
+            class="footer__title font-size-body line-height-body font-weight-bold font-family-inter fg-color-white mb-20">
+            Contact us:</h6>
+          <p class="font-weight-regular fg-color-white font-size-small line-height-small d-flex flex-column mb-10">
+            Phone:
+            <a class="fg-color-white font-family-inter fg-color-white-hover font-weight-bold mt-2"
+              href="tel:+44 (0) 1727 898890">
+              +44 (0) 1727 898890
+            </a>
+          </p>
+          <p
+            class="footer-contact__email font-weight-regular fg-color-white font-size-small line-height-small d-flex flex-column mb-10">
+            Email:
+            <a class="fg-color-white font-family-inter fg-color-white-hover font-weight-bold mt-2"
+              href="mailto:info@motorfuelgroup.com">
+              info@motorfuelgroup.com
+            </a>
+          </p>
+          <p
+            class="footer-contact__email font-weight-regular  fg-color-white font-size-small line-height-small d-flex flex-column pt-10 mb-10">
+            Media Contact:
+            <span class="fg-color-white font-family-inter fg-color-white-hover font-weight-bold  mt-2">Camarco</span>
+          </p>
+          <p class="font-weight-regular fg-color-white font-size-small line-height-small d-flex flex-column mb-10">
+            Phone:
+            <a class="fg-color-white font-family-inter fg-color-white-hover font-weight-bold mt-2"
+              href="tel:+44 (0) 20 3757 4980">
+              +44 (0) 20 3757 4980
+            </a>
+          </p>
+          <p
+            class="footer-contact__email font-weight-regular fg-color-white font-size-small line-height-small d-flex flex-column mb-10">
+            Email:
+            <a class="fg-color-white font-family-inter fg-color-white-hover font-weight-bold mt-2"
+              href="mailto:media@motorfuelgroup.com">
+              media@motorfuelgroup.com
+            </a>
+          </p>
+        </div>
+
+
+        <div class="col-12 col-md-6 col-lg-3  col-lg footer__column footer__address mb-40 mb-lg-0">
+          <h6
+            class="footer__title font-size-body line-height-20px font-weight-bold font-family-inter fg-color-white mb-20">
+            Where to find us:</h6>
+          <address class="mb-10 font-size-body line-height-small fg-color-white font-weight-regular">
+            Motor Fuel Limited<br>
+            10 Bricket Road, Marlborough<br>
+            Court, St Albans, Hertfordshire,<br>
+            AL1 3JX
+          </address>
+          <address class="mb-10 font-size-body line-height-small fg-color-white font-weight-regular">
+            EV Power Limited<br>
+            10 Bricket Road, Marlborough<br>
+            Court, St Albans, Hertfordshire,<br>
+            AL1 3JX
+          </address>
+          <a class="fg-color-white font-family-inter fg-color-white-hover font-size-small font-weight-bold line-height-small"
+            href="https://goo.gl/maps/7huzvdkKqEiU7onA8" target="_blank" rel="noopener">
+            Google Maps
+          </a>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3  col-lg footer__column footer__address mb-40 mb-lg-0">
+
+          <ul id="menu-footer-menu" class="menu remove-list-styles">
+            <li id="menu-item-2052" class="disabled-icon"><a target="_blank" rel="noopener"
+                href="https://www.youtube.com/watch?v=gLutH9bRZ00" class="font-family-inter">Helping Disabled
+                Drivers</a></li>
+            <li id="menu-item-336"><a href="https://www.motorfuelgroup.com/modern-slavery-statement/"
+                class="font-family-inter" rel="noopener">Modern Slavery Statement</a></li>
+            <li id="menu-item-340"><a href="https://www.motorfuelgroup.com/privacy-policy/" class="font-family-inter"
+                rel="noopener">Privacy Policy</a></li>
+          </ul>
+
+          <p class="footer-copyright__text font-weight-regular font-size-small fg-color-white mb-10">
+            © Copyright Motor Fuel Limited <span class="year-span"></span>.<br>
+            All rights reserved.<br>
+            Registered in England &amp; Wales.<br>
+            Number: 05206547.<br>
+            VAT Number: 123414161
+          </p>
+          <p class="footer-copyright__text font-weight-regular font-size-small fg-color-white mb-0 mt-2">
+            © Copyright MFG EV Power Limited <span class="year-span"></span>.<br>
+            All rights reserved.<br>
+            Registered in England &amp; Wales.<br>
+            Number: 13353242.<br>
+            VAT Number: 123414161
+          </p>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3  col-lg footer__column footer__address mb-40 mb-lg-0">
+          <h6
+            class="footer__title font-size-body line-height-20px font-weight-bold font-family-inter fg-color-white mb-20">
+            Social media links:</h6>
+          <div class="d-flex pt-20">
+            <div class="social-media d-flex">
+              <a href="https://www.facebook.com/MFGMotorFuelGroup/" target="_blank"
+                class="social-media__link d-inline-flex justify-content-center align-items-center h-18 facebook-h mr-20"
+                rel="noopener">
+                <svg fill="currentColor" viewBox="0 0 448 512">
+                  <path
+                    d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
+                  </path>
+                </svg>
+              </a>
+              <a href="https://www.instagram.com/motorfuelgroupmfg/" target="_blank"
+                class="social-media__link d-inline-flex justify-content-center align-items-center h-18 mr-20"
+                rel="noopener">
+                <svg fill="currentColor" viewBox="0 0 448 512">
+                  <path
+                    d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z">
+                  </path>
+                </svg>
+              </a>
+              <a href="https://www.linkedin.com/authwall?trk=gf&amp;trkInfo=AQGk1Pf4dnEVOQAAAXk2oU_gQPReEtW0QHCoEfwmfbIFpMHwuy6iMvfFhDD23kGuphtqF3iiA1pBEFMsKXZtLVY6X4U0hbCiQKWmb-p0_K_Lxq1vwE5aZQCsIsT6PMx5XTcA8eU=&amp;originalReferer=https://www.motorfuelgroup.com/&amp;sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2Fmotor-fuel-group-ltd-"
+                target="_blank" rel="noopener"
+                class="social-media__link d-inline-flex justify-content-center align-items-center h-18 mr-20">
+                <svg fill="currentColor" viewBox="0 0 448 512">
+                  <path
+                    d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 01107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z">
+                  </path>
+                </svg>
+              </a>
+              <a href="https://twitter.com/MotorFuelGroup" target="_blank" rel="noopener"
+                class="social-media__link d-inline-flex justify-content-center align-items-center h-18 mr-20">
+                <svg fill="currentColor" viewBox="0 0 512 512">
+                  <path
+                    d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
+                  </path>
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/channel/UCyKAUE28Yx22Hemoj7WzwHg" target="_blank" rel="noopener"
+                class="social-media__link d-inline-flex justify-content-center align-items-center h-18 mr-20">
+                <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                  <path
+                    d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z">
+                  </path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  $(".year-span").html(new Date().getFullYear())
+  var token = '{{csrf_token}}';
+  var change_picture_url = `{% url 'change_profile_picture' %}`;
+
+</script>
+<script src="{%static 'js/dashboard/base.js'%}"></script>
+{% block js %}
+{%endblock%}
+
+</html>

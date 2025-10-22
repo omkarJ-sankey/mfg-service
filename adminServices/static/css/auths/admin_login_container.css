@@ -1,0 +1,217 @@
+body{
+    background:url('../../images/admin_backend_banner.jpg');
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.login_section{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 6%;
+}  
+.login_container{
+    height: auto;
+    width: 25rem;
+    box-shadow: 0 15px 20px rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(3.12rem);
+}
+.login_form{
+    height: auto;
+    width: 100%;
+    background: inherit ;
+    backdrop-filter: blur(2rem);
+    padding: 1.8rem 2.8rem;
+}
+.blur{
+    width: 100%;
+    padding: 0.7rem;
+    box-shadow: 0 5px 10px rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(50px);
+    overflow: hidden; 
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.25);
+} 
+.blur .mfg_logo{
+    height: 42px;
+    object-fit: contain;
+}
+.login_container .login_form h3{
+    color: var(--white) !important;
+    font-weight: 500;
+    text-align: center;
+    font-size: 1.2rem;
+}
+.login-error-field{
+    margin:0 !important;
+    color: var(--mfg-red);
+    font-size: var(--font-14);
+    font-weight: 600;
+}
+.text_box_container{
+    display: block;
+    margin-bottom: 0.7rem;
+}
+.login_container .login_form .text_box_container label{
+    color: var(--white);
+    font-size: var(--font-14);
+}
+.login_container .login_form .text_box_container .txtbox{
+    width: 100%;
+    padding: 7px 12px;
+    background: inherit;
+    border: 1px solid var(--light-gray);
+    outline: none;
+    color: var(--white);
+    font-size: var(--font-14);
+    font-weight: 200;
+}
+.otp_txtbx{
+    word-spacing: 0.313rem;
+}
+.remeber_me_container {
+    color: var(--white);
+    font-size: var(--font-14);
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.login_container .login_form .text_box_container .pass_container{
+    width: 100%;
+    padding: 7px 12px;
+    background: inherit;
+    border: 1px solid var(--light-gray);
+    color: var(--light-gray);
+    font-size: var(--font-14);
+    font-weight: 200;
+    display: flex;
+    justify-content: space-between;
+}
+.login_container .login_form .text_box_container .pass_container.enable_error_border{
+    border: 1px solid var(--mfg-red)
+}
+.login_container .login_form .text_box_container .pass_container .txtbox1{
+    background: inherit;
+    border: none;
+    outline: none;
+    color: var(--white);
+}
+.password_box{
+    width: 90%;
+}
+.password_box_one{
+    width: inherit;
+}
+.login_container .login_form .text_box_container .pass_container .img_container img{
+    height: 15px;
+    object-fit: contain;
+}
+::placeholder{
+    color: var(--white);
+    font-size: var(--font-14);
+    font-weight: 200;
+}
+.login_container .login_form .text_box_container .pass_container .txtbox1:focus{
+    border: none;
+    outline: none;
+    color: var(--white);
+}
+
+.login_container .login_form .text_box_container .txtbox:focus{
+    border: 1px solid var(--light-gray);
+    outline: none;
+    color: var(--white);
+    font-weight: 400;
+}
+.login_container .login_form .link_container .forgot_password_link {
+    text-decoration: none;
+    font-size: var(--font-14);
+    font-weight: 200;
+    color:var(--light-gray);
+    
+}
+.login_container .login_form .submit_button{
+    width: 100%;
+    border: none;
+    outline: none;
+    background: #E2373F;
+    color: #fff;
+    margin: 1rem 0;
+    padding: 10px 0;
+    font-size: var(--font-14);
+    font-weight: 400;
+}
+
+.login_container .login_form .submit_button.disabled{
+    color:#dddddd;
+    background-color: #a5a2a2;
+}
+.login_container .login_form .link_container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.625rem;
+    overflow: hidden;
+}
+.login_container .login_form .link_container1 .link {
+    text-decoration: none;
+    font-size: var(--font-14);
+    font-weight: 200;
+    color:var(--light-gray);
+    
+}
+.login_container .login_form .link_container1 .vertical_line {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 200;
+    margin-bottom: 0;
+    padding: 0 5px;
+    text-align: center;
+    color: var(--light-gray);
+}
+.errors a{
+    color: var(--white);
+    font-size: var(--font-14);
+    text-align: center;
+}
+.errors{
+    background-color: var(--mfg-red);
+    text-align: center;
+    color: var(--white);
+}
+.success-messages-box p{ 
+    color: var(--white);
+    font-size: var(--font-14);
+    padding:0;
+    margin:0;
+}
+.success-messages-box{
+    padding: 4px 0;
+    background-color: var(--dark-blue);    
+    text-align: center
+}
+.hid-box {
+    top: 200px;
+    position: relative;
+    transition: all .4s ease-out;
+    height: 100%;
+  }
+@media only screen and (max-width: 700px) {
+    .login_section {  
+        justify-content: center;
+    }
+  }
+@media only screen and (max-width: 25rem) {
+    .login_container {
+        width: 85vw;
+        min-width: 22rem;
+    }
+  }
+ 

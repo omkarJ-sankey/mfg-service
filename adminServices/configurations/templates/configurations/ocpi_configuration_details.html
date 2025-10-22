@@ -1,0 +1,234 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}OCPI Configurations {% endblock %}
+{% load static %}
+
+
+{%block css%}
+{%endblock%}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/configurations/conf.css'%}">
+
+<div class="update_ocpi_configurations_container">
+    <div id="ocpi_update_configurations_form">
+
+        <div class="flex-text">
+            <button class="link_no_margin"
+                onclick="event.stopPropagation(); event.preventDefault(); showLoader(); Previous();"
+                style="all: unset; cursor: pointer;">
+
+                <span class="rotated_square">&#x276E;</span>
+
+                <span class="user_ocpi_back_navigation">
+                    OCPI Configuration
+                </span>
+        </div>
+        <div class="heading_details">
+            <div class="details_header">
+                <p class="ocpi_details">Details</p>
+            </div>
+            <div class="status-container">
+                <div class="status_label">Status</div>
+                <div class="status-box" id = "statusBox">{{ocpi_details.status}}</div>
+            </div>
+        </div>
+
+
+        <div class="forms page-section ocpi_role" id="formSection">
+
+            <div class="ocpi_details">
+                <div class="ocpi_detail_fields">
+                    <label class="labels">Name</label>
+                    <input type="text" id="upload_name_data" class="inputs" value="{{ocpi_details.name}}">
+                        
+                    <p class="error_field" id="error_field0"></p>
+                </div>
+
+                <div class="ocpi_detail_fields">
+
+                    <label class="labels">Endpoint</label>
+                    <input id="upload_endpoint_data" disabled="true" type="text" class="inputs" 
+                        value="{{ocpi_details.endpoint}}">
+                    <p class="error_field" id="error_field1"></p>
+                </div>
+
+                <div class="ocpi_detail_fields">
+
+                    <label class="labels">CPO Token</label>
+                    <input id="upload_cpo_token_data" disabled="true" type="text" class="inputs" 
+                        value="{{ocpi_details.cpo_token}}">
+                    <p class="error_field" id="error_field2"></p>
+                </div>
+
+                <div class="ocpi_detail_fields">
+
+                    <label class="labels">EMSP Token</label>
+                    <input id="upload_emsp_token_data" type="text" class="inputs" 
+                        value="{{ocpi_details.emsp_token}}">
+                    <p class="error_field" id="error_field3"></p>
+                </div>
+
+            </div>
+        </div>
+        <div class="horizontal-lines"></div>
+        <p>Roles</p>
+        <div id="ocpi_role">
+            {% for ocpi_config_role in ocpi_config_roles %}
+                <div class="ocpi_details">
+                    <div class="ocpi_detail_fields">
+                        <label class="labels">Role</label>
+                        <input type="text" disabled="true" id="to_role" class="inputs disabled_inputs" value="{{ocpi_config_role.role}}">
+                            
+                        <p class="error_field" id="error_field0"></p>
+                    </div>
+
+                    <div class="ocpi_detail_fields">
+
+                        <label class="labels">Business Details</label>
+                        <input type="text" disabled="true" id = "to_role_business" class="inputs disabled_inputs" 
+                            value="{{ocpi_config_role.business_details}}">
+                        <p class="error_field" id="error_field1"></p>
+                    </div>
+
+                    <div class="ocpi_detail_fields">
+
+                        <label class="labels">Country Code</label>
+                        <input type="text" disabled="true" id = "to_role_country_code" class="inputs disabled_inputs" 
+                            value="{{ocpi_config_role.country_code}}">
+                        <p class="error_field" id="error_field2"></p>
+                    </div>
+
+                    <div class="ocpi_detail_fields">
+
+                        <label class="labels">Party ID</label>
+                        <input type="text" disabled="true" id = "to_role_party_id" class="inputs disabled_inputs" 
+                            value="{{ocpi_config_role.party_id}}">
+                        <p class="error_field" id="error_field2"></p>
+                    </div>
+                </div>
+                <div class="ocpi_horizontal_lines ocpi_roles_seperator"></div>
+            {%endfor%}
+
+            <!-- </div> -->
+
+
+            <!-- <div class="ocpi_horizontal_lines"></div>
+
+
+            <div class="ocpi_details">
+                <div class="ocpi_detail_fields">
+                    <label class="labels">Role</label>
+                    <input type="text" disabled="true" id="from_role" class="inputs disabled_inputs" value="{{ocpi_configuration.cpo_role}}"
+                        
+                    <p class="error_field" id="error_field0"></p>
+                </div>
+
+                <div class="ocpi_detail_fields">
+
+                    <label class="labels">Business Details</label>
+                    <input type="text" disabled="true" id = "from_role_business" class="inputs disabled_inputs" 
+                        value="{{ocpi_configuration.cpo_business_details}}">
+                    <p class="error_field" id="error_field1"></p>
+                </div>
+
+                <div class="ocpi_detail_fields">
+
+                    <label class="labels">Country Code</label>
+                    <input type="text" disabled="true" id = "from_role_country_code" class="inputs disabled_inputs" 
+                        value="{{ocpi_configuration.cpo_country_code}}">
+                    <p class="error_field" id="error_field2"></p>
+                </div>
+
+                <div class="ocpi_detail_fields">
+
+                    <label class="labels">Party ID</label>
+                    <input type="text" disabled="true" id = "from_role_party_id" class="inputs disabled_inputs" 
+                        value="{{ocpi_configuration.cpo_party_id}}">
+                    <p class="error_field" id="error_field2"></p>
+                </div>
+
+            </div> -->
+
+        </div>
+
+        <div class="submit_buttons">
+            <div class="container_buttons">
+                <button class="cancle_button" data-bs-dismiss="modal">Cancel</button>
+                <button class="done_button" data-bs-dismiss="modal"
+                    onclick="submitUpdatedCredentialsData()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancle_submit_warning_popup" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content google_maps_content promo_cancel_modal">
+
+            <div class="modal-body">
+                <h3 id="updated_status">Are you sure you want to cancel, all data will be lost after
+                    pressing yes?</h3>
+                <div class="google_maps_submit_buttons">
+                    <div class="google_maps_container_buttons">
+                        <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                        <button onclick="showLoader();Previous();" class="done_button">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    var token = '{{csrf_token}}';
+
+   
+    let config_id = "{{ ocpi_details.id }}";
+    let update_ocpi_data_url = "{% url 'updateOCPIConfigurations' ocpi_details.id %}"
+    var prev_data = "{{ prev_data|escapejs }}"
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    var statusBox = document.getElementById('statusBox');
+    var allowedStatuses = ['Active', 'Inactive'];
+        if (statusBox) {
+            var currentStatus = statusBox.textContent.trim();
+            if (!allowedStatuses.includes(currentStatus)) {
+                document.querySelectorAll('.ocpi_details input').forEach(function(input) {
+                    input.setAttribute('disabled', 'true');
+                    input.classList.add('disabled_inputs');
+                });
+            }
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var statusBox = document.getElementById('statusBox');
+        var allowedStatuses = ['Active', 'Inactive'];
+        if (statusBox) {
+            var currentStatus = statusBox.textContent.trim();
+            if (!allowedStatuses.includes(currentStatus)) {
+                document.querySelectorAll('.ocpi_details input').forEach(function(input) {
+                    input.setAttribute('disabled', 'true');
+                    input.classList.add('disabled_inputs');
+                });
+                document.querySelectorAll('.submit_buttons button').forEach(function(btn) {
+                    btn.setAttribute('disabled', 'true');
+                    btn.classList.add('disabled_inputs');
+                });
+                var statusContainer = document.querySelector('.status-container');
+                if (statusContainer) {
+                    statusContainer.classList.add('disabled_status_container');
+                }
+            }
+        }
+    });
+    
+
+</script>
+<script src="{% static 'js/configurations/ocpi_configurations.js' %}"></script>
+{% endblock %}

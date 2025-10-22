@@ -1,0 +1,3878 @@
+[
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 1,
+        "fields": {
+            "base_configuration_key": "Pagination_page_rows",
+            "base_configuration_value": "10",
+            "base_configuration_image": "",
+            "created_date": "2021-05-25T17:25:31Z",
+            "updated_date": "2021-05-25T17:25:31Z",
+            "updated_by": "manish pawar"
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 2,
+        "fields": {
+            "base_configuration_key": "OTP_limit",
+            "base_configuration_value": "7",
+            "base_configuration_image": "",
+            "created_date": "2021-06-17T14:48:16.202Z",
+            "updated_date": "2021-06-17T14:48:16.203Z",
+            "updated_by": "manish pawar"
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 3,
+        "fields": {
+            "base_configuration_key": "Maps_nearby_radius",
+            "base_configuration_value": "1000",
+            "base_configuration_image": "",
+            "created_date": "2021-06-17T14:48:16.202Z",
+            "updated_date": "2021-06-17T14:48:16.203Z",
+            "updated_by": "manish pawar"
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 4,
+        "fields": {
+            "base_configuration_key": "root url",
+            "base_configuration_value": "https://mfg-ev-qa-admin.azurewebsites.net/",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 5,
+        "fields": {
+            "base_configuration_key": "send_email_value",
+            "base_configuration_value": "noreply@ev.mymfg.co.uk",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 6,
+        "fields": {
+            "base_configuration_key": "swarco_number",
+            "base_configuration_value": "22331155445",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 7,
+        "fields": {
+            "base_configuration_key": "swarco_api_call_time",
+            "base_configuration_value": "30000",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 8,
+        "fields": {
+            "base_configuration_key": "preauthorize_money_ev",
+            "base_configuration_value": "5",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 9,
+        "fields": {
+            "base_configuration_key": "dynamic_api_call_time",
+            "base_configuration_value": "30000",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 10,
+        "fields": {
+            "base_configuration_key": "session_api_call_time",
+            "base_configuration_value": "15000",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 11,
+        "fields": {
+            "base_configuration_key": "google_maps_lat_incrementer",
+            "base_configuration_value": "0.3",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 13,
+        "fields": {
+            "base_configuration_key": "google_map_max_lat_incrementer",
+            "base_configuration_value": "6",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 14,
+        "fields": {
+            "base_configuration_key": "google_maps_long_incrementer",
+            "base_configuration_value": "0.6",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 16,
+        "fields": {
+            "base_configuration_key": "google_map_max_lon_incrementer",
+            "base_configuration_value": "9",
+            "base_configuration_image": "",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 17,
+        "fields": {
+            "base_configuration_key": "bp_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/BP_5.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 18,
+        "fields": {
+            "base_configuration_key": "shell_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/Shell_1.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 19,
+        "fields": {
+            "base_configuration_key": "ev power_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/evpwer.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 20,
+        "fields": {
+            "base_configuration_key": "murco_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/murcosite.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 21,
+        "fields": {
+            "base_configuration_key": "esso_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/Esso_1.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 22,
+        "fields": {
+            "base_configuration_key": "texaco_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/Texaco_1.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.baseconfigurations",
+        "pk": 23,
+        "fields": {
+            "base_configuration_key": "jet_default_image",
+            "base_configuration_value": "null",
+            "base_configuration_image": "images/JET_1_1.jpg",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 1,
+        "fields": {
+            "name": "Dashboard"
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 2,
+        "fields": {
+            "name": "Sites"
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 3,
+        "fields": {
+            "name": "Promotions"
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 4,
+        "fields": {
+            "name": "Reviews"
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 5,
+        "fields": {
+            "name": "User Management"
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 6,
+        "fields": {
+            "name": "Configurations"
+        }
+    },
+    {
+        "model": "sharedServices.content",
+        "pk": 7,
+        "fields": {
+            "name": "Reconciliation"
+        }
+    },
+    {
+        "model": "sharedServices.roleaccesstypes",
+        "pk": 1,
+        "fields": {
+            "role_name": "Admin",
+            "access_content": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ]
+        }
+    },
+    {
+        "model": "sharedServices.roleaccesstypes",
+        "pk": 2,
+        "fields": {
+            "role_name": "Super admin",
+            "access_content": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ]
+        }
+    },
+    {
+        "model": "sharedServices.roleaccesstypes",
+        "pk": 3,
+        "fields": {
+            "role_name": "Operator",
+            "access_content": [
+                1,
+                2,
+                4
+            ]
+        }
+    },
+    {
+        "model": "sharedServices.adminuser",
+        "pk": 16,
+        "fields": {
+            "role_id": 2,
+            "phone": "7788667786",
+            "full_name": "MFG Operator",
+            "user_name": "mfgoperator",
+            "email": "mfgev@motorfuelgroup.com",
+            "profile_picture": "",
+            "first_time_login": true,
+            "created_date": "2021-08-03T11:05:49.672Z",
+            "updated_date": "2021-10-29T12:23:34.171Z",
+            "updated_by": ""
+        }
+    },
+    {
+        "model": "sharedServices.adminauthorization",
+        "pk": 16,
+        "fields": {
+            "user_id": 16,
+            "otp": "5847",
+            "otp_type": "admin otp",
+            "password": "pbkdf2_sha256$29000$mioqsQ2LSA7X$GuNSBcRIdvufrXuhI5OpkQqAsjqODiX1Vj+FwF3+EFk=",
+            "token": "b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTYiLCJleHAiOjE2Mzg4OTA5MTUsImF1dGhvcml6YXRpb25faWQiOjE2fQ.VWp51K4TlxgKSKbYpDBpMyi2UFNQbgqhv0BjDbzQwws'",
+            "token_secret": "3609226c0f6c9e090a756939dcf01379",
+            "refresh_token": "b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTYiLCJhdXRob3JpemF0aW9uX2lkIjoxNn0.fujVwJwrcqnAcOQHiuEIYxMFGTmYUskUe9jXLexiur4'",
+            "token_expire_time": "2021-12-07T15:28:35.601Z"
+        }
+    },
+    {
+        "model": "sharedServices.loginrecords",
+        "pk": 15,
+        "fields": {
+            "user_id": 16,
+            "current_status": "Active",
+            "device_mac_address": null,
+            "updated_date": "2021-12-07T05:53:04.175Z"
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 2,
+        "fields": {
+            "map_marker_key": "Other-Rapid",
+            "map_marker_image": "images/Other_Rapid_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 3,
+        "fields": {
+            "map_marker_key": "MFG-Normal",
+            "map_marker_image": "images/MFG_EV_Normal_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 4,
+        "fields": {
+            "map_marker_key": "Other-Normal",
+            "map_marker_image": "images/Other_Normal_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 6,
+        "fields": {
+            "map_marker_key": "Esso",
+            "map_marker_image": "images/ESSO_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 7,
+        "fields": {
+            "map_marker_key": "Shell",
+            "map_marker_image": "images/Shell_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 8,
+        "fields": {
+            "map_marker_key": "BP",
+            "map_marker_image": "images/BP_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 9,
+        "fields": {
+            "map_marker_key": "Texaco",
+            "map_marker_image": "images/Texaco_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 10,
+        "fields": {
+            "map_marker_key": "Murco",
+            "map_marker_image": "images/Murco_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 11,
+        "fields": {
+            "map_marker_key": "Jet",
+            "map_marker_image": "images/JET_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 12,
+        "fields": {
+            "map_marker_key": "Magdalen",
+            "map_marker_image": "images/Murco_oIGW1oa.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 13,
+        "fields": {
+            "map_marker_key": "MFG-EV",
+            "map_marker_image": "images/MFG_EV_Normal_3x_t8emzPS.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 14,
+        "fields": {
+            "map_marker_key": "MFG-Rapid",
+            "map_marker_image": "images/MFG_EV_Rapid_3x.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 15,
+        "fields": {
+            "map_marker_key": "EV Power",
+            "map_marker_image": "images/MFG_EV_Normal_3x_t8emzPS_hEGFOQY.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 16,
+        "fields": {
+            "map_marker_key": "Other-Rapid-Available",
+            "map_marker_image": "images/Other_Rapid_Available_3x_Y9FLrbF.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 17,
+        "fields": {
+            "map_marker_key": "Other-Rapid-Occupied",
+            "map_marker_image": "images/Other_Rapid_Charging_3x_kPBoh9y.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 18,
+        "fields": {
+            "map_marker_key": "Other-Rapid-Unknown",
+            "map_marker_image": "images/Other_Rapid_Unavailable_3x_jm8ca9Q.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 19,
+        "fields": {
+            "map_marker_key": "MFG-Normal-Available",
+            "map_marker_image": "images/MFG_EV_Normal_Available_3x_jPA6sxn.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 20,
+        "fields": {
+            "map_marker_key": "MFG-Normal-Occupied",
+            "map_marker_image": "images/MFG_EV_Normal_Charging_3x_pcR3MZf.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 21,
+        "fields": {
+            "map_marker_key": "MFG-Normal-Unknown",
+            "map_marker_image": "images/MFG_EV_Normal_Unavailable_3x_7nUTvPB.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 22,
+        "fields": {
+            "map_marker_key": "Other-Normal-Available",
+            "map_marker_image": "images/Other_Normal_Available_3x_FqTuUcE.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 23,
+        "fields": {
+            "map_marker_key": "Other-Normal-Occupied",
+            "map_marker_image": "images/Other_Normal_Charging_3x_7pRovC0.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 24,
+        "fields": {
+            "map_marker_key": "Other-Normal-Unknown",
+            "map_marker_image": "images/Other_Normal_Unavailable_3x_BKWVM7d.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 25,
+        "fields": {
+            "map_marker_key": "MFG-Rapid-Available",
+            "map_marker_image": "images/MFG_EV_Rapid_Available_3x_REAO7vD.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 26,
+        "fields": {
+            "map_marker_key": "MFG-Rapid-Occupied",
+            "map_marker_image": "images/MFG_EV_Rapid_Charging_3x_b5vt7aC.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+    {
+        "model": "sharedServices.mapmarkerconfigurations",
+        "pk": 27,
+        "fields": {
+            "map_marker_key": "MFG-Rapid-Unknown",
+            "map_marker_image": "images/MFG_EV_Rapid_Unavailable_3x_Ce87T2n.png",
+            "created_date": null,
+            "updated_date": null,
+            "updated_by": null
+        }
+    },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": { "app_label": "sharedServices", "model": "bulkuploadprogress" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": { "app_label": "sharedServices", "model": "cards" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": { "app_label": "sharedServices", "model": "chargepoint" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": { "app_label": "sharedServices", "model": "charging_sessions" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "sharedServices",
+      "model": "connectorconfiguration"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": { "app_label": "sharedServices", "model": "content" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "sharedServices",
+      "model": "electricvehicledatabase"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": { "app_label": "sharedServices", "model": "emailverification" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": { "app_label": "sharedServices", "model": "loginrecords" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": { "app_label": "sharedServices", "model": "loyalty" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": { "app_label": "sharedServices", "model": "loyaltyavailableon" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": { "app_label": "sharedServices", "model": "loyaltytransactions" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": {
+      "app_label": "sharedServices",
+      "model": "mapmarkerconfigurations"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 27,
+    "fields": { "app_label": "sharedServices", "model": "profile" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 28,
+    "fields": { "app_label": "sharedServices", "model": "promotionimages" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 29,
+    "fields": { "app_label": "sharedServices", "model": "promotions" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 30,
+    "fields": {
+      "app_label": "sharedServices",
+      "model": "promotionsavailableon"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 31,
+    "fields": { "app_label": "sharedServices", "model": "reviewlikes" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 32,
+    "fields": { "app_label": "sharedServices", "model": "reviews" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 33,
+    "fields": { "app_label": "sharedServices", "model": "roleaccesstypes" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 34,
+    "fields": { "app_label": "sharedServices", "model": "serviceconfiguration" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 35,
+    "fields": { "app_label": "sharedServices", "model": "stationconnector" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 36,
+    "fields": { "app_label": "sharedServices", "model": "stationimages" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 37,
+    "fields": { "app_label": "sharedServices", "model": "stations" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 38,
+    "fields": { "app_label": "sharedServices", "model": "swarcodynamicdata" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 39,
+    "fields": {
+      "app_label": "sharedServices",
+      "model": "userloyaltytransactions"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 40,
+    "fields": { "app_label": "sharedServices", "model": "trips" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 41,
+    "fields": { "app_label": "sharedServices", "model": "transactionsdetails" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 42,
+    "fields": { "app_label": "sharedServices", "model": "transactions" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 43,
+    "fields": { "app_label": "sharedServices", "model": "stationworkinghours" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 44,
+    "fields": { "app_label": "sharedServices", "model": "stationservices" }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 45,
+    "fields": {
+      "app_label": "sharedServices",
+      "model": "thirdpartycredentials"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 46,
+    "fields": { "app_label": "auth", "model": "user" }
+  },
+  {
+    "model": "sharedServices.serviceconfiguration",
+    "pk": 1,
+    "fields": {
+      "service_name": "Budgens",
+      "image_path": "images/Budgens_B7Y5TZP0XOKETF0.png",
+      "service_type": "Retail",
+      "service_unique_identifier": 1,
+      "deleted": null,
+      "created_date": "2022-02-09T14:28:58.802Z",
+      "updated_date": "2022-02-09T14:28:58.802Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 1,
+    "fields": {
+      "base_configuration_key": "Pagination_page_rows",
+      "base_configuration_value": "10",
+      "base_configuration_image": "",
+      "created_date": "2021-05-25T17:25:31Z",
+      "updated_date": "2021-05-25T17:25:31Z",
+      "updated_by": "manish pawar"
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 2,
+    "fields": {
+      "base_configuration_key": "OTP_limit",
+      "base_configuration_value": "7",
+      "base_configuration_image": "",
+      "created_date": "2021-06-17T14:48:16.202Z",
+      "updated_date": "2021-06-17T14:48:16.203Z",
+      "updated_by": "manish pawar"
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 3,
+    "fields": {
+      "base_configuration_key": "Maps_nearby_radius",
+      "base_configuration_value": "1000",
+      "base_configuration_image": "",
+      "created_date": "2021-06-17T14:48:16.202Z",
+      "updated_date": "2021-06-17T14:48:16.203Z",
+      "updated_by": "manish pawar"
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 4,
+    "fields": {
+      "base_configuration_key": "root url",
+      "base_configuration_value": "https://mfg-ev-qa-admin.azurewebsites.net/",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 5,
+    "fields": {
+      "base_configuration_key": "send_email_value",
+      "base_configuration_value": "noreply@ev.mymfg.co.uk",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 6,
+    "fields": {
+      "base_configuration_key": "swarco_number",
+      "base_configuration_value": "22331155445",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 7,
+    "fields": {
+      "base_configuration_key": "swarco_api_call_time",
+      "base_configuration_value": "30000",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 8,
+    "fields": {
+      "base_configuration_key": "preauthorize_money_ev",
+      "base_configuration_value": "5",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 11,
+    "fields": {
+      "base_configuration_key": "google_maps_lat_incrementer",
+      "base_configuration_value": "0.3",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 13,
+    "fields": {
+      "base_configuration_key": "google_map_max_lat_incrementer",
+      "base_configuration_value": "6",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 14,
+    "fields": {
+      "base_configuration_key": "google_maps_long_incrementer",
+      "base_configuration_value": "0.6",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.baseconfigurations",
+    "pk": 16,
+    "fields": {
+      "base_configuration_key": "google_map_max_lon_incrementer",
+      "base_configuration_value": "9",
+      "base_configuration_image": "",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 2,
+    "fields": {
+      "map_marker_key": "Other-Rapid",
+      "map_marker_image": "images/Other_Rapid_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 3,
+    "fields": {
+      "map_marker_key": "MFG-Normal",
+      "map_marker_image": "images/MFG_EV_Normal_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 4,
+    "fields": {
+      "map_marker_key": "Other-Normal",
+      "map_marker_image": "images/Other_Normal_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 6,
+    "fields": {
+      "map_marker_key": "Esso",
+      "map_marker_image": "images/ESSO_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 7,
+    "fields": {
+      "map_marker_key": "Shell",
+      "map_marker_image": "images/Shell_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 8,
+    "fields": {
+      "map_marker_key": "BP",
+      "map_marker_image": "images/BP_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 9,
+    "fields": {
+      "map_marker_key": "Texaco",
+      "map_marker_image": "images/Texaco_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 10,
+    "fields": {
+      "map_marker_key": "Murco",
+      "map_marker_image": "images/Murco_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 11,
+    "fields": {
+      "map_marker_key": "Jet",
+      "map_marker_image": "images/JET_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 12,
+    "fields": {
+      "map_marker_key": "Magdalen",
+      "map_marker_image": "images/Murco_oIGW1oa.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 13,
+    "fields": {
+      "map_marker_key": "MFG-EV",
+      "map_marker_image": "images/MFG_EV_Normal_3x_t8emzPS.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 14,
+    "fields": {
+      "map_marker_key": "MFG-Rapid",
+      "map_marker_image": "images/MFG_EV_Rapid_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 15,
+    "fields": {
+      "map_marker_key": "EV Power",
+      "map_marker_image": "images/MFG_EV_Normal_3x_t8emzPS_hEGFOQY.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 16,
+    "fields": {
+      "map_marker_key": "Other-Rapid-Available",
+      "map_marker_image": "images/Other_Rapid_Available_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 17,
+    "fields": {
+      "map_marker_key": "Other-Rapid-Occupied",
+      "map_marker_image": "images/Other_Rapid_Charging_3x_cOMhBuN.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 18,
+    "fields": {
+      "map_marker_key": "Other-Rapid-Unknown",
+      "map_marker_image": "images/Other_Rapid_Unavailable_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 19,
+    "fields": {
+      "map_marker_key": "MFG-Normal-Available",
+      "map_marker_image": "images/MFG_EV_Normal_Available_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 20,
+    "fields": {
+      "map_marker_key": "MFG-Normal-Occupied",
+      "map_marker_image": "images/MFG_EV_Normal_Charging_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 21,
+    "fields": {
+      "map_marker_key": "MFG-Normal-Unknown",
+      "map_marker_image": "images/MFG_EV_Normal_Unavailable_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 22,
+    "fields": {
+      "map_marker_key": "Other-Normal-Available",
+      "map_marker_image": "images/Other_Normal_Available_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 23,
+    "fields": {
+      "map_marker_key": "Other-Normal-Occupied",
+      "map_marker_image": "images/Other_Normal_Charging_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 24,
+    "fields": {
+      "map_marker_key": "Other-Normal-Unknown",
+      "map_marker_image": "images/Other_Normal_Unavailable_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 25,
+    "fields": {
+      "map_marker_key": "MFG-Rapid-Available",
+      "map_marker_image": "images/MFG_EV_Rapid_Available_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 26,
+    "fields": {
+      "map_marker_key": "MFG-Rapid-Occupied",
+      "map_marker_image": "images/MFG_EV_Rapid_Charging_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.mapmarkerconfigurations",
+    "pk": 27,
+    "fields": {
+      "map_marker_key": "MFG-Rapid-Unknown",
+      "map_marker_image": "images/MFG_EV_Rapid_Unavailable_3x.png",
+      "created_date": null,
+      "updated_date": null,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "sharedServices.stations",
+    "pk": 1,
+    "fields": {
+      "station_id": "FS012",
+      "station_name": "Crow Orchard",
+      "station_address1": "Mossy Lea Road",
+      "station_address2": "Wrightington",
+      "station_address3": "Wigan",
+      "town": "Wrightington",
+      "post_code": "WN6 9RB",
+      "country": "England",
+      "brand": "BP",
+      "owner": "MFG",
+      "latitude": 53.5906,
+      "longitude": -2.69678,
+      "email": "CustomerCare@motorfuelgroup.com",
+      "phone": "01257424119",
+      "status": "Active",
+      "station_type": "MFG EV plus Forecourt",
+      "site_title": "BP Crow Orchard Service Station",
+      "operation_region": "North",
+      "region": "North",
+      "regional_manager": "Adam Waters",
+      "area": "44.0",
+      "area_regional_manager": "Chris Fleetwood",
+      "deleted": "0",
+      "is_mfg": "1",
+      "is_ev": "1",
+      "available_promotion": "[]",
+      "created_date": "2022-02-09T14:26:27.353Z",
+      "updated_date": "2022-02-09T14:33:41.144Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationworkinghours",
+    "pk": 1,
+    "fields": {
+      "station_id": null,
+      "monday_friday": "24 hours",
+      "saturday": "24 hours",
+      "sunday": "24 hours",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:26:27.401Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationworkinghours",
+    "pk": 2,
+    "fields": {
+      "station_id": 1,
+      "monday_friday": "24 hours",
+      "saturday": "24 hours",
+      "sunday": "24 hours",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.181Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 1,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258631",
+      "charger_point_name": "MFG0012001",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "1",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.212Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 2,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258634",
+      "charger_point_name": "MFG0012003",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "5",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.010Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 3,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258633",
+      "charger_point_name": "MFG0012002",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "3",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.932Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 4,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258635",
+      "charger_point_name": "MFG0012004",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "7",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.095Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 5,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258636",
+      "charger_point_name": "MFG0012005",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "9",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.176Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 6,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258637",
+      "charger_point_name": "MFG0012006",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "11",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.399Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 7,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258638",
+      "charger_point_name": "MFG0012007",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "14",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.800Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.chargepoint",
+    "pk": 8,
+    "fields": {
+      "station_id": 1,
+      "charger_point_id": "258639",
+      "charger_point_name": "MFG0012008",
+      "charger_point_status": "Active",
+      "back_office": "SWARCO",
+      "device_id": "16",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.866Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 1,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 1,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.275Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 2,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 2,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.038Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 3,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 2,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.065Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 4,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 3,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.960Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 5,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 4,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.120Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 6,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 5,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.201Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 7,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 3,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.988Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 8,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 6,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.446Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 9,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 6,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.465Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 10,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 7,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.826Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 11,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 8,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.890Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 12,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 7,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.847Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 13,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 1,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.329Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 14,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 4,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.144Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 15,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 5,
+      "connector_id": "2",
+      "connector_name": "Socket 2",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CHAdeMO",
+      "max_charge_rate": "50",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:42.228Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationconnector",
+    "pk": 16,
+    "fields": {
+      "station_id": 1,
+      "charge_point_id": 8,
+      "connector_id": "1",
+      "connector_name": "Socket 1",
+      "connector_type": "Ultra-Rapid",
+      "status": "Active",
+      "plug_type_name": "CCS",
+      "max_charge_rate": "150",
+      "tariff_amount": 0.39,
+      "tariff_currency": "GBP(\u00a3)",
+      "deleted": "0",
+      "created_date": null,
+      "updated_date": "2022-02-09T14:33:41.912Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.stationservices",
+    "pk": 1,
+    "fields": {
+      "service_id": 1,
+      "station_id": 1,
+      "service_name": "Retail",
+      "start_time": "",
+      "end_time": "",
+      "availability_days": "",
+      "deleted": "0",
+      "created_date": "2022-02-09T14:33:42.317Z",
+      "updated_date": null,
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.mfguserev",
+    "pk": 1,
+    "fields": {
+      "last_login": null,
+      "email": "pbkdf2_sha256$29000$cl0WKG5ncaLY$hHeWwmpYiAN9mtEhMrBd7LmqtnX2S+uMRQtnl8Ox06o=",
+      "password": "pbkdf2_sha256$29000$Jnfw4SqagvKt$jig8d+KxKrl9Z5++TLCcDMxnqT+YVWM2oyqSkJB/hSI=",
+      "first_name": null,
+      "last_name": null,
+      "username": "third_party@mfg",
+      "post_code": null,
+      "country": null,
+      "key": null,
+      "timestamp": "2022-02-09T12:06:51.857Z",
+      "customer_id": null
+    }
+  },
+  {
+    "model": "sharedServices.mfguserev",
+    "pk": 2,
+    "fields": {
+      "last_login": "2022-02-09T19:28:33.292Z",
+      "email": "pbkdf2_sha256$29000$1ISayrxXMAvR$qR/tvpEM+Olj6G4BviohQbb7+k/OU/wL21zgHce3BtE=",
+      "password": "pbkdf2_sha256$29000$ZgTgvFa8QJUL$IZZ8ShU6dr9vjCKIrMPopWR+J89IsfeuYR6eeCa197g=",
+      "first_name": "Z0FBQUFBQmlBOUxNZ2l1RGFEdUk2RkZvcVpwaXluaWFDejM5N2Mwbnl1MjBIWGQ2UkZJYzh6LVowNXJyUVJjVU5PUmoxYkJ2VnBhV25SWXQ2Y2RnZFRmc29QajFCNjJzd3c9PQ==",
+      "last_name": "Z0FBQUFBQmlBOUxNTlk2TEZ2eTJkSS1vMkplOEFGMVRLWWZVRmUxV1FSMXV0QXp3d1NNS1FOVVQyZU1ndEV0U190Wmg3RTYzU1UtbjFpeS1iZGlrQ1g1NU1JNzZROGhxR3c9PQ==",
+      "username": "mapwar",
+      "post_code": "Z0FBQUFBQmlBOUxNMWNxX00xOWRaTXNGOUcyNk9sSnNEZG9NUjBSRVNFWjd4eldKSGowVXhCNHp1U01sNkM5eDNoTVV2SElUcU9FUVNTVmJaS1RsM2ptWHNkZ0VYU2R4UkE9PQ==",
+      "country": "Z0FBQUFBQmlBOUxNRFZjS0NuaGFpS0hxUkNkVmpKal9QTFpJS1hMUF9CY1NWMDZmYnFVT29JS0twRF9qclpSM0RFZ3RlM3NGNlVIQ1R6QkRwTzkxN29reXV5QW9iN0p3UFE9PQ==",
+      "key": "dDl0MFlNTVFfN0VyWGpfcG1rNVJZZFhfU3cxR05JcDU4Q2lzbXlMdGRUVT0=",
+      "timestamp": "2022-02-09T14:42:20.537Z",
+      "customer_id": ""
+    }
+  },
+  {
+    "model": "sharedServices.mfguserev",
+    "pk": 3,
+    "fields": {
+      "last_login": null,
+      "email": "pbkdf2_sha256$29000$EZKEAHwEnLLt$uBIjxMTMDhkKSpKMZvyarMp3SwLV2nOU9qK5m170YcA=",
+      "password": "pbkdf2_sha256$29000$2YKvhPn0CW83$WLdhErDvVuX85OlFcLFNzpJlmECwk9F1nLy00KhO/o8=",
+      "first_name": null,
+      "last_name": null,
+      "username": "tlm@mfg.com",
+      "post_code": null,
+      "country": null,
+      "key": null,
+      "timestamp": "2022-02-09T19:50:37.539Z",
+      "customer_id": null
+    }
+  },
+  {
+    "model": "sharedServices.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "profile_picture": "",
+      "swarco_token": null,
+      "swarco_refresh_token": null,
+      "app_access_token": null,
+      "user_token": null,
+      "user_ev_ids": null,
+      "default_ev_id": null
+    }
+  },
+  {
+    "model": "sharedServices.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "profile_picture": "",
+      "swarco_token": null,
+      "swarco_refresh_token": null,
+      "app_access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VyX3Rva2VuIjoicGJrZGYyX3NoYTI1NiQyOTAwMCRKc1NnR1VhT0pYcnUkS0xSS0ZiUTN3NGF5akRKS3orVTROWDJwUXBvQitCNlNoUDVFM1ZlUnh5cz0iLCJ1c2VybmFtZSI6InBia2RmMl9zaGEyNTYkMjkwMDAkMUlTYXlyeFhNQXZSJHFSL3R2cEVNK09sajZHNEJ2aW9oUWJiNytrL09VL3dMMjF6Z0hjZTNCdEU9IiwiZW1haWwiOiJwYmtkZjJfc2hhMjU2JDI5MDAwJDFJU2F5cnhYTUF2UiRxUi90dnBFTStPbGo2RzRCdmlvaFFiYjcray9PVS93TDIxemdIY2UzQnRFPSJ9.hroPJbVzfmMUqtzV8yrfW-l1VKgtCd4bkSt_m_W4NdM",
+      "user_token": "pbkdf2_sha256$29000$JsSgGUaOJXru$KLRKFbQ3w4ayjDJKz+U4NX2pQpoB+B6ShP5E3VeRxys=",
+      "user_ev_ids": null,
+      "default_ev_id": null
+    }
+  },
+  {
+    "model": "sharedServices.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "profile_picture": "",
+      "swarco_token": null,
+      "swarco_refresh_token": null,
+      "app_access_token": null,
+      "user_token": null,
+      "user_ev_ids": null,
+      "default_ev_id": null
+    }
+  },
+  {
+    "model": "sharedServices.content",
+    "pk": 1,
+    "fields": { "name": "Dashboard" }
+  },
+  { "model": "sharedServices.content", "pk": 2, "fields": { "name": "Sites" } },
+  {
+    "model": "sharedServices.content",
+    "pk": 3,
+    "fields": { "name": "Promotions" }
+  },
+  {
+    "model": "sharedServices.content",
+    "pk": 4,
+    "fields": { "name": "Reviews" }
+  },
+  {
+    "model": "sharedServices.content",
+    "pk": 5,
+    "fields": { "name": "User Management" }
+  },
+  {
+    "model": "sharedServices.content",
+    "pk": 6,
+    "fields": { "name": "Configurations" }
+  },
+  {
+    "model": "sharedServices.content",
+    "pk": 7,
+    "fields": { "name": "Reconciliation" }
+  },
+  {
+    "model": "sharedServices.content",
+    "pk": 9,
+    "fields": { "name": "Loyalty" }
+  },
+  {
+    "model": "sharedServices.roleaccesstypes",
+    "pk": 1,
+    "fields": { "role_name": "Admin", "access_content": [1, 2, 3, 4, 5, 6] }
+  },
+  {
+    "model": "sharedServices.roleaccesstypes",
+    "pk": 2,
+    "fields": {
+      "role_name": "Super admin",
+      "access_content": [1, 2, 3, 4, 5, 6, 7, 9]
+    }
+  },
+  {
+    "model": "sharedServices.roleaccesstypes",
+    "pk": 3,
+    "fields": { "role_name": "Operator", "access_content": [1, 2, 4] }
+  },
+  {
+    "model": "sharedServices.adminuser",
+    "pk": 1,
+    "fields": {
+      "role_id": 2,
+      "phone": "7788667786",
+      "full_name": "MFG Operator",
+      "user_name": "mfgev",
+      "email": "mfgev@motorfuelgroup.com",
+      "profile_picture": "",
+      "first_time_login": "0",
+      "created_date": "2021-08-03T11:05:49.672Z",
+      "updated_date": "2021-09-07T15:13:20.848Z",
+      "updated_by": "mfgevuser"
+    }
+  },
+  {
+    "model": "sharedServices.adminauthorization",
+    "pk": 1,
+    "fields": {
+      "user_id": 1,
+      "otp": "",
+      "otp_type": null,
+      "password": "pbkdf2_sha256$29000$Q7qickepG7kS$rKFYa1au63VOKiBwI1eiQSrjDUqUNsWH21xE3kr5Ob4=",
+      "token": "b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY0NDgyNDQ4MiwiYXV0aG9yaXphdGlvbl9pZCI6MX0.SZLdAq8ejeoVzOEthMLn9s5emIXVacErpwvY9H1mRnM'",
+      "token_secret": "2e5b6d67a64e9d4f3a3616a2459e28d6",
+      "refresh_token": "b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMSIsImF1dGhvcml6YXRpb25faWQiOjF9.Umt0ykxqxnWoZOYdZ2LcVPDaziphjSrIjljyNSRf3Cg'",
+      "token_expire_time": "2022-02-14T07:41:22.016Z"
+    }
+  },
+  {
+    "model": "sharedServices.loginrecords",
+    "pk": 1,
+    "fields": {
+      "user_id": 1,
+      "current_status": "Active",
+      "device_mac_address": null,
+      "updated_date": null
+    }
+  },
+  {
+    "model": "sharedServices.loginrecords",
+    "pk": 2,
+    "fields": {
+      "user_id": null,
+      "current_status": "Active",
+      "device_mac_address": null,
+      "updated_date": "2022-02-09T14:23:58.786Z"
+    }
+  },
+  {
+    "model": "sharedServices.bulkuploadprogress",
+    "pk": 1,
+    "fields": {
+      "uploaded_for": "stations",
+      "total_rows_count": "0",
+      "uploaded_rows_count": "0",
+      "uploading_status": "completed",
+      "created_date": "2022-02-09T14:26:26.795Z"
+    }
+  },
+  {
+    "model": "sharedServices.bulkuploaderrormessages",
+    "pk": 1,
+    "fields": {
+      "uploaded_for": "stations",
+      "errors": "[{\"tab\": \"sites\", \"errors\": [{\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"AdBlue\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Air\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Air HGV\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"EV Charge Points\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"HGV Suitable\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Off Licence\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Screenwash\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Toilets\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Water\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"ATM\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Costa Coffee\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Costa Express\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Lottery\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"Amazon Lockers\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Services column -> \\\"PayPoint\\\" is not added                    in Admin Portal Amenity configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Food to go column -> \\\"Costa Coffee\\\" is not added                    in Admin Portal Food to go configurations.\"}, {\"Station ID\": \"All sites (Sites Tab)\", \"Error\": \"Retail column -> \\\"Budgens\\\" is not added                    in Admin Portal Retail configurations.\"}]}, {\"tab\": \"Chargepoint\", \"errors\": []}, {\"tab\": \"MFG\", \"errors\": []}]",
+      "ready_to_export": "1",
+      "created_date": "2022-02-09T14:26:27.097Z"
+    }
+  },
+  {
+    "model": "sharedServices.loyalty",
+    "pk": 1,
+    "fields": {
+      "product": "Car wash",
+      "category": "Costa",
+      "loyalty_title": "TestLoylty",
+      "status": "Active",
+      "valid_from_date": "2022-02-06T00:00:00Z",
+      "valid_to_date": "2022-02-24T23:59:00Z",
+      "number_of_paid_purchases": 500,
+      "timed_expiry": "1",
+      "expiry_minutes": 5,
+      "bar_code_std": "EAN8",
+      "scheme_bar_code": "12312321322",
+      "product_bar_code": "123123213",
+      "redemption_price": 2.0,
+      "is_shop_wise": "1",
+      "shop_ids": "[\"Budgens\"]",
+      "deleted": "0",
+      "available_for": "App only",
+      "redeem_type": "Money",
+      "loyalty_validity_duration": null,
+      "offer_details": "rgggrgrge",
+      "terms_and_conditions": "wggwewefwefwe",
+      "image": "",
+      "created_date": "2022-02-09T14:40:42.556Z",
+      "updated_date": "2022-02-14T04:42:29.787Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.loyalty",
+    "pk": 2,
+    "fields": {
+      "product": "Ev charge",
+      "category": "Costa",
+      "loyalty_title": "Loyaltyte",
+      "status": "Active",
+      "valid_from_date": "2022-02-01T00:00:00Z",
+      "valid_to_date": "2022-02-28T23:59:00Z",
+      "number_of_paid_purchases": 50,
+      "timed_expiry": "1",
+      "expiry_minutes": 5,
+      "bar_code_std": "EAN8",
+      "scheme_bar_code": "6677888",
+      "product_bar_code": "22334455",
+      "redemption_price": 5.0,
+      "is_shop_wise": "1",
+      "shop_ids": "[\"Budgens\"]",
+      "deleted": "0",
+      "available_for": "App only",
+      "redeem_type": "Transaction",
+      "loyalty_validity_duration": null,
+      "offer_details": "qfewrfwefwf wrfwfwfwe",
+      "terms_and_conditions": "wefwefwefwef wefwefwef",
+      "image": "",
+      "created_date": "2022-02-10T05:42:12.629Z",
+      "updated_date": "2022-02-14T04:42:17.806Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.loyalty",
+    "pk": 3,
+    "fields": {
+      "product": "Ev charge",
+      "category": "Costa",
+      "loyalty_title": "Loyaltytitlr",
+      "status": "Active",
+      "valid_from_date": "2022-02-01T00:00:00Z",
+      "valid_to_date": "2022-02-23T23:59:00Z",
+      "number_of_paid_purchases": 100,
+      "timed_expiry": "1",
+      "expiry_minutes": 5,
+      "bar_code_std": "EAN8",
+      "scheme_bar_code": "3344221133",
+      "product_bar_code": "2211223344",
+      "redemption_price": 6.0,
+      "is_shop_wise": "1",
+      "shop_ids": "[\"Budgens\"]",
+      "deleted": "0",
+      "available_for": "App only",
+      "redeem_type": "Money",
+      "loyalty_validity_duration": null,
+      "offer_details": "rrfrfrfrfrefer erererer ergerg",
+      "terms_and_conditions": "ergergerer ergergerg ergeg",
+      "image": "",
+      "created_date": "2022-02-10T06:07:46.018Z",
+      "updated_date": "2022-02-14T04:53:10.267Z",
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.loyaltyavailableon",
+    "pk": 1,
+    "fields": {
+      "loyalty_id": 1,
+      "station_id": 1,
+      "station_name": "Crow Orchard",
+      "operation_region": "North",
+      "region": "North",
+      "area": "44.0",
+      "deleted": "0",
+      "created_date": "2022-02-09T14:40:42.680Z",
+      "updated_date": null,
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.loyaltyavailableon",
+    "pk": 2,
+    "fields": {
+      "loyalty_id": 2,
+      "station_id": 1,
+      "station_name": "Crow Orchard",
+      "operation_region": "North",
+      "region": "North",
+      "area": "44.0",
+      "deleted": "0",
+      "created_date": "2022-02-10T05:42:12.737Z",
+      "updated_date": null,
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.loyaltyavailableon",
+    "pk": 3,
+    "fields": {
+      "loyalty_id": 3,
+      "station_id": 1,
+      "station_name": "Crow Orchard",
+      "operation_region": "North",
+      "region": "North",
+      "area": "44.0",
+      "deleted": "0",
+      "created_date": "2022-02-10T06:07:46.171Z",
+      "updated_date": null,
+      "updated_by": "MFG Operator"
+    }
+  },
+  {
+    "model": "sharedServices.userloyaltytransactions",
+    "pk": 6,
+    "fields": {
+      "loyalty_id": 2,
+      "user_id": 2,
+      "number_of_transactions": 2,
+      "transaction_ids": "[16]",
+      "start_date": "2022-02-14T05:10:38.021Z",
+      "end_date": null,
+      "action_code": "Purchased",
+      "created_date": "2022-02-14T05:10:38.021Z",
+      "updated_date": "2022-02-14T05:10:38.021Z"
+    }
+  },
+  {
+    "model": "sharedServices.loyaltytransactions",
+    "pk": 16,
+    "fields": {
+      "loyalty_id": 2,
+      "user_id": 2,
+      "station_id": 1,
+      "qr_code": "MFGEVCONNECT_2_L_EAN8_6677888_22334455_0_2022-02-01_2022-02-28_Y_5_2022-02-14 05:00:20:681447_P_FS012",
+      "transaction_response": "[{\"barcode\": null, \"price\": 1.469, \"saleQuantity\": 2, \"saleAmount\": 3, \"saleTaxAmount\": 0.3, \"originalSaleAmount\": 2}]",
+      "transaction_time": "2022-02-14T05:10:37.677Z",
+      "transaction_type": "Purchased",
+      "created_date": "2022-02-14T05:10:37.677Z",
+      "updated_date": "2022-02-14T05:10:37.677Z"
+    }
+  },
+  {
+    "model": "sharedServices.thirdpartycredentials",
+    "pk": 1,
+    "fields": {
+      "username": "third_party@mfg",
+      "password": "pbkdf2_sha256$29000$Jnfw4SqagvKt$jig8d+KxKrl9Z5++TLCcDMxnqT+YVWM2oyqSkJB/hSI=",
+      "owner": "MFGEV",
+      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InBia2RmMl9zaGEyNTYkMjkwMDAkY2wwV0tHNW5jYUxZJGhIZVd3bXBZaUFOOW10RWhNckJkN0xtcXRuWDJTK3VNUlF0bmw4T3gwNm89IiwiZW1haWwiOiJwYmtkZjJfc2hhMjU2JDI5MDAwJGNsMFdLRzVuY2FMWSRoSGVXd21wWWlBTjltdEVoTXJCZDdMbXF0blgyUyt1TVJRdG5sOE94MDZvPSIsImV4cCI6MTY3NTk3MTQyOH0.KY2NuB2Uv28_TZWA2rIKWDRbVvj9CFD_bCMn8z-E8-o",
+      "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InBia2RmMl9zaGEyNTYkMjkwMDAkY2wwV0tHNW5jYUxZJGhIZVd3bXBZaUFOOW10RWhNckJkN0xtcXRuWDJTK3VNUlF0bmw4T3gwNm89IiwiZW1haWwiOiJwYmtkZjJfc2hhMjU2JDI5MDAwJGNsMFdLRzVuY2FMWSRoSGVXd21wWWlBTjltdEVoTXJCZDdMbXF0blgyUyt1TVJRdG5sOE94MDZvPSJ9.uZpjkx2IzE6eBQCnwLPRM7AEfqfGNlpFTfJPvwDkPaw",
+      "disabled": "No",
+      "user_id": 1,
+      "created_date": "2022-02-09T11:14:38.070Z",
+      "updated_date": "2022-02-09T11:14:38.070Z"
+    }
+  },
+  {
+    "model": "sharedServices.thirdpartycredentials",
+    "pk": 2,
+    "fields": {
+      "username": "tlm@mfg.com",
+      "password": "pbkdf2_sha256$29000$2YKvhPn0CW83$WLdhErDvVuX85OlFcLFNzpJlmECwk9F1nLy00KhO/o8=",
+      "owner": "TLM",
+      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6InBia2RmMl9zaGEyNTYkMjkwMDAkRVpLRUFId0VuTEx0JHVCSWp4TVRNRGhrS1NwS01adnlhck1wM1N3TFYybk9VOXFLNW0xNzBZY0E9IiwiZW1haWwiOiJwYmtkZjJfc2hhMjU2JDI5MDAwJEVaS0VBSHdFbkxMdCR1QklqeE1UTURoa0tTcEtNWnZ5YXJNcDNTd0xWMm5PVTlxSzVtMTcwWWNBPSIsImV4cCI6MTY3NjM1MTQyMX0.LidMXaCToWerdLObnK_NBywTBjOrppIVtgYPkG9jfZM",
+      "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6InBia2RmMl9zaGEyNTYkMjkwMDAkRVpLRUFId0VuTEx0JHVCSWp4TVRNRGhrS1NwS01adnlhck1wM1N3TFYybk9VOXFLNW0xNzBZY0E9IiwiZW1haWwiOiJwYmtkZjJfc2hhMjU2JDI5MDAwJEVaS0VBSHdFbkxMdCR1QklqeE1UTURoa0tTcEtNWnZ5YXJNcDNTd0xWMm5PVTlxSzVtMTcwWWNBPSJ9.Vv8_cF_NmZhD8UfdpeqNXIDnoOAGJvtT85i0SrG6BAg",
+      "disabled": "No",
+      "user_id": 3,
+      "created_date": null,
+      "updated_date": null
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 4,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 4,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 4,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 4,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 5,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 5,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 5,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 5,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add auth token",
+      "content_type": 6,
+      "codename": "add_authtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change auth token",
+      "content_type": 6,
+      "codename": "change_authtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete auth token",
+      "content_type": 6,
+      "codename": "delete_authtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view auth token",
+      "content_type": 6,
+      "codename": "view_authtoken"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add mfg user ev",
+      "content_type": 7,
+      "codename": "add_mfguserev"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change mfg user ev",
+      "content_type": 7,
+      "codename": "change_mfguserev"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete mfg user ev",
+      "content_type": 7,
+      "codename": "delete_mfguserev"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view mfg user ev",
+      "content_type": 7,
+      "codename": "view_mfguserev"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add admin authorization",
+      "content_type": 8,
+      "codename": "add_adminauthorization"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change admin authorization",
+      "content_type": 8,
+      "codename": "change_adminauthorization"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete admin authorization",
+      "content_type": 8,
+      "codename": "delete_adminauthorization"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view admin authorization",
+      "content_type": 8,
+      "codename": "view_adminauthorization"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add admin user",
+      "content_type": 9,
+      "codename": "add_adminuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change admin user",
+      "content_type": 9,
+      "codename": "change_adminuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete admin user",
+      "content_type": 9,
+      "codename": "delete_adminuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view admin user",
+      "content_type": 9,
+      "codename": "view_adminuser"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add audit trail",
+      "content_type": 10,
+      "codename": "add_audittrail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change audit trail",
+      "content_type": 10,
+      "codename": "change_audittrail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete audit trail",
+      "content_type": 10,
+      "codename": "delete_audittrail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view audit trail",
+      "content_type": 10,
+      "codename": "view_audittrail"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add base configurations",
+      "content_type": 11,
+      "codename": "add_baseconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change base configurations",
+      "content_type": 11,
+      "codename": "change_baseconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete base configurations",
+      "content_type": 11,
+      "codename": "delete_baseconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view base configurations",
+      "content_type": 11,
+      "codename": "view_baseconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add bookmarks",
+      "content_type": 12,
+      "codename": "add_bookmarks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change bookmarks",
+      "content_type": 12,
+      "codename": "change_bookmarks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete bookmarks",
+      "content_type": 12,
+      "codename": "delete_bookmarks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view bookmarks",
+      "content_type": 12,
+      "codename": "view_bookmarks"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add bulk upload error messages",
+      "content_type": 13,
+      "codename": "add_bulkuploaderrormessages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change bulk upload error messages",
+      "content_type": 13,
+      "codename": "change_bulkuploaderrormessages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete bulk upload error messages",
+      "content_type": 13,
+      "codename": "delete_bulkuploaderrormessages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view bulk upload error messages",
+      "content_type": 13,
+      "codename": "view_bulkuploaderrormessages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add bulk upload progress",
+      "content_type": 14,
+      "codename": "add_bulkuploadprogress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change bulk upload progress",
+      "content_type": 14,
+      "codename": "change_bulkuploadprogress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete bulk upload progress",
+      "content_type": 14,
+      "codename": "delete_bulkuploadprogress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view bulk upload progress",
+      "content_type": 14,
+      "codename": "view_bulkuploadprogress"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add cards",
+      "content_type": 15,
+      "codename": "add_cards"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change cards",
+      "content_type": 15,
+      "codename": "change_cards"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete cards",
+      "content_type": 15,
+      "codename": "delete_cards"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view cards",
+      "content_type": 15,
+      "codename": "view_cards"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add charge point",
+      "content_type": 16,
+      "codename": "add_chargepoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change charge point",
+      "content_type": 16,
+      "codename": "change_chargepoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete charge point",
+      "content_type": 16,
+      "codename": "delete_chargepoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view charge point",
+      "content_type": 16,
+      "codename": "view_chargepoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+      "name": "Can add charging_sessions",
+      "content_type": 17,
+      "codename": "add_charging_sessions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+      "name": "Can change charging_sessions",
+      "content_type": 17,
+      "codename": "change_charging_sessions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+      "name": "Can delete charging_sessions",
+      "content_type": 17,
+      "codename": "delete_charging_sessions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+      "name": "Can view charging_sessions",
+      "content_type": 17,
+      "codename": "view_charging_sessions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+      "name": "Can add connector configuration",
+      "content_type": 18,
+      "codename": "add_connectorconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+      "name": "Can change connector configuration",
+      "content_type": 18,
+      "codename": "change_connectorconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+      "name": "Can delete connector configuration",
+      "content_type": 18,
+      "codename": "delete_connectorconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+      "name": "Can view connector configuration",
+      "content_type": 18,
+      "codename": "view_connectorconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+      "name": "Can add content",
+      "content_type": 19,
+      "codename": "add_content"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+      "name": "Can change content",
+      "content_type": 19,
+      "codename": "change_content"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+      "name": "Can delete content",
+      "content_type": 19,
+      "codename": "delete_content"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+      "name": "Can view content",
+      "content_type": 19,
+      "codename": "view_content"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+      "name": "Can add electric vehicle database",
+      "content_type": 20,
+      "codename": "add_electricvehicledatabase"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+      "name": "Can change electric vehicle database",
+      "content_type": 20,
+      "codename": "change_electricvehicledatabase"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+      "name": "Can delete electric vehicle database",
+      "content_type": 20,
+      "codename": "delete_electricvehicledatabase"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+      "name": "Can view electric vehicle database",
+      "content_type": 20,
+      "codename": "view_electricvehicledatabase"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+      "name": "Can add email verification",
+      "content_type": 21,
+      "codename": "add_emailverification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+      "name": "Can change email verification",
+      "content_type": 21,
+      "codename": "change_emailverification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+      "name": "Can delete email verification",
+      "content_type": 21,
+      "codename": "delete_emailverification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+      "name": "Can view email verification",
+      "content_type": 21,
+      "codename": "view_emailverification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+      "name": "Can add login records",
+      "content_type": 22,
+      "codename": "add_loginrecords"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+      "name": "Can change login records",
+      "content_type": 22,
+      "codename": "change_loginrecords"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+      "name": "Can delete login records",
+      "content_type": 22,
+      "codename": "delete_loginrecords"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+      "name": "Can view login records",
+      "content_type": 22,
+      "codename": "view_loginrecords"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+      "name": "Can add loyalty",
+      "content_type": 23,
+      "codename": "add_loyalty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+      "name": "Can change loyalty",
+      "content_type": 23,
+      "codename": "change_loyalty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+      "name": "Can delete loyalty",
+      "content_type": 23,
+      "codename": "delete_loyalty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+      "name": "Can view loyalty",
+      "content_type": 23,
+      "codename": "view_loyalty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+      "name": "Can add loyalty available on",
+      "content_type": 24,
+      "codename": "add_loyaltyavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+      "name": "Can change loyalty available on",
+      "content_type": 24,
+      "codename": "change_loyaltyavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+      "name": "Can delete loyalty available on",
+      "content_type": 24,
+      "codename": "delete_loyaltyavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+      "name": "Can view loyalty available on",
+      "content_type": 24,
+      "codename": "view_loyaltyavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 97,
+    "fields": {
+      "name": "Can add loyalty transactions",
+      "content_type": 25,
+      "codename": "add_loyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 98,
+    "fields": {
+      "name": "Can change loyalty transactions",
+      "content_type": 25,
+      "codename": "change_loyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 99,
+    "fields": {
+      "name": "Can delete loyalty transactions",
+      "content_type": 25,
+      "codename": "delete_loyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 100,
+    "fields": {
+      "name": "Can view loyalty transactions",
+      "content_type": 25,
+      "codename": "view_loyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 101,
+    "fields": {
+      "name": "Can add map marker configurations",
+      "content_type": 26,
+      "codename": "add_mapmarkerconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 102,
+    "fields": {
+      "name": "Can change map marker configurations",
+      "content_type": 26,
+      "codename": "change_mapmarkerconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 103,
+    "fields": {
+      "name": "Can delete map marker configurations",
+      "content_type": 26,
+      "codename": "delete_mapmarkerconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 104,
+    "fields": {
+      "name": "Can view map marker configurations",
+      "content_type": 26,
+      "codename": "view_mapmarkerconfigurations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 105,
+    "fields": {
+      "name": "Can add profile",
+      "content_type": 27,
+      "codename": "add_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 106,
+    "fields": {
+      "name": "Can change profile",
+      "content_type": 27,
+      "codename": "change_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 107,
+    "fields": {
+      "name": "Can delete profile",
+      "content_type": 27,
+      "codename": "delete_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 108,
+    "fields": {
+      "name": "Can view profile",
+      "content_type": 27,
+      "codename": "view_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 109,
+    "fields": {
+      "name": "Can add promotion images",
+      "content_type": 28,
+      "codename": "add_promotionimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 110,
+    "fields": {
+      "name": "Can change promotion images",
+      "content_type": 28,
+      "codename": "change_promotionimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 111,
+    "fields": {
+      "name": "Can delete promotion images",
+      "content_type": 28,
+      "codename": "delete_promotionimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 112,
+    "fields": {
+      "name": "Can view promotion images",
+      "content_type": 28,
+      "codename": "view_promotionimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 113,
+    "fields": {
+      "name": "Can add promotions",
+      "content_type": 29,
+      "codename": "add_promotions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 114,
+    "fields": {
+      "name": "Can change promotions",
+      "content_type": 29,
+      "codename": "change_promotions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 115,
+    "fields": {
+      "name": "Can delete promotions",
+      "content_type": 29,
+      "codename": "delete_promotions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 116,
+    "fields": {
+      "name": "Can view promotions",
+      "content_type": 29,
+      "codename": "view_promotions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 117,
+    "fields": {
+      "name": "Can add promotions available on",
+      "content_type": 30,
+      "codename": "add_promotionsavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 118,
+    "fields": {
+      "name": "Can change promotions available on",
+      "content_type": 30,
+      "codename": "change_promotionsavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 119,
+    "fields": {
+      "name": "Can delete promotions available on",
+      "content_type": 30,
+      "codename": "delete_promotionsavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 120,
+    "fields": {
+      "name": "Can view promotions available on",
+      "content_type": 30,
+      "codename": "view_promotionsavailableon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 121,
+    "fields": {
+      "name": "Can add review likes",
+      "content_type": 31,
+      "codename": "add_reviewlikes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 122,
+    "fields": {
+      "name": "Can change review likes",
+      "content_type": 31,
+      "codename": "change_reviewlikes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 123,
+    "fields": {
+      "name": "Can delete review likes",
+      "content_type": 31,
+      "codename": "delete_reviewlikes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 124,
+    "fields": {
+      "name": "Can view review likes",
+      "content_type": 31,
+      "codename": "view_reviewlikes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 125,
+    "fields": {
+      "name": "Can add reviews",
+      "content_type": 32,
+      "codename": "add_reviews"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 126,
+    "fields": {
+      "name": "Can change reviews",
+      "content_type": 32,
+      "codename": "change_reviews"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 127,
+    "fields": {
+      "name": "Can delete reviews",
+      "content_type": 32,
+      "codename": "delete_reviews"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 128,
+    "fields": {
+      "name": "Can view reviews",
+      "content_type": 32,
+      "codename": "view_reviews"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 129,
+    "fields": {
+      "name": "Can add role access types",
+      "content_type": 33,
+      "codename": "add_roleaccesstypes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 130,
+    "fields": {
+      "name": "Can change role access types",
+      "content_type": 33,
+      "codename": "change_roleaccesstypes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 131,
+    "fields": {
+      "name": "Can delete role access types",
+      "content_type": 33,
+      "codename": "delete_roleaccesstypes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 132,
+    "fields": {
+      "name": "Can view role access types",
+      "content_type": 33,
+      "codename": "view_roleaccesstypes"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 133,
+    "fields": {
+      "name": "Can add service configuration",
+      "content_type": 34,
+      "codename": "add_serviceconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 134,
+    "fields": {
+      "name": "Can change service configuration",
+      "content_type": 34,
+      "codename": "change_serviceconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 135,
+    "fields": {
+      "name": "Can delete service configuration",
+      "content_type": 34,
+      "codename": "delete_serviceconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 136,
+    "fields": {
+      "name": "Can view service configuration",
+      "content_type": 34,
+      "codename": "view_serviceconfiguration"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 137,
+    "fields": {
+      "name": "Can add station connector",
+      "content_type": 35,
+      "codename": "add_stationconnector"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 138,
+    "fields": {
+      "name": "Can change station connector",
+      "content_type": 35,
+      "codename": "change_stationconnector"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 139,
+    "fields": {
+      "name": "Can delete station connector",
+      "content_type": 35,
+      "codename": "delete_stationconnector"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 140,
+    "fields": {
+      "name": "Can view station connector",
+      "content_type": 35,
+      "codename": "view_stationconnector"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 141,
+    "fields": {
+      "name": "Can add station images",
+      "content_type": 36,
+      "codename": "add_stationimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 142,
+    "fields": {
+      "name": "Can change station images",
+      "content_type": 36,
+      "codename": "change_stationimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 143,
+    "fields": {
+      "name": "Can delete station images",
+      "content_type": 36,
+      "codename": "delete_stationimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 144,
+    "fields": {
+      "name": "Can view station images",
+      "content_type": 36,
+      "codename": "view_stationimages"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 145,
+    "fields": {
+      "name": "Can add stations",
+      "content_type": 37,
+      "codename": "add_stations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 146,
+    "fields": {
+      "name": "Can change stations",
+      "content_type": 37,
+      "codename": "change_stations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 147,
+    "fields": {
+      "name": "Can delete stations",
+      "content_type": 37,
+      "codename": "delete_stations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 148,
+    "fields": {
+      "name": "Can view stations",
+      "content_type": 37,
+      "codename": "view_stations"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 149,
+    "fields": {
+      "name": "Can add swarco dynamic data",
+      "content_type": 38,
+      "codename": "add_swarcodynamicdata"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 150,
+    "fields": {
+      "name": "Can change swarco dynamic data",
+      "content_type": 38,
+      "codename": "change_swarcodynamicdata"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 151,
+    "fields": {
+      "name": "Can delete swarco dynamic data",
+      "content_type": 38,
+      "codename": "delete_swarcodynamicdata"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 152,
+    "fields": {
+      "name": "Can view swarco dynamic data",
+      "content_type": 38,
+      "codename": "view_swarcodynamicdata"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 153,
+    "fields": {
+      "name": "Can add user loyalty transactions",
+      "content_type": 39,
+      "codename": "add_userloyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 154,
+    "fields": {
+      "name": "Can change user loyalty transactions",
+      "content_type": 39,
+      "codename": "change_userloyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 155,
+    "fields": {
+      "name": "Can delete user loyalty transactions",
+      "content_type": 39,
+      "codename": "delete_userloyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 156,
+    "fields": {
+      "name": "Can view user loyalty transactions",
+      "content_type": 39,
+      "codename": "view_userloyaltytransactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 157,
+    "fields": {
+      "name": "Can add trips",
+      "content_type": 40,
+      "codename": "add_trips"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 158,
+    "fields": {
+      "name": "Can change trips",
+      "content_type": 40,
+      "codename": "change_trips"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 159,
+    "fields": {
+      "name": "Can delete trips",
+      "content_type": 40,
+      "codename": "delete_trips"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 160,
+    "fields": {
+      "name": "Can view trips",
+      "content_type": 40,
+      "codename": "view_trips"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 161,
+    "fields": {
+      "name": "Can add transactions details",
+      "content_type": 41,
+      "codename": "add_transactionsdetails"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 162,
+    "fields": {
+      "name": "Can change transactions details",
+      "content_type": 41,
+      "codename": "change_transactionsdetails"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 163,
+    "fields": {
+      "name": "Can delete transactions details",
+      "content_type": 41,
+      "codename": "delete_transactionsdetails"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 164,
+    "fields": {
+      "name": "Can view transactions details",
+      "content_type": 41,
+      "codename": "view_transactionsdetails"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 165,
+    "fields": {
+      "name": "Can add transactions",
+      "content_type": 42,
+      "codename": "add_transactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 166,
+    "fields": {
+      "name": "Can change transactions",
+      "content_type": 42,
+      "codename": "change_transactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 167,
+    "fields": {
+      "name": "Can delete transactions",
+      "content_type": 42,
+      "codename": "delete_transactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 168,
+    "fields": {
+      "name": "Can view transactions",
+      "content_type": 42,
+      "codename": "view_transactions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 169,
+    "fields": {
+      "name": "Can add station working hours",
+      "content_type": 43,
+      "codename": "add_stationworkinghours"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 170,
+    "fields": {
+      "name": "Can change station working hours",
+      "content_type": 43,
+      "codename": "change_stationworkinghours"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 171,
+    "fields": {
+      "name": "Can delete station working hours",
+      "content_type": 43,
+      "codename": "delete_stationworkinghours"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 172,
+    "fields": {
+      "name": "Can view station working hours",
+      "content_type": 43,
+      "codename": "view_stationworkinghours"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 173,
+    "fields": {
+      "name": "Can add station services",
+      "content_type": 44,
+      "codename": "add_stationservices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 174,
+    "fields": {
+      "name": "Can change station services",
+      "content_type": 44,
+      "codename": "change_stationservices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 175,
+    "fields": {
+      "name": "Can delete station services",
+      "content_type": 44,
+      "codename": "delete_stationservices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 176,
+    "fields": {
+      "name": "Can view station services",
+      "content_type": 44,
+      "codename": "view_stationservices"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 177,
+    "fields": {
+      "name": "Can add third party credentials",
+      "content_type": 45,
+      "codename": "add_thirdpartycredentials"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 178,
+    "fields": {
+      "name": "Can change third party credentials",
+      "content_type": 45,
+      "codename": "change_thirdpartycredentials"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 179,
+    "fields": {
+      "name": "Can delete third party credentials",
+      "content_type": 45,
+      "codename": "delete_thirdpartycredentials"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 180,
+    "fields": {
+      "name": "Can view third party credentials",
+      "content_type": 45,
+      "codename": "view_thirdpartycredentials"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 181,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 46,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 182,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 46,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 183,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 46,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 184,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 46,
+      "codename": "view_user"
+    }
+  }
+]

@@ -1,0 +1,249 @@
+
+.sites_container{
+    flex:1;
+    display: flex;
+    flex-direction: row;
+}
+.side_bar_container{
+    flex: 0.25;
+    background: var(--dark-blue);
+    padding: 1.8rem;
+}
+.sidebar_head{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 93%;
+}
+.dashboard_container{
+    display: flex;
+    flex: 1;
+    padding: 1.2rem;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 100vh;
+}
+.a_filters{
+    text-align: left;
+    letter-spacing: 0.14px;
+    color: #FFFFFFB3 !important;
+    font-size: var(--font-14);
+    font-family: 'Roboto',serif;
+    text-transform: uppercase;
+}
+.a_clear{
+    text-align: left;
+    letter-spacing: 0.14px;
+    color:var(--white) !important;
+    font-size: var(--font-14);
+    font-family: 'Roboto',serif;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.dropdown_text{
+    font-size: 0.75rem;
+    font-family: 'Roboto',serif;
+    color: var(--white) !important;
+}
+/* to override default value of dropdown need to use '!important' */
+.dropdown_button{
+    border: solid 2px #FFFFFF77;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 2rem;
+    width: 100%;
+    border-radius: 0.3rem;
+    background: var(--dark-blue);
+    padding: 0 0.45rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image:  url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat !important;
+    background-position-x: 100% !important;
+    background-position-y: 0.2rem !important;
+}
+
+.dropdown_text > a:hover {
+    color: var(--white)!important;
+    text-decoration: none !important;
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+
+.unstyled::-webkit-inner-spin-button,
+.unstyled::-webkit-calendar-picker-indicator {
+    display: 'none';
+    -webkit-appearance: none;
+}
+
+input[type="date"]:focus-visible {
+    outline: -webkit-focus-ring-color auto 1px;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 0px;
+}
+.date_filter{
+    width:93%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+.date_filter .date_filter_container{
+    min-width: 6.6rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 4rem;
+    justify-content: space-between;
+}
+
+.fliter_head{
+    color:#FFFFFFE6 !important;
+   font-family: 'Roboto',serif;
+    font-size: 0.75rem;
+}
+.filter_container{
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+/*Dasboard CSS*/
+.top_container{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.card_container{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    height: 7.87rem;
+    max-height: 7.87rem;
+    min-width: 17.5rem;
+    box-shadow: 0px 1px 8px 0px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0px 1px 8px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 1px 8px 0px rgba(0,0,0,0.1);
+}
+.card_title{
+    border-bottom: solid 1px #00000014;
+    font-size: 1rem;
+    color: var(--dark-gray);
+   font-family: 'Roboto',serif;
+    text-align: center;
+    font-weight: bold;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon_size{
+    height: 1.5rem;
+}
+.sub_container{
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    display: flex
+}
+.card_value{
+    color: var(--dark-gray);
+   font-family: 'Roboto',serif;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.react_container{
+    display: flex;
+    flex-direction: column;
+    margin: 0.4rem;
+    align-items: center;
+}
+.smile{
+    height: 1rem;
+    width: 1rem;
+    object-fit: contain;
+}
+
+.ratngs{
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+   font-family: 'Roboto',serif;
+}
+.divider{
+   border-right: solid 1px var(--dark-gray); 
+   color: var(--white);
+   margin: 7px;
+}
+.filter{
+    margin: 1rem 0;
+    width: 93%;
+}
+.white-text{
+    color: var(--white);
+}
+.remove_profile_pic_icn{
+    position: absolute;
+    top: 20%;
+    left: 75%;
+    cursor: pointer;
+}
+.profile_picture_modal_styl{
+    width: 30vw !important;
+    margin: auto !important;
+    height: 70vh !important;
+}
+.chart_nav_styl{
+    min-height: 5rem;
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width:34.5rem) {
+    .sites_container{
+        flex-direction: column;
+    }
+    .date_filter{
+        gap: 1rem;
+    }
+  }
+@media only screen and (min-width: 78.125rem) {
+    .date_filter .date_filter_container{
+        max-width: 48%;
+    }
+  }
+  @media only screen and (max-width: 50.563rem) {
+    .top_container{
+        justify-content: center;
+    }
+  }
+  @media only screen and (max-width: 87.5rem) {
+    .date_filter {
+      flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1rem 0;
+    }
+    input[type='date']{
+        min-width: 12.188rem !important;
+    }
+  }

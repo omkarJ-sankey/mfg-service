@@ -1,0 +1,31 @@
+
+{% for message in messages %}
+    {% if message.tags == "success" %}
+        <div class="alert alert-success" role="alert">
+        {{message}}
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{message}}</div>
+    {% endif %}
+{% endfor %}
+<div class="btn-notification-email-unsubscribe-navigation">
+    <div class="sub-nav-bar-in-notification 
+    {% if active_tab == '3DS_for_all' %}
+     active-tab
+     {% endif %}
+     "><a href="{% url 'three_ds_config_for_all_app_users' %}" class="sub-nav-anchor-tag" onclick="showLoader()">3DS for all</a>
+    </div>
+
+    <div class="sub-nav-bar-in-notification
+    {% if active_tab == 'User_specific_3DS' %}
+     active-tab
+     {% endif %}"><a href="{% url 'user_specific_3ds_config' %}" class="sub-nav-anchor-tag" onclick="showLoader()">User Specific 3Ds</a>
+    </div>
+
+    <div class="sub-nav-bar-in-notification
+    {% if active_tab == '3Ds_logs' %}
+     active-tab
+     {% endif %}"><a href="{% url 'three_ds_logs' %}" class="sub-nav-anchor-tag" onclick="showLoader()">3Ds Logs</a>
+    </div>
+</div>

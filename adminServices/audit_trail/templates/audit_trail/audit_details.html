@@ -1,0 +1,103 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Audit trail{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="audit_trail_details_buttons_container">
+        <div class="audit_details_action_box">
+            <div class="flex-text mt-3">
+                <a class="link_no_margin" href="{% url 'audit_list' %}{{query_params_str}}" onclick="showLoader();">
+                    <div class="rotated_square"></div>
+                </a>
+                <a class="link_no_margin text_no_margin" href="{% url 'audit_list' %}{{query_params_str}}"
+                    onclick="showLoader();">
+                    <p class="user_back_navigation">
+                        Audit Details
+                    </p>
+                </a>
+            </div>
+
+            <div class="audit_trail_details_buttons">
+                <div class="mark_as_reviewed_box" id="review_status">
+                    {% if audit_entry.review_status == 'Yes' %}
+                    <span class="mark_as_review_light_text">Reviewed by </span>
+                    <span class="mark_as_review_text">{{audit_entry.reviewd_by}}</span>
+                    <span class="mark_as_review_light_text">on</span>
+                    <span class="mark_as_review_text">
+                        {% load date_formater %}{{audit_entry.review_date | date_formater}}</span>
+                    {% else %}
+                    <input type="checkbox" id="mark_as_review"
+                        onchange="markAsReviewed('{{audit_entry.id}}'); showLoader();">
+                    <label for="mark_as_review" class="mark_as_review_text">Mark As Reviewed</label>
+                    {% endif %}
+                </div>
+                {% if prev_data_available %}
+                <a href="{% url 'audit_detail' prev_data_available %}{{query_params_str}}"
+                    class="audit_prev_next_buttons" onclick="showLoader();">Prev</a>
+                {% else %}
+                <button disabled class="audit_prev_next_buttons">Prev</button>
+                {% endif %}
+                {% if next_data_available %}
+                <a href="{% url 'audit_detail' next_data_available %}{{query_params_str}}"
+                    class="audit_prev_next_buttons" onclick="showLoader();">Next</a>
+                {% else %}
+                <button disabled class="audit_prev_next_buttons">Next</button>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="updated_by_details_box">
+        {% if audit_entry.action == 'Update' %}
+        <span class="mark_as_review_light_text update_action">Updated </span>
+        {% elif audit_entry.action == 'Create' %}
+        <span class="mark_as_review_light_text create_action">Created </span>
+        {% else %}
+        <span class="mark_as_review_light_text delete_action">Deleted </span>
+        {% endif %}
+        {% if audit_entry.changes_reference_id%}
+
+        <span class="mark_as_review_light_text">due to changes made on </span>
+
+        <a href="{% url 'audit_detail' audit_entry.changes_reference_id %}{{query_params_str}}">
+            <span class="mark_as_review_text mark_as_review_link_text">{{audit_entry.changes_reference_id}}</span>
+        </a>
+        {% else %}
+        <span class="mark_as_review_light_text">by</span>
+        <span class="mark_as_review_text">{{audit_entry.user_name}}</span>
+        {% endif %}
+        <span class="mark_as_review_light_text">on</span>
+        <span class="mark_as_review_text">
+            {% load date_formater %}{{audit_entry.created_date | date_formater}}
+        </span>
+
+
+    </div>
+    <div id="detail_content">
+    </div>
+
+</div>
+{% endblock%}
+
+{% block js %}
+
+<script type="text/javascript">
+
+    var audit_data = JSON.parse('{{audit_data | escapejs }}');
+    var auditPage = "{{audit_entry.module}}";
+    var blobUrl = "{{blob_url}}";
+    let pdf_icon = "{% static '/images/pdf_icon.png' %}";
+    let excel_icon = "{% static '/images/excel_icon.png' %}";
+    let image_icon = "{% static '/images/image_icon.png' %}";
+    let ppt_icon = "{% static '/images/ppt_icon.png' %}";
+    let document_icon = "{% static '/images/document_icon.png' %}";
+    var token = '{{csrf_token}}';
+    var mark_as_reviewed_url = `{% url 'mark_as_reviewed' %}`;
+</script>
+<script src="{% static 'js/audit_trail/audit_detail.js'%}"></script>
+
+{% endblock %}

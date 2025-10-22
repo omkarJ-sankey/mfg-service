@@ -1,0 +1,523 @@
+.html {
+  overflow-x: hidden;
+}
+
+.formContainer.add-email-notification {
+
+  display: block;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 100px 25px 100px;
+}
+
+.error_and_count{
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-count{
+  font-size: small;
+  color: #666666;
+}
+
+.field_lable {
+  color: #666666;
+  font-size: 14px;
+}
+
+.sub-main {
+  max-width: 100% !important;
+}
+
+.content-div {
+  width: 100%;
+}
+
+.input_container {
+  padding-bottom: 0.6rem;
+}
+
+.select-field {
+  /* width: 30%; */
+  height: 2.375rem;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px
+}
+
+.subject-input {
+  height: 2.375rem;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px
+}
+
+.attachment-container-main {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.cancel-preview-done-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cancel-btn {
+  background-color: #E2373F00;
+  border: none;
+  padding: 4px 20px 4px 20px;
+  box-shadow: 0px 0px 6px #00000033;
+  margin-top: 5px;
+  border-radius: 4px;
+}
+
+.preview-btn {
+  background-color: #003875;
+  border: none;
+  padding: 4px 20px 4px 20px;
+  box-shadow: 0px 0px 6px #00000033;
+  border-radius: 4px;
+  margin-top: 5px;
+  color: #FFFFFF;
+}
+
+.done-btn {
+  background-color: #E2373F;
+  border: none;
+  padding: 4px 20px 4px 20px;
+  box-shadow: 0px 0px 6px #00000033;
+  margin-top: 5px;
+  border-radius: 4px;
+  color: #FFFFFF;
+}
+
+.assign_button {
+  border: none;
+  background-color: #FAFAFA;
+  color: #003875;
+  font-size: 15px;
+}
+
+.attachment-modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.attachment-main-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 38%;
+  height: 100vh;
+}
+
+.attachment-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  height: 90%;
+}
+
+.modal-header-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cancel-assign-btn-div {
+  display: flex;
+  box-shadow: 0px -2px 2px rgb(224, 218, 218);
+}
+
+.cancel-btn-div {
+  width: 50%;
+  padding: 10px;
+}
+
+.assign-btn-div {
+  width: 50%;
+  padding: 10px;
+}
+
+#attachment-modal-cancel-btn {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #888888;
+  padding: 4px 20px 4px 20px;
+  border-radius: 4px;
+  width: 100%;
+  box-shadow: 0px 0px 5px #0000001F;
+}
+
+#attachment-modal-assign-btn {
+  width: 100%;
+  background-color: #E2373F;
+  border: none;
+  padding: 4px 20px 4px 20px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px;
+  color: white;
+}
+
+#attachment-modal-cross-btn {
+  border: none;
+  background-color: white;
+}
+
+.count-add-attchment-btn-div {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#add-attachment-btn-add-modal {
+  background-color: white;
+  border: none;
+  color: #003875;
+  font-size: 14px;
+}
+
+.count-add-attchment-btn-div {
+  box-shadow: 0px 2px 2px rgb(224, 218, 218);
+}
+
+#add-attachment-label {
+  color: #003875;
+  font-size: 0.75rem;
+}
+
+.assigned-images-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: auto;
+}
+
+.stored_image_container {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 25%;
+  width: 100px;
+
+}
+
+.image-view-remover-cross {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.image-view-remover-cross-btn {
+  border: none;
+  border-radius: 100%;
+  transform: rotate(45deg);
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 18px;
+}
+
+.image-view {
+  height: 60px;
+}
+
+.main-attachment-container {
+  margin-top: 20px;
+  border: 1px solid #CCCCCC;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.file-name-div {
+  width: 100%;
+}
+
+.file-name-para {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.django-ckeditor-widget {
+  width: 100%;
+}
+
+.error-messages {
+  color: #E2373F;
+  margin-bottom: 0;
+  margin-left: 10px;
+}
+
+.error_assigntp {
+  color: #E2373F;
+  margin-bottom: 0;
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+.preview-push-notification-content {
+  height: 600px;
+  width: 405px;
+}
+
+.email-preview-content {
+  padding: 20px 50px 50px 50px;
+  height: 80vh;
+  overflow-y: scroll;
+}
+
+.modal-dialog {
+  max-width: 700px;
+}
+
+.modal-body {
+  padding: 20px 30px;
+}
+
+.device_div {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.modal_main_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heading-text {
+  color: #444444;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+}
+
+#ckeditor-error {
+  margin-bottom: 1rem;
+}
+
+.notify_image {
+  display: block;
+  width: inherit;
+  height: inherit;
+}
+
+.notifications_display {
+  width: 95%;
+  height: 38px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+}
+
+.subject_of_notification {
+  margin: 0;
+  top: 387px;
+  left: 592px;
+  width: 180px;
+  height: 15px;
+  text-align: left;
+  font: normal normal medium 8px/1px Roboto;
+  letter-spacing: 0.08px;
+  color: #2e2e2e;
+  opacity: 1;
+  margin-left: 8px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description_of_notification {
+  margin: 0;
+  width: 180px;
+  height: 15px;
+  text-align: left;
+  font: normal normal normal 6px/8px Roboto;
+  letter-spacing: 0.06px;
+  color: #080808;
+  opacity: 1;
+  font-size: 10px;
+  margin-left: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+.image_div {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  margin-left: 7px;
+}
+
+#default-image {
+  width: 100%
+}
+
+.email-body-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.marketing-email-heading-image {
+  height: 100px;
+}
+
+.attachment-info-message-container {
+  display: flex;
+  align-items: center;
+  width: 40%;
+}
+
+.attachment-info {
+  margin: 0 5px 0 5px;
+}
+
+.attachment-info-message {
+  display: none;
+  font-size: 12px;
+  padding: 2px 5px 2px 5px;
+  background-color: #FFFFFF;
+  border-radius: 1px;
+  box-shadow: 0px 0px 4px #CCCCCC;
+}
+
+.attachment-info:hover+.attachment-info-message {
+  display: flex;
+}
+
+.image-view-remover-cross {
+  border-radius: 100%;
+}
+
+.input_container_div {
+  display: flex;
+  flex-direction: row;
+}
+
+.input_container_inrow {
+  padding-bottom: 0.6rem;
+  width: 25%;
+  flex-direction: column;
+  display: flex;
+  margin-right: 10px;
+}
+
+.checkbox {
+  margin-right: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox_input {
+  margin-right: 10px;
+  width: 17px;
+  accent-color: #003875;
+  margin-bottom: 0.5rem;
+  height: 17px;
+}
+
+.image_assign {
+  color: #07078e;
+}
+
+.input_container_div_image {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content1 {
+  width: 100%;
+  transition: .5s ease;
+}
+
+.images_p {
+  margin-bottom: auto;
+}
+
+.upper_collapsibles {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#region_list {
+  margin-right: 0.4rem;
+}
+
+.device_screen {
+  height: 500px;
+  background: #6A6A6A 0% 0% no-repeat padding-box;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox_error {
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-lines {
+  margin: 0.625rem 0;
+  width: 97%;
+  margin-top: 15px;
+  height: 0.5px;
+  background: #D0D0D0;
+  opacity: 1;
+}
+
+.horizontal-lines.audit-data-dividers {
+  width: 100%;
+}
+
+.horizontal-lines1 {
+  margin: 5px 0;
+  width: 100%;
+  height: 0.5px;
+  background: #D0D0D0;
+  opacity: 1;
+}
+.icon-popup{
+  font-size: 0.7rem;
+  background: #fff;
+  margin-left: 0.5rem;
+  border: 1px solid #CCCCCC;
+  padding: 0.3rem;
+  transition: .5s ease;
+  top: 0px;
+  left: 60px;
+  display: none;
+  width: 15rem;
+  position: absolute;
+}
+.notification-details-title {
+  font-size: 18px;
+}

@@ -1,0 +1,21 @@
+<div class="btn-notification-email-unsubscribe-navigation">
+        <div class="sub-nav-bar-in-notification 
+        {% if active_tab == 'Notifications' %}
+         active-tab
+         {% endif %}
+         "><a href="{% url 'notifications_list' %}" class="sub-nav-anchor-tag" onclick="showLoader()">Notification</a>
+        </div>
+
+        <div class="sub-nav-bar-in-notification
+        {% if active_tab == 'Email' %}
+         active-tab
+         {% endif %}"><a href="{% url 'email_list' %}" class="sub-nav-anchor-tag" onclick="showLoader()">Email</a>
+        </div>
+
+        <div class="sub-nav-bar-in-notification
+        {% if active_tab == 'Unsubscribe' %}
+         active-tab
+         {% endif %}"><a href="{% url 'bulk_unsubscribe_to_email_notifications' %}" class="sub-nav-anchor-tag"
+                        onclick="showLoader()">Unsubscribe</a>
+        </div>
+</div>

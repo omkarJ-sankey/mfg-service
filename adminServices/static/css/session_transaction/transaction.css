@@ -1,0 +1,131 @@
+.actions_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete_button {
+  border: 1px solid #03d9ff;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 5px 10px;
+}
+
+.delete_button_disable {
+  border: 1px solid #000000;
+  background-color: #cccccc;
+  color: #666666;
+  padding: 5px 10px;
+}
+
+.pre_auth_message_container {
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  width: 50%;
+}
+
+.reprocess_button {
+  font-size: 90%;
+}
+
+@media only screen and (max-width: 80rem) {
+  .reprocess_container {
+    width: 50% !important;
+  }
+}
+
+/* .preauth_container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.attachment-info-message {
+  width: auto;
+  display: none;
+  position: relative;
+  font-size: 12px;
+  padding: 2px 5px 2px 5px;
+  background-color: #FFFFFF;
+  border-radius: 3px;
+  box-shadow: 0px 0px 7px #CCCCCC;
+  position: absolute;
+  top: 35px;
+}
+
+#preauth_button:hover+.attachment-info-message {
+  display: block;
+} */
+.hold-payment-bulk-upload {
+  margin-left: 30%;
+  width: 6%;
+}
+
+.action-buttons-main-container {
+  display: flex;
+}
+
+.edit-btn {
+  min-width: 3.5rem;
+  min-height: 2.0rem;
+  background: var(--mfg-red);
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 0px 6px #00000033;
+  margin-left: 0.5rem;
+}
+
+.approve-btn {
+  background-color: #003875;
+  min-width: 5.5rem;
+  min-height: 2.0rem;
+  border: none;
+  font-size: 0.9rem;
+  color: #FAFAFA;
+  border-radius: 4px;
+}
+
+.approve-hold-payment-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.hold-payment-details-label {
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.hold-payment-details-value {
+  font-weight: bold;
+}
+
+.modal_action_container{
+  margin-top: 1rem;
+}
+.edit_hold_payment_input{
+  width: 100%;
+  padding: 0.625rem;
+  background: var(--white) 0% 0% no-repeat padding-box;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  color: var(--dark-gray);
+  font-size: 0.8rem;
+  height: 2.2rem;
+  font-weight: 400;
+  width: 60%;
+}
+
+.hold_payment_message_container{
+  height: 7vh;
+  padding: 0.7rem;
+}
+
+#cdr_id_text{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 150px; 
+}

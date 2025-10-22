@@ -1,0 +1,136 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Email Notification{% endblock %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/css/notifications/notifications/notifications.css' %}">
+<link rel="stylesheet" href="{% static '/css/common.css' %}">
+<link rel="stylesheet"
+    href="{% static '/css/notifications/email_notifications/unsubscribe_to_email_notifications.css' %}">
+<link rel="stylesheet" href="{% static '/css/notifications/email_notifications/add_email_notification_form.css'%}">
+{% endblock %}
+{% block content %}
+<div class="unsubscribe-email-notifications-main-container">
+    {% include "notifications/notification_sub_nav_bar.html" %}
+    <div class="bulk-unsubscribe-div">
+        <div class="extra_small_width_field inner-bulk-unsubscribe-div">
+            <button data-toggle="modal" data-target="#bulkupload" class="bulk_upload unsubscribe_bulk"
+                onclick="removePreviosData()">Bulk
+                <img src="{% static 'images/up_arrow.png' %}" class="rotated_button_arrow" alt=""></button>
+        </div>
+    </div>
+    <div class="formContainer add-email-notification unsubscribe-main" id="formContainer">
+        <div class="custom_dialouge sub-main">
+            <div class="content-div">
+                <div>
+                    <div>
+                        <div>
+                            <div><a class="usr_detaile input_container gray-one"><b>Unsubscribe Email</b></a></div>
+                            <div class="user_form_container unsubscribe-form-container">
+                                <div class="add-email-notification-form" id="add-email-notification-form">
+                                    {% csrf_token %}
+                                    <div class="input_container" id="subject-data-container">
+                                        <label class="field_lable">Enter Email ID</label>
+                                        <input type="text" id="email-input"
+                                            class="subject-input unsubscribe-email-input"
+                                            onkeyup="emailValidator(this.value)" onfocus=" removeMessages()">
+                                        <p class='error-messages' id='unsubscribe-user-error'></p>
+                                        <p class='success-messages' id='unsubscribe-user-success'></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="send-now-cancel-btn-container" id="send-now-cancel-btn-container">
+                                <div class="btn_container">
+                                    <button class="cancel" id="cancel">Cancel</button>
+                                    <button data-toggle="modal" data-target="#unsubscribe_user_modal"
+                                        class="new_user submit_new_user_data"
+                                        id="unsubscribe-to-email-btn">Unsubscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- bulk upload modal -->
+<div class="modal fade" id="bulkupload" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog promotion-modal-dialog" role="document">
+        <div class="modal-content modal_padding promotion-modal-content">
+            <div class="modal-header border-none-style">
+                <h5 class="modal-title" id="bulkuploadTitle">Bulk Upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body file_upload">
+                <label class="custom_file_upload" for='selectSheet'>Select File </label>
+                <input id='selectSheet' onchange="unableUploadButton(),removeSuccessErrorExpotButton()" type="file"
+                    accept=".xlsx">
+                <a id='filename'></a>
+            </div>
+            <div class="px-2" id="progress_bar_box">
+                <label for="progress_bar">Bulk Upload Progress: <span id="progess_count">0%</span>
+                    completed</label><br>
+                <progress id="progress_bar" class="w-100" value="0" max="100"> </progress>
+            </div>
+            <div id="bulk_upload_res_sucess">
+            </div>
+            <div id="bulk_upload_res_error">
+
+            </div>
+            <div id="empty_column_errors">
+            </div>
+
+            <a href="{% url 'bulk_unsubscribe_to_email_notifications' %}?export_errors=Yes" id="error_export_button"
+                class="btn btn-outline-danger my-2">Export
+                Errors</a>
+
+            <div id="upload_message"><a class="req_invalid">Please upload the file with all valid entries</a></div>
+            <div class="modal-footer  border-none-style">
+
+                <button type="button" class="btn btn-secondary cancel_button_bulk" data-dismiss="modal"
+                    id="bulk-modal-close">Cancel</button>
+                <button type="button" onclick="processCSV()" class="btn btn-primary upload_button_bulk"
+                    id="bulk-modal-upload">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- confirmation to unsubscription modal -->
+<div class="modal fade" id="unsubscribe_user_modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby=""
+    aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered unsubscribe-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="heading ">
+                    <h6 class="">Unsubscribe Email Notifications</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <p id="unsubscibe_user_confirmation_text">Are you sure you want to unsubscribe this user?</p>
+                </div>
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <button type="button" class="btn btn-light view-email-notification-btns"
+                    data-dismiss="modal">No</button>
+                <button id="" class="btn btn-danger" onclick="sendUserEmail()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    var token = '{{csrf_token}}';
+    let uploadSheet_unsubscribe_email_url = "{% url 'bulk_unsubscribe_to_email_notifications'%}"
+    let unsubscribe_email_url = "{% url 'unsubscribe_to_email_notifications' %}"
+    let get_progress_url = "{% url 'get_unsubscribe_progress_bar_details' %}"
+</script>
+<script src="{% static '/js/notifications/unsubscribe_email.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,136 @@
+.chart_card {
+  height: 36%;
+  width: 49%;
+  padding: 0.75rem;
+  box-shadow: 0px 1px 8px 0px rgb(0 0 0 / 12%);
+  -webkit-box-shadow: 0px 1px 8px 0px rgb(0 0 0 / 12%);
+  -moz-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  min-height: 18.75rem;
+  min-width: 28.75rem;
+  margin-bottom: 2rem;
+  background-color: var(--white)
+}
+
+.active {
+  display: flex !important;
+}
+
+canvas {
+  background-color: var(--white);
+}
+
+.legend_chart {
+  display: flex;
+  align-items: center;
+}
+
+.chart_title {
+  color: var(--dark-gray) !important;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.container_custom {
+  flex: 1
+}
+
+input:checked {
+  background-color: var(--dark-blue);
+}
+
+.checkbox_container {
+  padding: 0.3rem;
+  float: right;
+}
+
+.checkbox-lable {
+  color: #888888;
+  font-size: 0.75rem;
+}
+
+.chart_container_bx {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.chart_bx_bottom_border {
+  border-bottom: solid 1px #00000014;
+  padding-bottom: 0.7rem;
+}
+
+.ratings_count_cntainer,
+.purchased-container {
+  display: flex;
+  align-items: center;
+}
+
+.purchased-container {
+  margin-right: 15px;
+}
+
+.rating_icn_styl,
+.purchased-redeemed-icon-style,
+.three-ds-status-icon-style {
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-right: 0.3rem;
+}
+
+.rating_icn_styl.five_stars_ratings,
+.purchased-redeemed-icon-style.purchased-color {
+  background: #3391C9;
+
+}
+
+.rating_icn_styl.four_stars_ratings,
+.purchased-redeemed-icon-style.redeemed-color,
+.three-ds-status-icon-style.success-check-color {
+  background: #9FCA4F;
+
+}
+
+.rating_icn_styl.one_stars_ratings,
+.three-ds-status-icon-style.failed-check-color {
+  background: #FF3B3B;
+
+}
+
+.rating_icn_styl.two_stars_ratings {
+  background: #FFB13B;
+
+}
+
+.rating_icn_styl.three_stars_ratings {
+  background: rgb(183, 255, 117);
+
+}
+
+.chart-nav-container {
+  display: flex;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 0.6rem
+}
+
+@media (max-width: 36rem) {
+  .navbar-expand-sm {
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+
+  .chart_nav_styl {
+    justify-content: center;
+  }
+
+  .chart_card {
+    position: relative;
+    margin: auto auto 2rem auto;
+    height: auto;
+    width: 80vw;
+    min-height: auto;
+    min-width: 80vw;
+  }
+}

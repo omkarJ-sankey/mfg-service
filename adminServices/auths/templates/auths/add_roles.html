@@ -1,0 +1,11 @@
+
+
+<h1>{{text}}</h1>
+
+<form method="post" action="" id="AddStationForm" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{form.as_p }}
+
+    <input type="submit" name="add">
+</form>

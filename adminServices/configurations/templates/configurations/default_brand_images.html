@@ -1,0 +1,339 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} Default Brand Images {% endblock %}
+{% load static %}
+
+
+{%block css%}
+{%endblock%}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/configurations/conf.css'%}">
+<div class="configration-nav-container">
+
+    {% include "configurations/side_nav.html" %}
+
+    <!-- Amenities -->
+    <div class="form_container" id="Amenities">
+        <div class="Fields-container configurations_fields_container">
+            <div class="bigger_width_field">
+                <label for="fname" class="labels">Search</label>
+                <div class="search-box">
+                    <img src="{% static '/images/search-1.png' %}" alt="">
+                    <input id="search-input" type="text" placeholder="E.g. Oscar Brown" class="inputs" />
+                </div>
+            </div>
+            <div class="btn_container ml-auto">
+                <button class="add-btn" onclick="addBrandDefaultImageFunc()" data-toggle="modal"
+                    data-target="#addBrandDefaultImage">
+                    <img data-toggle="tooltip" data-placement="bottom" title="Add"
+                        src="{% static '/images/plus-sign.png' %}" alt=""></button>
+            </div>
+        </div>
+        <div class="table_container configurations_table_container">
+            <table class="table configurations_table" aria-describedby="configdesc" id="table-amenities">
+                <thead>
+                    <tr>
+                        <th scope="col" hidden>ID</th>
+                        <th scope="col" hidden>Path</th>
+                        <th scope="col" class="text-left  th_conf left_20px">Brand Name</th>
+                        <th scope="col" class="text-left">App Version</th>
+                        <th scope="col" class="text-left">Image</th>
+                        <th scope="col" class="text-right right_20px th_conf">Action</th>
+                    </tr>
+                </thead>
+                <!-- <tbody>
+                    {% if base_configurations %}
+                        {% for st in base_configurations %}
+                            <tr>
+                                <td hidden>{{st.id}}</td>
+                                <td hidden>{{st.base_configuration_image}}</td>
+                                <td class="config_table" data-toggle="modal" onclick="viewBrandDefaultImageDetailsFunc('{{st.id}}','{{st.base_configuration_name}}','{{st.get_image}}')" data-target="#viewDefaultImages" class="con-typ td_text text-left view-con-itm left_20px">{%if st.base_configuration_name %}{{st.base_configuration_name}}{% else %} Not provided{%endif%}</td>
+                                <td data-toggle="modal"  class="text-center td_text view-con-itm view-connector-details-modal ">
+                                    <div class="d-flex align-items-center default_image_flex_box">
+                                        
+                                        <div class="default_images_container image_container_box" data-toggle="modal" onclick="viewBrandDefaultImageDetailsFunc('{{st.id}}','{{st.base_configuration_name}}','{{st.get_image}}')" data-target="#viewDefaultImages" >
+                                            <img class="brand_default_table_images" src={{st.get_image}} alt="">
+                                            
+                                        </div>
+                                        <div class="image_container_box">
+                                            <span class="view_default_image_btn" onclick="toggleBrandDefaultImageViewer('{{st.get_image}}')">View Image</span>
+                                        </div>
+                                    </div>
+                                </td>
+                               
+                                <td class=" td_text text-right config_shops_icon">
+                                    
+                                    <img data-toggle="modal" data-target="#editDefaultImage" onclick="editBrandDefaultImageDetailsFunc('{{st.id}}','{{st.base_configuration_name}}','{{st.get_image}}')" title="Edit"  src="{% static '/images/pencil-2.png' %}" class="delete-icn conf-edit-icn" alt="">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    <tr>
+                        <td colspan="7"  class="pagination_bx_background">
+                            <div class="pagination_div">
+                                <div class="record_count">
+                                    {% if data_count is 0 %}
+                                        <p class="config_table" >No records</p>
+                                    {% elif data_count == 1  %}
+                                        <p class="config_table">   <strong>{{data_count}}</strong> </strong> record </p>
+                                    {% else %}
+                                        <p class="config_table">   <strong>{{data_count}}</strong> </strong> records </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                </tr>
+                </tbody> -->
+
+
+
+                <tbody id="listingTable">
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="pagination_bx_background">
+                            <div class="pagination_div">
+                                <div class="record_count">
+                                    <span id="record_count"></span>
+                                </div>
+                                <div class="pagination_buttons d-flex justify-content-lg-start align-items-center"
+                                    id="pagination_button_box">
+                                    <span class="pagination_button prev" id="button_prev">Previous</span>
+                                    <span id="page_number"></span>
+                                    <span class="pagination_button next" id="button_next">Next</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- modal for add Amenities -->
+<div class="modal fade" id="addBrandDefaultImage" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addBrandDefaultImageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content brand_default_images_modal">
+            <div class="modal-body">
+                <div class="heading">
+                    <h6 class="add_conf_heading">Add Brand Image</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column">
+
+                    {% csrf_token %}
+                    <div>
+                        <div id="d-flex flex-column ">
+                            <label for="add_brand_default_name" class="labels">Brand Name</label><br>
+                            <select name="add_brand_default_name" id="add_brand_default_name" class="txtbox input-txt ">
+                                <option value="">Select Brand</option>
+                                {% for brand in brands %}
+                                    <option value="{{brand}}">{{brand}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">For App Version
+                            </p>
+
+                            <input type="number" id="app_version" class="txtbox input-txt" name="app_version"
+                                placeholder="">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <label for="email" class="labels">Brand Image</label><br>
+                            <input type="text" id="image_path_src" hidden class="txtbox" name="image_path"
+                                placeholder="">
+                        </div>
+                    </div>
+
+                    <div id="add_images_container" class="add_images_conf_container">
+
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <input type="file" id="i_file" name="filename" hidden accept=".jpeg,.jpg,.png" />
+                            <label for="i_file" class="add_images_label"><strong class=" pick-img">Add
+                                    Image</strong></label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer modal_footer_padding">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger" onclick="addBrandDefaultImageDetails()"
+                    id="add_amenity_button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for edit Amenities -->
+<div class="modal fade" id="editDefaultImage" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editDefaultImageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content brand_default_images_modal">
+
+            <div class="modal-body">
+                <div class="heading heading-mar">
+                    <h6 class="add_conf_heading">Edit Brand Image</h6>
+                    <button type="button" class="btn-close" onclick="closeModal('#editDefaultImage')"
+                        data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column">
+
+                    <input type="text" id="default_image_id" hidden name="type" placeholder="" value="">
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="edit_brand_default_name" class="labels">Brand Name</label><br>
+                            <select name="edit_brand_default_name" id="edit_brand_default_name"
+                                class="txtbox input-txt ">
+                                <option value="">Select Brand</option>
+                                {% for brand in brands %}
+                                    <option value="{{brand}}">{{brand}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <p class="service_info" data-toggle="collapse" data-target="#collapseImage"
+                                aria-expanded="false" aria-controls="collapseImage">For App Version
+                            </p>
+
+                            <input type="number" id="update_app_version" class="txtbox input-txt" name="app_version"
+                                placeholder="">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <label for="edit_brand_default_image" class="labels">Brand Image</label><br>
+                            <input type="text" id="edit_brand_default_image" hidden class="txtbox input-txt" name="type"
+                                placeholder="" value="Type 1">
+                        </div>
+                    </div>
+                    <div id="add_images_container1">
+                        <div class="default_image_preview_container">
+                            <div id='edit_discard' class='discard'></div>
+                            <img class="default_preview_image_ service_image view-con-img"
+                                src="{% static '/images/Group.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer conf_modal_footer">
+                <button type="button" class="btn btn-light" onclick="closeModal('#editDefaultImage')"
+                    data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="update_amenity_button"
+                    onclick="updateBrandDefaultImageDetails()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for view Amenities details -->
+<div class="modal fade" id="viewDefaultImages" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="viewDefaultImagesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content brand_default_images_modal">
+
+            <div class="modal-body">
+                <div class="heading heading-mar">
+                    <h6 class="add_conf_heading">Brand Image Details</h6>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column">
+
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">Brand Name</label><br>
+                            <h6 class="view-con-typ conf-details-heading"></h6>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="d-flex flex-column">
+                            <label for="email" class="labels">For App Version</label><br>
+                            <h6 class="conf-details-heading" id="view_app_version"></h6>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="d-flex flex-column" class="mr-tp">
+                            <label for="email" class="labels">Brand Image</label><br>
+                        </div>
+                    </div>
+
+                    <div id="add_images_container add_images_conf_container">
+                        <div class="default_image_preview_container">
+                            <img class="default_preview_image_ service_image view-con-img"
+                                src="{% static '/images/Group.png' %}" alt="">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer conf_modal_footer">
+                <button onclick="switchToDefaultImageEditor()" type="button" class="btn btn-danger"
+                    data-dismiss="modal">
+                    <img src="{% static '/images/pencil.png' %}" class="delete-icn2" alt="">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="site_brand_image_previewer" id="default_image_viewer_container_id">
+    <div class="stop_preview_div" onclick="toggleBrandDefaultImageViewer('')">
+        <div class="stop_preview"></div>
+    </div>
+
+    <div class="site_brand_image_previewer_background">
+
+    </div>
+    <img id="default_image_preview_id" src="https://mfgevqastorage.blob.core.windows.net/media/images/BP_5.jpg"
+        alt="brand_default_image">
+</div>
+
+
+
+
+{% endblock%}
+
+
+<!-- javascript -->
+{% block js %}
+
+
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    var errors = ["{%for m in messages%}{{m}}{%endfor%}"];
+    is_error = "{% firstof messages%}";
+    let url_u = `{{update_url_param|safe}}`;
+    let window_radirect_location = "{% url 'amenities'%}";
+    var token = '{{csrf_token}}';
+    let add_default_image_url = "{% url 'addDefaultImages' %}";
+    let update_default_image_url = "{% url 'updateDefaultImages' %}";
+    let group_png_url = "{% static '/images/Group.png' %}";
+
+    let paginationObj = JSON.parse('{{json_data | escapejs }}');
+    let pencilEditImage = "{% static '/images/pencil-2.png' %}";
+    let paginationCount = "{{pagination_count}}";
+    let paginationFor = "default_images";
+</script>
+
+<script src="{% static 'js/configurations/common-configurations-func.js' %}"></script>
+<script src="{% static 'js/configurations/default_brand_images.js' %}"></script>
+<script src="{% static 'js/configurations/pagination.js' %}"></script>
+{% endblock %}

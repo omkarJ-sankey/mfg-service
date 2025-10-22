@@ -1,0 +1,165 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %} Reconciliation {% endblock %}
+{%endblock%}
+{% block content %}
+
+
+<div class="back-link"><div class="flex-text"><div class="rotated_square"></div> <a  href="{% url 'reconciliation_list' %}">{{station.station_id}} {{station.station_name}}</a></div></div>
+    
+<div class="transaction_info_container space_between">
+    <div class="info_content">
+        <p>Date: <strong>{{date}}</strong></p>
+    </div>
+    <span >|</span>
+    <div class="info_content">
+        <p>Payment Method: <strong>{{payment_method}}</strong></p>
+    </div>
+    <span>|</span>
+    <div class="info_content">
+        <p>Total Records: <strong>{{Total_transactions}}</strong></p>
+    </div>
+    <span>|</span>
+    <div class="info_content">
+        <p>Total Transaction Amount: <strong>£ {{Total_transaction_amount}}</strong></p>
+    </div>
+    <span>|</span>
+    <div class="info_content">
+        <p>Total Settlement Amount: <strong>£ {{Total_settlement}}</strong></p>
+    </div>
+</div>
+<div class="table_container_for_shadow">
+<div class="table_container_promotions reconciliation">
+    
+   
+    <div class="right_table reconciliation reconciliation_table" id="sliding_table"  >
+        <!-- reused promotions classes for scrolling functionlity -->
+        <table class="table_promotions full-width" aria-describedby="slidetable">
+            <thead>
+              <tr>
+                <th scope="col">
+                    Transaction ID
+                </th>
+                <th scope="col">Time</th>
+                <th scope="col">Transaction Total</th>
+                <th scope="col">Settlement Total</th>
+                <th scope="col">Status</th>
+                <th scope="col recon_align_center">Comments</th>
+
+              </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %} 
+              <tr>
+                <th id="reconciliation_form">
+                    <a class="view_recon_details_link"
+                    href="{% url 'transaction_details' transaction.id %}" rel=noopener>
+                    {{transaction.order_id}}</a></th>
+                
+                      <td>{{transaction.transaction_timestamp.time}}</td>
+                      <td>{{transaction.transaction_amount}}</td>
+                      <td>{{transaction.settlement_amount}}</td>
+                      <td>{{transaction.status}}</td>
+                      <td class="transaction_comment_box">
+                        <div id="comment_box_{{transaction.id}}">{%if transaction.comments %}{{transaction.comments}}{% endif %}</div>  
+                        <button class="delete-station-image-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="appendCommentsContent('{{transaction.id}}')">
+                        
+                        <img class="table_buttons provide_comment" src="{% static '/images/pencil-2.png' %}" alt="">
+                      </button></td>
+             </tr>  
+              {% endfor %}
+            </tbody>
+          </table>
+
+
+
+    </div>
+       
+</div>
+
+<div class="Promotion_pagination">
+    <div class="pagination_div">
+        <div class="record_count">
+            {% if data_count is 0 %}
+                <p>No records</p>
+            {% else %}
+                <p>   <strong>{{first_data_number}}</strong>-<strong>{{last_data_number}}</strong> of <strong>{{data_count}}</strong> records </p>
+        
+            {% endif %}
+        </div>
+        <div class="pagination_buttons">
+            
+            {% if data_count >= 10 %}
+                {% if prev  %}
+                    <a href="{% url 'reconciliation_list_for_station' station.id %}?page={{prev}}&payment_type={{payment_method}}&date={{date}}" ><button class="pagination_button prev" >Previous</button></a>
+                {% else %}
+                    
+                    <button class="disabled_button promotion prev">Previous</button>
+                {% endif %} 
+            {% endif %}
+            {% for i in pagination_num_list%}
+            
+                {% if i is None %}
+
+                    <span>.</span>
+
+                {% else %}
+                    {% if current_page == i%}
+                        <a href="#"  ><button class="active_pagination_button">{{i}}</button></a>
+                    {% else %}
+                        <a href="{% url 'reconciliation_list_for_station' station.id %}?page={{i}}&payment_type={{payment_method}}&date={{date}}" ><button class="pagination_button">{{i}}</button></a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            {% if data_count >= 10 %}
+                {% if next  %}
+                    <a href="{% url 'reconciliation_list_for_station' station.id %}?page={{next}}&payment_type={{payment_method}}&date={{date}}" ><button class="pagination_button next">Next</button></a>
+                {% else %}
+                    
+                    <button class="disabled_button promotion next">Next</button>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div> 
+
+
+</div>
+</div>
+
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content add_transaction_comment_modal">
+         
+        <div class="modal-body">
+            <div class="heading">
+                <h5>Comments</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <div class="provide_comment_content" id="delete-modal-content">
+
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock%}
+
+
+{% block js %}
+
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    var token = '{{csrf_token}}';
+
+    let do_comment_url = "{% url 'do_comment' %}";
+
+</script>
+<script src="{% src 'js/reconciliation/common-funcs.js'%}"></script>
+<script src="{% src 'js/reconciliation/reconciliation_fromstations.js'%}"></script>
+{% endblock %}

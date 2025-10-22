@@ -1,0 +1,526 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} Add promotions{% endblock %}
+
+{% block stylesheet %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static '/css/promotions/app_preview.css'%}">
+{% endblock %}
+{% block css %}
+
+
+{% endblock %}
+{% block content %}
+
+
+
+
+{% load static %}
+<div class="side_modal" id="side_modal_id">
+    <div class="background_manager">
+
+    </div>
+    <div class="side_modal_content">
+        <div id="dynamic_content_container">
+            <div class="content_of_modal"> 
+                <div class="side_modal_heading">
+                    <a>Assign Images</a>
+                    <button class="close_button" onclick="toggleModal();">X</button>
+        
+                </div>
+                <div class="side_modal_heading1">
+                    <p>00 added</p>
+                    <a href="" class="add_images">Add Images</a>
+                </div>
+                <div class="hor_line"></div>
+                
+
+                
+            </div>
+            <div class="add_images_button_cotainer">
+                <button class="cancel_image_button">Cancel</button>
+                <button class="assign_image">Assign</button>
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+<div class="add_station_container">
+
+    <div class="side_content_indicator">
+            <p class="ptext active1" onclick="scrollPageFunction('formSection')">Promotion Details</p>
+            <p class="ptext" onclick="scrollPageFunction('assign_promotions_form_container')">Assign Promotions</p>
+            <p class="ptext" onclick="scrollPageFunction('image_section')">Images</p>
+    </div>
+    
+    <div class="form_container">
+        
+        <div class="add_new_site_link"><div class="flex-text" ><a class="link_no_margin" href="{% url 'promotions_list' %}{{query_params_str}}" onclick="showLoader();"><div class="rotated_square"></div></a><a class="link_no_margin text_no_margin" href="{% url 'promotions_list' %}{{query_params_str}}" onclick="showLoader();"><p class="user_back_navigation" id="link_text">Add New Promotion</p></a></div></div>
+        <p class="site_details">Promotion Details</p>
+        
+        <div class="forms page-section" id="formSection">
+            <div class="station_form promotion_add_form">
+                <div class="station_fields">
+                
+                    <label    class="labels">Retail Barcode</label>
+                    <input type="text" value="{{promotion.retail_barcode}}"   class="inputs" value="" onkeyup="updateUploadedDataSet(0, this.value);" placeholder="Enter retail barcode" >
+                    <p class="error_field" id="error_field0"></p>
+                </div>
+    
+                <div class="station_fields">
+                
+                    <label    class="labels">Promotions Title</label>
+                    <input type="text" value="{{promotion.promotion_title}}"   class="inputs" onkeyup="updateUploadedDataSet(1, this.value);" placeholder="Enter promotions title">
+                    <p class="error_field" id="error_field1"></p>
+                </div>
+    
+                <div class="station_fields">
+                
+                    <label    class="labels">Product</label>
+                    <input type="text" value="{{promotion.product}}"    class="inputs" onkeyup="updateUploadedDataSet(2, this.value);" placeholder="Enter product name">
+                    <p class="error_field" id="error_field2"></p>
+                </div>
+     
+                <div class="station_fields">
+                
+                    <label    class="labels">M Code</label>
+                    <input type="text"   value="{{promotion.m_code}}"  class="inputs" onkeyup="updateUploadedDataSet(3, this.value);" placeholder="Enter M Code">
+                    <p class="error_field" id="error_field3"></p>
+                </div>
+
+                <div class="station_fields">
+                
+                    <label    class="labels">Status</label>
+                    <div class="station_select-box">
+                        <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(4, this.value);">
+                            <option value="">Select</option>
+                            {% for i in status_list %}
+                                {% if i == promotion.status %}
+                                        
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field4"></p>
+                </div>
+                
+                <div class="station_fields">
+                
+                    <label    class="labels">Available For</label>
+                    <div class="station_select-box">
+                        <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(5, this.value);">
+                            <option value="">Select</option>
+                            {% for i in available_for_list%}
+                                {% if i == promotion.available_for %}
+                                    
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <p class="error_field1" id="error_field5"></p>
+                </div>
+                <div class="station_fields">
+                
+                    <label    class="labels">Start Date</label>
+                    <div class="date_container1" onclick="showFromDatePicker()">
+            
+                        <input disabled type="text" id="start_date" value="{{promotion.start_date}}" placeholder="Start date"  onchange="updateUploadedDataSet(6, this.value);"  class="datepicker1" >
+                        
+                    </div>
+                    <p class="error_field" id="error_field6"></p>
+                </div>
+                <div class="station_fields">
+                
+                    <label    class="labels">End Date</label>
+                    <div class="date_container1" onclick="showToDatePicker()">
+            
+                        <input disabled type="text" id="end_date"  value="{{promotion.end_date}}" placeholder="End date"  onchange="updateUploadedDataSet(7, this.value);"  class="datepicker1" >
+                        
+                    </div>
+                    <p class="error_field" id="error_field7"></p>
+                </div>
+                <div class="station_fields">
+                
+                    <label    class="labels">Price</label>
+                    <input type="number" id="promotion_price" value="{{promotion.price}}"  min="0"  class="inputs" onchange="updateUploadedDataSet(8, this.value); restrictWordInNumberFields('promotion_price')" placeholder="Enter price">
+                    <p class="error_field" id="error_field8"></p>
+                </div>
+                <div class="station_fields">
+                
+                    <label    class="labels">Quantity</label>
+                    <input type="number" id="promotion_quantity"  value="{{promotion.quantity}}"  min="0" class="inputs" placeholder="Enter quantity" onchange="updateUploadedDataSet(9, this.value); restrictWordInNumberFields('promotion_quantity')">
+                    
+                    <p class="error_field" id="error_field9"></p>
+                </div>
+                
+                <div class="station_fields">
+                
+                    <label    class="labels">Unique Code / Barcode</label>
+                    <input type="text"  value="{{promotion.unique_code}}"   class="inputs" placeholder="Enter Unique Code / Barcode" onkeyup="updateUploadedDataSet(10, this.value);">
+                    
+                    <p class="error_field" id="error_field10"></p>
+                </div>
+                <div class="station_fields h-auto big promotion-details-popup">
+                
+                    <label    class="labels">Offer Details <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('offer')" onmouseout="hide_info_box('offer')" alt=""><span id='show_tooltip_offer' class="icon-popup">Please limit offer details upto 300 characters.</span></label>
+                    <textarea id="offers" class="inputs promotion_textarea" on="removeWhiteSpace(promotion.offer_details)" onkeyup="updateUploadedDataSet(11, this.value);" placeholder="Enter offer details">
+                        {{promotion.offer_details}}     
+                    </textarea>
+                    <p class="error_field" id="error_field11"></p>
+                </div>
+                <div class="station_fields h-auto big">
+                
+                    <label    class="labels">Terms And Conditions</label>
+                    <textarea id="terms" class="inputs promotion_textarea" onload="removeWhiteSpace(promotion.terms_and_conditions)" onkeyup="updateUploadedDataSet(12, this.value);" placeholder="Enter terms and conditions">
+                        {{promotion.terms_and_conditions}}
+                    </textarea>
+                    <p class="error_field" id="error_field12"></p>
+                </div>
+               
+            </div>
+        </div>
+        
+        <div class="horizontal-lines"></div>
+
+        
+    <p class="site_details">Assign Promotions</p>
+
+        <div class="assign_promotions_form page-section" id="assign_promotions_form_container">
+            <div class="station_fields">
+                
+                <label    class="labels">Offer Type</label>
+                <div class="station_select-box">
+                    <select   class="dropdown_input small_dropdown_input" onchange="updateUploadedDataSet(13, this.value);">
+                        <option value="">Select</option>
+                        {% for i in offer_types%}
+                            {% if i == promotion.offer_type %}
+                                        
+                                <option value="{{i}}" selected>{{i}}</option>
+                            {% else %}
+                            
+                                <option value="{{i}}">{{i}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <p class="error_field1" id="error_field13"></p>
+            </div>
+            
+            <div class="station_fields">
+                <label    class="labels">Shop</label>
+                <div class="station_select-box checkbox_select_box">
+                    <div class="multiselect">
+                        <div class="selectBox" onclick="showCheckboxes('shop-checkboxes')">
+                          <select>
+                            <option id="shopText">Select</option>
+                          </select>
+                          <div class="overSelect"></div>
+                        </div>
+                        <div class="checkboxes" id="shop-checkboxes">
+                           <!-- <div id="checkbosx0_loader" ></div> -->
+                          <label class="servicesLabel">
+                            <input type="checkbox"  class="padder  shopch " id="shop-all-input" onchange="updateLoyaltyData('shop', 'All');"/>All</label>
+                            <!-- {% for shop in shops %}
+                                {% if shop.1 in promotion.shops %}
+                                    
+                                <label class="servicesLabel">
+                                    <input type="checkbox" checked class="padder  shopch shopch{{shop.1}}" id="sel-reg-shop" ref='{{shop.1}}'  onchange="refreshCheckList('sel-reg-shop');checkboxForshops('{{shop.1}}', false);"/>{{shop.1}}</label>
+                                {%else%}
+                                
+                                <label class="servicesLabel">
+                                    <input type="checkbox"  class="padder  shopch shopch{{shop.1}}" id="sel-reg-shop" ref='{{shop.1}}'  onchange="refreshCheckList('sel-reg-shop');checkboxForshops('{{shop.1}}', false);"/>{{shop.1}}</label>
+                                
+                                {% endif %}
+                            {% endfor %} -->
+                            {% for shop in shops %}
+                                    <label class="servicesLabel">
+                                        <input
+                                            type="checkbox"
+                                            value="{{shop.1}}"
+                                            class="padder shop-input"
+                                            id="shop-{{shop.1}}-checkbox"
+                                            onchange="updateLoyaltyData('shop', '{{shop.1}}');"
+                                        />{{shop.1}}</label>
+                                {% endfor %}
+                        </div>
+                      </div>
+                </div>
+                <p class="error_field1" id="error_field14"></p>
+            </div>
+                <div class="station_fields">
+                
+                    <label    class="labels">Londis Code (If Applicable)</label>
+                    <input type="text" value="{% if promotion.londis_code != 'nan' %}{{promotion.londis_code}} {% else %}NA{% endif %}"  id="upload_Data1"  class="inputs" value="" onchange="updateUploadedDataSet(15, this.value);"  >
+                    <p class="error_field" id="error_field15"></p>
+                </div>
+    
+                <div class="station_fields">
+                
+                    <label    class="labels">Budgen Code (If Applicable)</label>
+                    <input type="text" value="{% if promotion.budgen_code != 'nan' %}{{promotion.budgen_code}} {% else %}NA{% endif %}"    class="inputs" onchange="updateUploadedDataSet(16, this.value);">
+                    <p class="error_field" id="error_field16"></p>
+                </div>
+    
+
+                
+                <div class="station_fields">
+                
+                    <label    class="labels">Operation Regions</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('ops-region-checkboxes')">
+                              <select>
+                                <option id="opsRegionText">Select</option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="ops-region-checkboxes">
+                              <!-- <label >
+                                <input type="checkbox" id="sel-opr-reg-all"  class="padder  opsch" onchange="checkboxSelected('All');"/>All</label>
+                                {% for ops_region in ops_regions %}
+                                    {% if ops_region in promotion.operation_regions %}
+                                        
+                                    <label >
+                                        <input type="checkbox" checked id="sel-opr-reg" ref='{{ops_region}}'  class="padder  opsch" onchange="refreshCheckList('sel-opr-reg');checkboxSelected('{{ops_region}}');"/>{{ops_region}}</label>
+                                    {%else%}
+                                    
+                                    <label >
+                                        <input type="checkbox" checked id="sel-opr-reg" ref='{{ops_region}}'    class="padder  opsch" onchange="refreshCheckList('sel-opr-reg');checkboxSelected('{{ops_region}}');"/>{{ops_region}}</label>
+                                    
+                                    {% endif %}
+                                {% endfor %} -->
+                            </div>
+                          </div>
+                    </div>
+                    <p class="error_field1" id="station_error_field_ops_region"></p>
+                </div>
+    
+                <div class="station_fields">
+                
+                    <label    class="labels">Regions</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('region-checkboxes')">
+                              <select>
+                                <option id ="regionText">Select</option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="region-checkboxes">
+                            </div>
+                          </div>
+                    </div>
+                    <p class="error_field1" id="station_error_field_region"></p>
+                </div>
+
+                <div class="station_fields">
+                
+                    <label    class="labels">Areas</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('area-checkboxes')">
+                              <select>
+                                <option id="areaText">Select</option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="area-checkboxes">
+                            </div>
+                          </div>
+                    </div>
+                    <p class="error_field1" id="station_error_field_areas"></p>
+                </div>
+
+                
+                <div class="station_fields">
+                
+                    <label    class="labels">Stations</label>
+                    <div class="station_select-box checkbox_select_box">
+                        <div class="multiselect">
+                            <div class="selectBox" onclick="showCheckboxes('station-checkboxes')">
+                              <select>
+                                <option id="stationText">Select</option>
+                              </select>
+                              <div class="overSelect"></div>
+                            </div>
+                            <div class="checkboxes" id="station-checkboxes">
+                            </div>
+                          </div>
+                    </div>
+                    <p class="error_field1 station_error_field" ></p>
+                </div>
+                
+                
+               
+        </div>
+
+
+    
+    <div class="horizontal-lines"></div>
+
+
+<!-- Assign promotions section -->
+
+
+    <!-- Images section -->
+
+<div class="upper_collapsibles page-section promotion-details-popup" id="image_section">
+    <p class="site_details" data-toggle="collapse" data-target="#collapseImage" aria-expanded="false" aria-controls="collapseImage">Images <img class="i_icon" src="{% static '/images/i_icon.png' %}" onmouseover="show_info_box('image')" onmouseout="hide_info_box('image')" alt=""><span id='show_tooltip_image' class="icon-popup image_popup">Assign images for promotion.</span></p>
+    <button class="assign_button" onclick="toggleModal(1);">Assign</button>
+</div>
+
+<div class="content1 collapse show" id="collapseImage">
+<div id="images_container">
+    {% if promotion.images.0 %}
+        
+        {% for img in promotion.images %}
+        <img src="{{img}}" alt="">
+        {% endfor %}
+    {%else %}
+        
+    <div class="empty_box_text"><p>Click 'Assign' button to add images</p></div>
+    {%endif%}
+</div>
+</div>
+<div class="horizontal-lines"></div>
+
+
+
+
+<div class="submit_buttons">
+    <div class="container_buttons" id="submit_button_container">
+        
+    </div>
+</div>      
+
+    </div>
+</div>
+
+<div class="modal fade" id="cancle_submit_warning_popup"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promo_cancel_modal" >
+         
+        <div class="modal-body">
+            <h3 id="updated_status">Are you sure you want to cancel, all data will be lost after pressing yes?</h3>
+            <div class="google_maps_submit_buttons">
+                <div class="google_maps_container_buttons">
+                    <button class="cancle_button" data-bs-dismiss="modal">No</button>
+                    <button onclick="showLoader();Previous();" class="done_button" >Yes</button>
+                </div>
+             </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop"   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content app_preview_bx">
+        <div class="modal-body">
+            <div class="heading">
+                <h5>App Preview</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            </div>
+            <div class="content_of_preview">
+                <div class="content_heading">
+                    <h6>promotion details</h6>
+                </div>
+            </div>
+            <div class="slider_arrrows">
+                <div class="rotated_arrow left_arrow">
+
+                </div>
+                <div class="slide_number">
+                    <p><strong>01</strong>/02</p>
+                </div>
+                <div class=" rotated_arrow right_arrow">
+
+                </div>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="modal fade" id="restrict_image_upload"   data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content google_maps_content promo_image_warning_modal">
+         
+        <div class="modal-body">
+            <h3 id="updated_status">Only one image is allowed, by adding new image old image will be removed!</h3>
+            
+            <div class="google_maps_submit_buttons">
+                <div class="google_maps_container_buttons">
+                        
+                    <button class="cancle_button" data-bs-dismiss="modal" onclick="do_not_add_new_image_in_container();">Discard</button>
+                    
+                    <button class="done_button" data-bs-dismiss="modal" onclick="add_new_image_in_container();">Add new image</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+
+
+
+<script type="text/javascript">
+  // This javascript code uses data from django tags
+    let shop_and_store_list = [{% for shop in shops %}
+        "{{shop.1|safe}}",
+    {% endfor %}];
+
+    let cross_icon_image_url = "{% static 'images/cross-1.png'%}";
+    
+    let all_stations = [{% for station in all_stations_from_backend %}
+        ["{{station.id|safe}}","{{station.station_id|safe}}"],
+    {% endfor %}];
+
+    var token = '{{csrf_token}}';
+    let checkbox_data_for_add_promotions_url = `{% url 'checkbox_data_for_add_promotions' %}`;
+    
+    // var promotion_data_from_backend;
+    
+    var all_shops = [{% for shop in shops %} 
+        "{{shop.1|safe}}",
+    {% endfor %}];
+    var all_amenities = [{% for amenity in amenities %} 
+        "{{amenity.1|safe}}",
+    {% endfor %}];
+    var stationsMasterDataFromBackend = JSON.parse('{{stations_master_data | escapejs }}')
+    var prevShopsAndAmenities = []
+    var screenIdentifier = "promotions_screen"
+    var promotionDataFromBackend =null;
+    var promotion_add_edit = true;
+    var edit_page_check = "{{edit_page}}" === "Yes";
+    if( edit_page_check){
+        document.getElementById('link_text').innerHTML = 'Edit promotion details';
+        document.title = "Edit promotions";
+        promotionDataFromBackend = JSON.parse('{{tsjson | escapejs }}');
+        prevShopsAndAmenities=promotionDataFromBackend.shop
+    }
+    var query_params_str_edit_promotion = "{{query_params_str|safe}}" ;
+</script>
+
+<script  src="{% static 'js/promotions/view-promotion.js' %}"></script>
+
+<script src="{% static 'js/promotions/add-promotion.js' %}"></script>
+<script  src="{% static 'js/common_functions/loyalty_promotions_common.js' %}"></script>
+
+
+
+
+{% endblock %}

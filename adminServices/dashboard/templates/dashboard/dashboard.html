@@ -1,0 +1,284 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+    </symbol>
+    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+    </symbol>
+    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+            d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+    </symbol>
+</svg>
+{% for message in messages %}
+<div class="alert alert-success d-flex align-items-center mt-4 py-4" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+        <use xlink:href="#check-circle-fill" />
+    </svg>
+    <div>
+        <strong>{{message}}</strong>
+    </div>
+</div>
+{% endfor %}
+<div class="sites_container">
+    <div class="side_bar_container">
+        <div class="sidebar_head">
+            <a class="a_filters">Filters</a>
+            <a class="a_clear" onclick="filterFunction('clear');">Clear</a>
+        </div>
+        <div>
+            <div class="filter">
+                <div class="filter_container">
+                    <a class="fliter_head">Type Of Change</a>
+                    <select class="dropdown_button dropdown_text" onchange="filterFunction('type_of_change',this.value)"
+                        id="">
+                        {%for i in type_of_changes%}
+                        {% if i == prev_type_of_change %}
+
+                        <option class="white-text" value="{{i}}" selected>{{i}}</option>
+                        {% else %}
+
+                        <option class="white-text" value="{{i}}">{{i}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="date_filter">
+                <div class="date_filter_container">
+
+                    <a class="fliter_head">From</a>
+                    <div class="date_container dashboard_date_container" onclick="showFromDatePicker()">
+
+                        <input disabled type="text" id="from_date" value="{{prev_from_date}}" placeholder="From date"
+                            onchange="filterFunction('from_date',this.value);"
+                            class="datepicker dashboard_datepicker p-2">
+                    </div>
+                </div>
+                <div class="date_filter_container">
+                    <a class="fliter_head">To</a>
+                    <div class="date_container dashboard_date_container" onclick="showToDatePicker()">
+                        <input disabled type="text" id="to_date" value="{{prev_to_date}}" placeholder="To date"
+                            onchange="filterFunction('to_date',this.value);" class="datepicker dashboard_datepicker">
+                    </div>
+                </div>
+
+            </div>
+            <div class="filter">
+                <div class="filter_container">
+                    <a class="fliter_head">OPS Region</a>
+                    <select class="dropdown_button dropdown_text" onchange="filterFunction('ops_region',this.value)"
+                        id="">
+                        <option class="white-text" value="All">All</option>
+                        {% for region in ops_regions %}
+                        {% if region.operation_region %}
+                        {%if prev_ops_region == region.operation_region %}
+                        <option class="white-text" value="{{region.operation_region}}" selected>
+                            {{region.operation_region}}</option>
+                        {% else %}
+                        <option class="white-text" value="{{region.operation_region}}">{{region.operation_region}}
+                        </option>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <div class="filter_container">
+                    <a class="fliter_head">Region</a>
+                    <select class="dropdown_button dropdown_text" onchange="filterFunction('region',this.value)" id="">
+                        <option class="white-text" value="All">All</option>
+                        {% for region in regions %}
+                        {% if region.region %}
+                        {%if prev_region == region.region %}
+                        <option class="white-text" value="{{region.region}}" selected>{{region.region}}</option>
+                        {% else %}
+                        <option class="white-text" value="{{region.region}}">{{region.region}}</option>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <div class="filter_container">
+                    <a class="fliter_head">Area</a>
+                    <select class="dropdown_button dropdown_text" onchange="filterFunction('area',this.value)" id="">
+                        <option class="white-text" value="All">All</option>
+                        {% for area in area %}
+                        {% if area.area %}
+                        {%if prev_area == area.area %}
+                        <option class="white-text" value="{{area.area}}" selected>{{area.area}}</option>
+                        {% else %}
+                        <option class="white-text" value="{{area.area}}">{{area.area}}</option>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <div class="filter_container">
+                    <a class="fliter_head">Sites</a>
+                    <select class="dropdown_button dropdown_text" onchange="filterFunction('station',this.value)" id="">
+                        <option class="white-text" value="All">All</option>
+                        {% for station in stations %}
+                        {% if station.station_id %}
+                        {%if prev_station_id == station.station_id %}
+                        <option class="white-text" value="{{station.station_id}}" selected>{{station.station_id}}
+                        </option>
+                        {% else %}
+                        <option class="white-text" value="{{station.station_id}}">{{station.station_id}}</option>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_container">
+        <div class="top_container">
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Total Registered Users
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/User-Count-Fast.gif' %}" alt="" />
+                    <a class="card_value">{{usr_count}}</a>
+                </div>
+            </div>
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Total EV users
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/User-Count-Fast.gif' %}" alt="" />
+                    <a class="card_value">{{total_ev_users_count}}</a>
+                </div>
+            </div>
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Total non-EV users
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/User-Count-Fast.gif' %}" alt="" />
+                    <a class="card_value">{{total_non_ev_users_count}}</a>
+                </div>
+            </div>
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Total Charging Sessions
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/Thunder.gif' %}" alt="" />
+                    <a class="card_value">{{total_charging_sessions}}</a>
+                </div>
+            </div>
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Total Customer Ratings
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/Star.gif' %}" alt="" />
+                    <a class="card_value">{{ratings_count}}</a>
+                    <div class="divider">.</div>
+                    <div class="react_container">
+                        <img class="smile" src="{% static '/images/smile1.png' %}" alt="" />
+                        {% load num_formater %}
+                        <a class="ratings">{{ positive_rating_count|num_formater }}
+                        </a>
+                    </div>
+                    <div class="react_container">
+                        <img class="smile" src="{% static '/images/smile2.png' %}" alt="" />
+                        <a class="ratings">{{ neutral_rating_count|num_formater }}</a>
+                    </div>
+                    <div class="react_container">
+                        <img class="smile" src="{% static '/images/smile-3.png' %}" alt="" />
+                        <a class="ratings">{{ negative_rating_count|num_formater }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Purchased QR Codes
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/purchased_qr_code_dashboard.gif' %}" alt="" />
+                    <a class="card_value">{{purchased_qr_count}}</a>
+                </div>
+            </div>
+            <div class="card_container">
+                <div class="card_title">
+                    <a>
+                        Redeemed QR Codes
+                    </a>
+                </div>
+                <div class="sub_container">
+                    <img class="icon_size" src="{% static '/images/redeemed_qr_code_dashboard.gif' %}" alt="" />
+                    <a class="card_value">{{redeemed_qr_count}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="chart_nav_styl" id="chart_nav">
+                <nav class="navbar navbar-expand-sm  navbar-light navbar-custom p-0">
+
+                    <ul class="navbar-nav chart-nav-container mr-auto">
+                        {% for o in chart %}
+                        <li class="nav-item {{o.state}}" id="{{o.name}}">
+                            <a class="nav-link nav-link-custom"
+                                href="/administrator/dashboard/?active_chart_tab={{o.name}}{{graph_urls}}"
+                                onclick="showLoader();">{{o.name}} <span class="sr-only">(current)</span></a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+
+
+            </div>
+            <div id='chart_container_id'>
+
+                {% include 'dashboard/charts.html' %}
+                {% block chart %}
+                {% endblock chart %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script type="text/javascript">
+    // This javascript code uses data from django tags
+    let url_u = `{{updated_url_params|safe}}`;
+    let window_radirect_location = "{% url 'dashboard'%}";
+    let time_difference = Number("{{time_difference|safe}}");
+    let maximum_to_date = Number("{{maximum_to_date|safe}}");
+    let dashboard_data_days_limit = Number("{{dashboard_data_days_limit|safe}}");
+    var to_date_difference_from_current_date = "{{to_date_difference_from_current_date}}";
+</script>
+<script src="{% static '/js/dashboard/dashboard.js'%}"></script>
+{% endblock js %}
