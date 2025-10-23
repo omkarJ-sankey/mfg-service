@@ -22,7 +22,7 @@ class Reviews(models.Model):
     """reviews model"""
 
     conditions = ((YES, YES), (NO, NO))
-    review_id = models.AutoField
+    review_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         MFGUserEV, null=True, on_delete=models.SET_NULL
     )

@@ -33,3 +33,4 @@ class AdminOTPVerificationRequestSerializer(serializers.Serializer):
         if not value.isdigit():
             raise serializers.ValidationError("OTP must be numeric")
         return value
+

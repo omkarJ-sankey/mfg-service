@@ -18,7 +18,7 @@ from ..constants import NO
 class AuditTrail(models.Model):
     """audit trail model"""
 
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=False, blank=False)
     user_name = models.CharField(max_length=1000, blank=True, null=True)
     user_role = models.CharField(max_length=1000, blank=True, null=True)

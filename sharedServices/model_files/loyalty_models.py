@@ -62,7 +62,7 @@ class Loyalty(models.Model):
         (ALL_USERS,ALL_USERS)
     )
 
-    loyalty_id = models.AutoField
+    loyalty_id = models.AutoField(primary_key=True)
     product = models.CharField(max_length=60, null=True, blank=True)
     category = models.CharField(max_length=60, null=True, blank=True)
     loyalty_title = models.CharField(max_length=60, null=True, blank=True)
@@ -206,7 +206,7 @@ class LoyaltyAvailableOn(models.Model):
     """loyalty , stations relations table"""
 
     conditions = ((YES, YES), (NO, NO))
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     loyalty_id = models.ForeignKey(
         Loyalty,
         null=True,
@@ -256,7 +256,7 @@ class LoyaltyProducts(models.Model):
         ("Active", "Active"),
         ("Inactive", "Inactive"),
     )
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     loyalty_id = models.ForeignKey(
         Loyalty,
         null=True,
@@ -287,7 +287,7 @@ class LoyaltyOccurrences(models.Model):
     """loyalty occurrences models"""
 
     conditions = ((YES, YES), (NO, NO))
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     loyalty_id = models.ForeignKey(
         Loyalty,
         null=True,
@@ -317,7 +317,7 @@ class UserLoyaltyTransactions(models.Model):
         ("Redeemed", "Redeemed"),
         ("Burned", "Burned"),
     )
-    user_transaction_id = models.AutoField
+    user_transaction_id = models.AutoField(primary_key=True)
     loyalty_id = models.ForeignKey(
         Loyalty,
         null=True,
@@ -354,7 +354,7 @@ class LoyaltyTransactions(models.Model):
         ("Purchased", "Purchased"),
         ("Redeemed", "Redeemed"),
     )
-    loyalty_transaction_id = models.AutoField
+    loyalty_transaction_id = models.AutoField(primary_key=True)
     loyalty_id = models.ForeignKey(
         Loyalty,
         null=True,
@@ -401,7 +401,7 @@ class LoyaltyBulkUpload(models.Model):
         (FAILED, FAILED),
     )
     conditions = ((YES, YES), (NO, NO))
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     transaction_bulk_data = models.TextField()
     transaction_data_size = models.IntegerField()
     status = models.CharField(

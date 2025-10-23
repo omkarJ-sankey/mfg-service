@@ -20,7 +20,7 @@ class ElectricVehicleDatabase(models.Model):
     """Electric vehicle data"""
 
     ev_types = (("bev", "bev"), ("phev", "phev"))
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     vehicle_id = models.CharField(max_length=70, null=True, blank=True)
     misc_body = models.CharField(max_length=150, null=True, blank=True)
     vehicle_make = models.CharField(max_length=150, null=True, blank=True)
@@ -70,7 +70,7 @@ class ElectricVehicleDatabase(models.Model):
 class UserEVs(models.Model):
     """User EV vehicles data"""
 
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         MFGUserEV,
         null=True,

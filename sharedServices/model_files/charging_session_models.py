@@ -50,7 +50,7 @@ class ChargingSession(models.Model):
         ("Partial", "Partial"),
         ("non wallet", "non wallet"),
     )
-    session_id = models.AutoField
+    session_id = models.AutoField(primary_key=True)
     start_time = models.DateTimeField(null=True, blank=True)
     station_id = models.ForeignKey(
         Stations,
@@ -249,7 +249,7 @@ class SessionTransactionStatusTracker(models.Model):
         ("Failed", "Failed"),
     )
 
-    transaction_id = models.AutoField
+    transaction_id = models.AutoField(primary_key=True)
     session_id = models.CharField(max_length=100, null=True, blank=True)
     comment = models.CharField(max_length=1000, null=True, blank=True)
     status = models.CharField(
@@ -271,7 +271,7 @@ class SessionTransactionStatusTracker(models.Model):
 class SwarcoDynamicData(models.Model):
     """swarco dynamic data model"""
 
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     chargepoint_name = models.CharField(max_length=600, blank=True, null=True)
     chargepoint_status = models.CharField(max_length=60, null=True, blank=True)
 

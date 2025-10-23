@@ -208,3 +208,7 @@ class UpdateStationRequestSerializer(serializers.Serializer):
         child=serializers.DictField(), required=False
     )
 
+
+class DeleteStationRequestSerializer(serializers.Serializer):
+    """Serializer for validating station deletion request."""
+    station_pk = serializers.CharField(required=True)

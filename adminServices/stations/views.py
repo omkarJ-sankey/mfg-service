@@ -1402,8 +1402,8 @@ def validate_location(request):
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .serializers import AddStationRequestSerializer, StationListRequestSerializer, StationListResponseSerializer, UpdateStationRequestSerializer, ViewStationRequestSerializer, ViewStationResponseSerializer
-from .services import add_station_service, get_station_details_service, get_station_list, update_station_data
+from .serializers import AddStationRequestSerializer, DeleteStationRequestSerializer, StationListRequestSerializer, StationListResponseSerializer, UpdateStationRequestSerializer, ViewStationRequestSerializer, ViewStationResponseSerializer
+from .services import add_station_service, delete_station_service, get_station_details_service, get_station_list, update_station_data
 from sharedServices.constants import ConstantMessage
 import traceback
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -1589,8 +1589,7 @@ class ViewStation(APIView):
 
             station_obj = result["station_obj"]
 
-            # Update station in DB
-            updated_response = update_station_data(
+            update_station_data(
                 request,
                 station_pk,
                 station_obj,
@@ -1607,6 +1606,37 @@ class ViewStation(APIView):
             )
 
         except Exception as e:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+        
+    def delete(self, request, station_pk):
+        """Internal method to perform deletion."""
+        try:
+            serializer = DeleteStationRequestSerializer(
+                data={"station_pk": station_pk, **request.query_params}
+            )
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            validated_data = serializer.validated_data
+
+            delete_station_service(station_pk=validated_data["station_pk"], user=request.user)
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.STATION_DELETED_SUCCESS
+            )
+
+        except Exception:
             return api_response(
                 message=ConstantMessage.SOMETHING_WENT_WRONG,
                 status=False,

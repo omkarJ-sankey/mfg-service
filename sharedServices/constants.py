@@ -232,9 +232,11 @@ class ConstantMessage:
     STATION_LIST_FETCH_SUCCESS = "Station list fetched successfully."
     STATION_LIST_EMPTY = "No stations available."
     INVALID_PAGE_NUMBER = "Invalid page number."
-    SOMETHING_WENT_WRONG = "Something went wrong while fetching stations."
-    STATION_DATA_RETRIVED_SUCCESS = "Station data retrived successfully."
-    STATION_NOT_FOUND = "Station not found."
+    SOMETHING_WENT_WRONG = "something went wrong while fetching stations."
+    STATION_DATA_RETRIVED_SUCCESS = "station data retrived successfully."
+    STATION_NOT_FOUND = "station not found."
+    STATION_DELETED_SUCCESS = "station delete successfully"
+    STATION_UPDATED_SUCCESS = "station update successfully."
 
 METER_TO_MILES_DIVIDER = 1.609 * 1000
 MILES_TO_METER_MULTIPLIER = 1.609 * 1000

@@ -37,7 +37,7 @@ class Stations(models.Model):
     """Station model"""
 
     conditions = ((YES, YES), (NO, NO))
-    station_dbid = models.AutoField
+    station_dbid = models.AutoField(primary_key=True)
     station_id = models.CharField(
         max_length=15,
         unique=True,
@@ -199,7 +199,7 @@ class StationWorkingHours(models.Model):
     """station working hours model"""
 
     conditions = ((YES, YES), (NO, NO))
-    station_working_hours_id = models.AutoField
+    station_working_hours_id = models.AutoField(primary_key=True)
     station_id = models.ForeignKey(
         Stations,
         null=True,
@@ -235,7 +235,7 @@ class ChargePoint(models.Model):
     """chargepoint model"""
 
     conditions = ((YES, YES), (NO, NO))
-    charge_point_id = models.AutoField
+    charge_point_id = models.AutoField(primary_key=True)
     station_id = models.ForeignKey(
         Stations,
         null=True,
@@ -295,7 +295,7 @@ class StationConnector(models.Model):
     """Station connectors models"""
 
     conditions = ((YES, YES), (NO, NO))
-    station_connector_id = models.AutoField
+    station_connector_id = models.AutoField(primary_key=True)
     station_id = models.ForeignKey(
         Stations,
         null=True,
@@ -384,7 +384,7 @@ class ValetingTerminals(models.Model):
     status = models.CharField(
         max_length=30, validators=[validate_min_length], default=""
     )
-    valeting_terminals_id=models.AutoField
+    valeting_terminals_id=models.AutoField(primary_key=True)
     payter_serial_number=models.CharField(
         max_length=100, blank=True, null=True
     )
@@ -411,7 +411,7 @@ class StationImages(models.Model):
     """Station images"""
 
     conditions_stations = ((YES, YES), (NO, NO))
-    image_id = models.AutoField
+    image_id = models.AutoField(primary_key=True)
     station_id = models.ForeignKey(
         Stations,
         null=True,
@@ -523,7 +523,7 @@ class Bookmarks(models.Model):
         ("bookmarked", "bookmarked"),
         ("bookmarked-removed", "bookmarked-removed"),
     )
-    bookmark_id = models.AutoField
+    bookmark_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         MFGUserEV, null=True, on_delete=models.SET_NULL
     )

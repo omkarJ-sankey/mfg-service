@@ -18,7 +18,7 @@ from ..constants import YES, NO
 class BulkUploadProgress(models.Model):
     """Bulk upload progress bar indicator table"""
 
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     uploaded_for = models.CharField(max_length=100, null=True, blank=True)
     total_rows_count = models.CharField(max_length=1000, blank=True, null=True)
     uploaded_rows_count = models.CharField(
@@ -35,7 +35,7 @@ class BulkUploadErrorMessages(models.Model):
     """Bulk upload errorstable"""
 
     conditions = ((YES, YES), (NO, NO))
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     uploaded_for = models.CharField(max_length=100, null=True, blank=True)
     errors = models.TextField()
     ready_to_export = models.CharField(

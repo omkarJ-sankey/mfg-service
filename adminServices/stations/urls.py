@@ -40,7 +40,7 @@ urlpatterns = [
     path("view-station/<str:station_pk>/", ViewStation.as_view(), name="view_station"),
     path(
         "delete-station/<str:station_pk>/",
-        delete_station,
+        ViewStation.as_view(),
         name="delete_station",
     ),
     path(
