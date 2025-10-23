@@ -36,6 +36,8 @@ ERROR_TEMPLATE_URL = "dashboard/internal_error_template.html"
 JSON_ERROR_OBJECT = JsonResponse(
     {"status": 1, "message": "Something went wrong"}
 )
+SOMETHING_WENT_WRONG = "Something went wrong"
+OTP_SENT_SUCCESSFULLY = "OTP sent successfully"
 INVALID_DATE_TIME = JsonResponse(
     {"status": 406, "message": "Please select valid date and time"}
 )
@@ -187,6 +189,22 @@ BUYING_EMAIL = "Buying email"
 NEW_LOGGED_IN_USER = "new user"
 ADMIN_OTP = "admin otp"
 
+class ConstantMessage:
+    EMAIL_NOT_FOUND = "Email not found"
+    FIRST_TIME_LOGIN = "Please set your password first"
+    INVALID_PASSWORD = "Please enter valid password"
+    OTP_SENT_SUCCESSFULLY = "OTP sent successfully"
+    FAILED_SENDING_EMAIL = "Failed sending email"
+    ACCOUNT_DEACTIVATED = "The account is deactivated"
+    TRY_AGAIN = "Try once again"
+
+    #Otp verification api
+    INVALID_OTP = "Invalid OTP"
+    OTP_LENGTH_INVALID = "OTP has to be exactly 4 digits"
+    OTP_VERIFIED_SUCCESSFULLY = "OTP verified successfully"
+    USER_NOT_FOUND = "User not found"
+    SOMETHING_WENT_WRONG = "Something went wrong"
+    OTP_EXPIRED = "OTP expired or invalid"
 
 METER_TO_MILES_DIVIDER = 1.609 * 1000
 MILES_TO_METER_MULTIPLIER = 1.609 * 1000

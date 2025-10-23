@@ -1,5 +1,6 @@
 """common functions"""
 
+import logging
 import math
 import re
 import secrets
@@ -1404,3 +1405,36 @@ def get_cdr_details(session):
         charging_session_id_id=session
         )
     return cdr_list
+
+logger = logging.getLogger(__name__)
+from rest_framework.response import Response
+
+def api_response(
+        self, message=None, data=None, status=True, status_code=200, error=None
+    ):
+        """Use this common function to send responses for all APIs."""
+        if error:
+            logger.error(
+                "Error occured.",
+                extra={
+                    "extra": {
+                        "error_info": {"error": str(error)},
+                    },
+                },
+                exc_info=True,
+            )
+        return Response(
+            (
+                {
+                    "status": status,
+                    "message": message,
+                    "data": data,
+                }
+                if status
+                else {
+                    "status": status,
+                    "message": message,
+                }
+            ),
+            status=status_code,
+        )
