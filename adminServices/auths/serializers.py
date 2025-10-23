@@ -3,7 +3,6 @@ import re
 from sharedServices.common import (
     generate_token_func,
     email_validator,
-    otp_validator,
     password_validator,
     set_token_cache,
 )

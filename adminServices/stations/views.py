@@ -71,9 +71,11 @@ from sharedServices.model_files.loyalty_models import LoyaltyAvailableOn
 from sharedServices.model_files.audit_models import AuditTrail
 from sharedServices.decorators import allowed_users, authenticated_user
 from sharedServices.common import (
+    api_response,
     export_data_function_multi_tabs,
     filter_url,
     order_by_function,
+    paginate_and_serialize,
     pagination_and_filter_func,
     string_to_array_converter,
     search_validator,
@@ -1394,4 +1396,220 @@ def validate_location(request):
             
     except COMMON_ERRORS:
         return JsonResponse({"valid": False},status=status.HTTP_400_BAD_REQUEST)
+    
+#Rest API
 
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from .serializers import AddStationRequestSerializer, StationListRequestSerializer, StationListResponseSerializer, UpdateStationRequestSerializer, ViewStationRequestSerializer, ViewStationResponseSerializer
+from .services import add_station_service, get_station_details_service, get_station_list, update_station_data
+from sharedServices.constants import ConstantMessage
+import traceback
+from rest_framework.parsers import MultiPartParser, FormParser
+from .serializers import UploadSheetRequestSerializer
+from .services import upload_sheet_service
+
+
+class AddStationAPIView(APIView):
+    """
+    API view for adding a station.
+    All business logic handled in service layer.
+    """
+
+    def post(self, request):
+        try:
+            serializer = AddStationRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            result = add_station_service(serializer.validated_data, request.user)
+
+            return api_response(
+                message=result.get("message"),
+                status=result.get("status"),
+                status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,
+                data=result.get("data", None)
+            )
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+        
+
+class UploadSheetAPIView(APIView):
+    """
+    API view for bulk station upload from Excel sheet.
+    Handles multiple tabs and starts asynchronous processing.
+    """
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        try:
+            serializer = UploadSheetRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            file_obj = serializer.validated_data.get("file")
+            result = upload_sheet_service(file_obj, request.user)
+
+            return api_response(
+                message=result.get("message"),
+                status=result.get("status"),
+                status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,
+                data=result.get("data", None)
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+        
+
+
+class StationList(APIView):
+    """API view to retrieve the list of stations with filters and pagination."""
+
+    def get(self, request):
+        """Handle GET request to retrieve station list."""
+        try:
+            # Step 1: Validate query parameters
+            serializer = StationListRequestSerializer(data=request.query_params)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            # Step 2: Fetch filtered data from service
+            data_list = get_station_list(serializer.validated_data)
+
+            # # Step 3: Paginate and serialize
+            result = paginate_and_serialize(
+                request, data_list, StationListResponseSerializer
+            )
+
+            # Step 4: Return standardized API response
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.STATION_LIST_FETCH_SUCCESS,
+                data=result,
+            )
+
+        except Exception as e:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+
+
+class ViewStation(APIView):
+    """API view to fetch full details of a specific station."""
+
+    def get(self, request, station_pk):
+        """Retrieve station details by ID."""
+        try:
+            # Validate path + query params
+            serializer = ViewStationRequestSerializer(
+                data={"station_pk": station_pk, **request.query_params}
+            )
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            station_data = get_station_details_service(serializer.validated_data)
+
+            if not station_data:
+                return api_response(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    message=ConstantMessage.STATION_NOT_FOUND,
+                )
+
+            response_serializer = ViewStationResponseSerializer(station_data)
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.STATION_DATA_RETRIVED_SUCCESS,
+                data=response_serializer.data,
+            )
+
+        except Exception as e:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+    
+    def put(self, request, station_pk):
+        """Update station details by ID."""
+        try:
+            # Validate input
+            serializer = UpdateStationRequestSerializer(
+                data={"station_pk": station_pk, **request.data}
+            )
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            # Fetch existing station details
+            result = get_station_details_service(serializer.validated_data)
+            if not result or "station_obj" not in result:
+                return api_response(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    message=ConstantMessage.STATION_NOT_FOUND
+                )
+
+            station_obj = result["station_obj"]
+
+            # Update station in DB
+            updated_response = update_station_data(
+                request,
+                station_pk,
+                station_obj,
+                result["data"]["amenities"],
+                result["data"]["retail"],
+                result["data"]["food"],
+                request.META.get('QUERY_STRING', '')
+            )
+
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.STATION_UPDATED_SUCCESS,
+            )
+
+        except Exception as e:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )

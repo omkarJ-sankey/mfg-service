@@ -206,6 +206,36 @@ class ConstantMessage:
     SOMETHING_WENT_WRONG = "Something went wrong"
     OTP_EXPIRED = "OTP expired or invalid"
 
+    #add station
+    STATION_CREATED_SUCCESSFULLY = "Station created successfully"
+    STATION_ALREADY_EXISTS = "Station with this id already exists"
+    STATION_CREATION_FAILED = "Unable to create station"
+    NO_CHARGEPOINTS_PROVIDED = "No chargepoints provided for EV Power station"
+    SOMETHING_WENT_WRONG = "Something went wrong"
+
+    # Generic messages
+    SUCCESS = "File uploaded successfully, processing started."
+    UNKNOWN_ERROR = "Something went wrong."
+    INVALID_EXCEL_FILE = "File not recognized as Excel file."
+    
+    # Validation-related
+    MISSING_SHEETS = "Sheet must include {missing_tabs}"
+    
+    # Tabs
+    TAB_SITES = '"Sites" tab'
+    TAB_CHARGEPOINT = '"Chargepoint" tab'
+    TAB_MFG = '"MFG" tab'
+    TAB_VALETING_TERMINALS = '"Valeting Terminals" tab'
+    TAB_VALETING_MACHINES = '"Valeting Machines" tab'
+
+    #Listing Station
+    STATION_LIST_FETCH_SUCCESS = "Station list fetched successfully."
+    STATION_LIST_EMPTY = "No stations available."
+    INVALID_PAGE_NUMBER = "Invalid page number."
+    SOMETHING_WENT_WRONG = "Something went wrong while fetching stations."
+    STATION_DATA_RETRIVED_SUCCESS = "Station data retrived successfully."
+    STATION_NOT_FOUND = "Station not found."
+
 METER_TO_MILES_DIVIDER = 1.609 * 1000
 MILES_TO_METER_MULTIPLIER = 1.609 * 1000
 CHARGING_DEADPOINT = 15

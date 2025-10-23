@@ -1438,3 +1438,40 @@ def api_response(
             ),
             status=status_code,
         )
+
+
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.exceptions import NotFound
+
+def paginate_and_serialize(request, queryset, serializer_class, context=None):
+    """Paginate the given data and return paginated response using provided serializer.
+
+    Args:
+        request: DRF request object (required for pagination context)
+        queryset (list or queryset): Data to paginate
+        serializer_class (DRF Serializer): Serializer to apply to paginated data
+
+    Returns:
+        Response: DRF paginated response
+
+    """
+    paginator = PageNumberPagination()
+    try:
+        paginated_data = paginator.paginate_queryset(queryset, request)
+    except NotFound as exc:
+        return api_response(
+                    message="Something went wrong",
+                    status=False,
+                )
+    paginated_data = paginator.paginate_queryset(queryset, request)
+    serialized_data = serializer_class(paginated_data, many=True, context=context) if context else serializer_class(paginated_data, many=True)
+    return paginator.get_paginated_response(serialized_data.data)
+
+class PageNumberPagination(PageNumberPagination):
+    """Custom pagination class for controlling the API's pagination behavior."""
+
+    page_size = 20
+    page_size_query_param = "page_size"
+    max_page_size = 100
+
+

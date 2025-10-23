@@ -49,7 +49,7 @@ def admin_login_service(validated_data):
     if login_status.current_status != "Active":
         return {"status": False, "message": ConstantMessage.ACCOUNT_DEACTIVATED}
 
-    user_auth_data = AdminAuthorization.objects.get(user_id=user.id)
+    user_auth_data = AdminAuthorization.objects.get(user_id=user.user_id)
     if not handler.verify(password, user_auth_data.password):
         return {"status": False, "message": ConstantMessage.INVALID_PASSWORD}
 
@@ -57,7 +57,7 @@ def admin_login_service(validated_data):
     if not otp:
         return {"status": False, "message": ConstantMessage.FAILED_SENDING_EMAIL}
 
-    AdminAuthorization.objects.filter(user_id=user.id).update(otp=otp, otp_type=ADMIN_OTP)
+    AdminAuthorization.objects.filter(user_id=user.user_id).update(otp=otp, otp_type=ADMIN_OTP)
     login_status.updated_date = timezone.localtime(timezone.now())
     login_status.save()
 

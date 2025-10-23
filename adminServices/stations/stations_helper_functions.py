@@ -833,101 +833,157 @@ def get_station_address_from_post_code(data_frame, i):
     ]
 
 
-# This functionnis used to handle the creation of station
-def create_station(request, station_create, postdata_from_front_end,location_data,back_office_name):
-    """add station view"""
-    # Insertion of Working hours details of station.
-    # Insertion in database
-    response_op = None
+# # This functionnis used to handle the creation of station
+# def create_station(request, station_create, postdata_from_front_end,location_data,back_office_name):
+#     """add station view"""
+#     # Insertion of Working hours details of station.
+#     # Insertion in database
+#     response_op = None
+#     try:
+#         insert_station_working_hours_entry(
+#             postdata_from_front_end, request.user, station_create
+#         )
+#     except (DataError, DatabaseError) as error:
+#         print(f'While inserting station working hours error occured as-> {str(error)}')
+#         response_op = {
+#             "status": False,
+#             # "message": str(error),
+#             "message": "Error while inserting station working hours",
+#             "url": reverse("station_list"),
+#         }
+
+#     # working hour details insertion logic end
+#     try:
+#         insert_station_connector_data(
+#             postdata_from_front_end, request.user, station_create,location_data,back_office_name
+#         )
+#     except (DataError, DatabaseError) as error:
+#         print(f'While inserting station connector data error occured as -> {str(error)}')
+#         response_op = {
+#             "status": False,
+#             # "message": str(error),
+#             "message": "Error while inserting station connector data",
+#             "url": reverse("station_list"),
+#         }
+
+#     for image in postdata_from_front_end.images:
+#         image_data_stations = image_converter(image)
+#         if not (
+#             image_data_stations[2] > 700
+#             or image_data_stations[3] > 1400
+#             or image_data_stations[2] < 400
+#             or image_data_stations[3] < 700
+#         ):
+#             response_op = {
+#                 "status": False,
+#                 "message": "Image with improper size is provided.",
+#                 "url": reverse("station_list"),
+#             }
+#         image = optimize_image(
+#             image_data_stations[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
+#             str(station_create.station_id)
+#             + randon_string_generator()
+#             + "."
+#             + image_data_stations[1],
+#             STATION_INFO_IMAGE,
+#         )
+#         StationImages.objects.create(
+#             station_id=station_create,
+#             image=image,
+#             image_width=image_data_stations[2],
+#             image_height=image_data_stations[3],
+#             created_date=timezone.localtime(timezone.now()),
+#             updated_by=request.user.full_name,
+#         )
+
+#     # inserting station services
+#     insert_station_services_data(
+#         postdata_from_front_end, request.user, station_create
+#     )
+
+#     # inserting valeting data
+#     try:
+#         insert_valeting_terminals_data(
+#             postdata_from_front_end, request.user, station_create
+#         )
+#     except (DataError, DatabaseError) as error:
+#         print(f'While inserting valeting terminals data error occured as -> {str(error)}')
+#         response_op = {
+#             "status": False,
+#             # "message": str(error),
+#             "message": "Error occured while inserting valeting terminals data",
+#             "url": reverse("station_list"),
+#         }
+
+#     # inserting valeting machines data
+#     try:
+#         insert_valeting_machines_data(
+#             postdata_from_front_end, request.user, station_create
+#         )
+#     except (DataError, DatabaseError) as error:
+#         print(f'While inserting valeting machines data error occurred as -> {str(error)}')
+#         response_op = {
+#             "status": False,
+#             "message": "Error occurred while inserting valeting machines data",
+#             "url": reverse("station_list"),
+#         }
+#     return response_op
+
+from django.db import transaction, DatabaseError, DataError
+from sharedServices.constants import ConstantMessage as CM
+
+def create_station(postdata, user, station_obj, location_data, back_office_name):
+    """
+    Optimized version: batch DB operations, avoid repeated queries
+    Returns: dict with status and message
+    """
+    response = None
     try:
-        insert_station_working_hours_entry(
-            postdata_from_front_end, request.user, station_create
-        )
-    except (DataError, DatabaseError) as error:
-        print(f'While inserting station working hours error occured as-> {str(error)}')
-        response_op = {
-            "status": False,
-            # "message": str(error),
-            "message": "Error while inserting station working hours",
-            "url": reverse("station_list"),
-        }
+        with transaction.atomic():
+            # 1. Working hours insertion
+            insert_station_working_hours_entry(postdata, user, station_obj)
 
-    # working hour details insertion logic end
-    try:
-        insert_station_connector_data(
-            postdata_from_front_end, request.user, station_create,location_data,back_office_name
-        )
-    except (DataError, DatabaseError) as error:
-        print(f'While inserting station connector data error occured as -> {str(error)}')
-        response_op = {
-            "status": False,
-            # "message": str(error),
-            "message": "Error while inserting station connector data",
-            "url": reverse("station_list"),
-        }
+            # 2. Connector data insertion
+            insert_station_connector_data(postdata, user, station_obj, location_data, back_office_name)
 
-    for image in postdata_from_front_end.images:
-        image_data_stations = image_converter(image)
-        if not (
-            image_data_stations[2] > 700
-            or image_data_stations[3] > 1400
-            or image_data_stations[2] < 400
-            or image_data_stations[3] < 700
-        ):
-            response_op = {
-                "status": False,
-                "message": "Image with improper size is provided.",
-                "url": reverse("station_list"),
-            }
-        image = optimize_image(
-            image_data_stations[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
-            str(station_create.station_id)
-            + randon_string_generator()
-            + "."
-            + image_data_stations[1],
-            STATION_INFO_IMAGE,
-        )
-        StationImages.objects.create(
-            station_id=station_create,
-            image=image,
-            image_width=image_data_stations[2],
-            image_height=image_data_stations[3],
-            created_date=timezone.localtime(timezone.now()),
-            updated_by=request.user.full_name,
-        )
+            # 3. Images processing
+            image_objects = []
+            for image in getattr(postdata, 'images', []):
+                img_data = image_converter(image)
+                w, h = img_data[2], img_data[3]
+                if not (400 <= w <= 700 and 700 <= h <= 1400):
+                    raise ValueError("Image with improper size is provided")
+                optimized_img = optimize_image(
+                    img_data[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
+                    f"{station_obj.station_id}{randon_string_generator()}.{img_data[1]}",
+                    STATION_INFO_IMAGE
+                )
+                image_objects.append(
+                    StationImages(
+                        station_id=station_obj,
+                        image=optimized_img,
+                        image_width=w,
+                        image_height=h,
+                        created_date=timezone.localtime(timezone.now()),
+                        updated_by=user.full_name
+                    )
+                )
+            # Bulk create images
+            if image_objects:
+                StationImages.objects.bulk_create(image_objects)
 
-    # inserting station services
-    insert_station_services_data(
-        postdata_from_front_end, request.user, station_create
-    )
+            # 4. Insert services
+            insert_station_services_data(postdata, user, station_obj)
 
-    # inserting valeting data
-    try:
-        insert_valeting_terminals_data(
-            postdata_from_front_end, request.user, station_create
-        )
-    except (DataError, DatabaseError) as error:
-        print(f'While inserting valeting terminals data error occured as -> {str(error)}')
-        response_op = {
-            "status": False,
-            # "message": str(error),
-            "message": "Error occured while inserting valeting terminals data",
-            "url": reverse("station_list"),
-        }
+            # 5. Valeting terminals & machines
+            insert_valeting_terminals_data(postdata, user, station_obj)
+            insert_valeting_machines_data(postdata, user, station_obj)
 
-    # inserting valeting machines data
-    try:
-        insert_valeting_machines_data(
-            postdata_from_front_end, request.user, station_create
-        )
-    except (DataError, DatabaseError) as error:
-        print(f'While inserting valeting machines data error occurred as -> {str(error)}')
-        response_op = {
-            "status": False,
-            "message": "Error occurred while inserting valeting machines data",
-            "url": reverse("station_list"),
-        }
-    return response_op
+    except (DataError, DatabaseError, ValueError) as e:
+        return {"status": False, "message": str(e)}
+
+    return {"status": True, "message": CM.STATION_CREATED_SUCCESSFULLY}
+
 
 
 def check_is_ev_status(postdata_from_front_end):
