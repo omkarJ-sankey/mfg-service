@@ -51,7 +51,7 @@ class MFGUserEV(AbstractBaseUser):
         (EMAIL_SIGN_IN, EMAIL_SIGN_IN),
         (GUEST_SIGN_IN, GUEST_SIGN_IN)
     )
-    email = models.CharField(max_length=1000, null=True,blank=True)
+    email = models.CharField(max_length=1000, unique=True, null=True,blank=True)
     user_email = models.CharField(max_length=1000, blank=True, null=True)
     password = models.CharField(max_length=1000, blank=True, null=True)
     first_name = models.BinaryField(blank=True, null=True)

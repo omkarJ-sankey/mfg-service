@@ -3010,6 +3010,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name='loyaltyavailableon',
-            index=models.Index(condition=models.Q(('deleted', 'No')), fields=['station_id', 'loyalty_id'], name='loyaltystationsindexes'),
+            index=models.Index(condition=models.Q(('deleted', False)), fields=['station_id', 'loyalty_id'], name='loyaltystationsindexes'),
         ),
     ]
