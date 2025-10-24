@@ -15,6 +15,7 @@ from django.urls import path
 
 # Views and APIs used for particular action and operation
 from .views import (
+    AddLoyaltiesView,
     loyalties,
     change_loyalty_status_view,
     add_loyalties,
@@ -32,7 +33,8 @@ urlpatterns = [
         change_loyalty_status_view,
         name="change_loyalty_status_view",
     ),
-    path("add-loyalties/", add_loyalties, name="add_loyalties"),
+    # path("add-loyalties/", add_loyalties, name="add_loyalties"),
+     path("add-loyalties/", AddLoyaltiesView.as_view(), name="add_loyalties"),
     path(
         "view-loyalties/<int:loyalty_pk>/",
         view_loyalties,

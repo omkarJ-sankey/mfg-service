@@ -24,10 +24,13 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.utils import timezone
 from django.urls import reverse
 from django.conf import settings
+from adminServices.loyalty.serializers import AddLoyaltyRequestSerializer, EditLoyaltyRequestSerializer
+from adminServices.loyalty.services import add_loyalty_service, update_single_loyalty_service
 from adminServices.stations.stations_helper_functions import remove_stations_cached_data
 # pylint:disable=import-error
 from sharedServices.decorators import allowed_users, authenticated_user
 from sharedServices.common import (
+    api_response,
     date_formater_for_frontend_date,
     end_date_formater_for_frontend_date,
     filter_url,
@@ -55,7 +58,8 @@ from sharedServices.constants import (
     BURNED,
     COSTA_COFFEE,
     ACTIVE,
-    NO
+    NO,
+    ConstantMessage
 )
 
 from sharedServices.models import (
@@ -90,6 +94,8 @@ from ..dashboard.app_level_constants import (
     DEFAULT_DASHBOARD_DATA_DAYS_LIMIT,
 )
 from .db_operators import create_single_loyalty, update_single_loyalty
+from rest_framework import status
+from rest_framework.views import APIView  
 
 # pylint:enable=import-error
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
@@ -763,3 +769,92 @@ def delete_loyalties(request, loyalty_pk):
         return redirect("loyalties_list")
     except COMMON_ERRORS:
         return render(request, ERROR_TEMPLATE_URL)
+
+
+
+class AddLoyaltiesView(APIView):
+    """API view to handle adding a new loyalty."""
+
+    @authenticated_user
+    @allowed_users(section=LOYALTY_CONST)
+    def post(self, request):
+        """Handle POST request to add loyalty."""
+        try:
+            # Step 1: Validate incoming data
+            serializer = AddLoyaltyRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors,
+                )
+
+            validated_data = serializer.validated_data
+
+            # Step 2: Call service layer
+            service_response = add_loyalty_service(validated_data, request.user)
+
+            # Step 3: Handle response from service
+            if not service_response["status"]:
+                return api_response(
+                    message=service_response["message"],
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    data=service_response,
+                )
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.LOYALTY_ADDED_SUCCESS,
+                data=service_response["data"],
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc(),
+            )
+
+    def put(self, request, loyalty_pk):
+        """Handle PUT request to update loyalty."""
+        try:
+
+            serializer = EditLoyaltyRequestSerializer(
+                data={**request.data, "loyalty_pk": loyalty_pk}
+            )
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors,
+                )
+
+            validated_data = serializer.validated_data
+
+            service_response = update_single_loyalty_service(validated_data, request.user)
+
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.LOYALTY_UPDATED_SUCCESS,
+                data=service_response["data"],
+            )
+
+        except Loyalty.DoesNotExist:
+            return api_response(
+                message=ConstantMessage.LOYALTY_NOT_FOUND,
+                status=False,
+                status_code=status.HTTP_404_NOT_FOUND,
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc(),
+            )

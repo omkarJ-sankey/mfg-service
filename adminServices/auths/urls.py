@@ -23,8 +23,8 @@ from .views import (
 
 # Assigning Views to particular url to access there functionality
 urlpatterns = [
-    path("", admin_login_page, name="AdminLogin"),
-    # path("admin-login/", AdminLoginAPIView, name="AdminLogin"),
+    # path("", admin_login_page, name="AdminLogin"),
+    path("admin-login/", AdminLoginAPIView.as_view(), name="AdminLogin"),
     # path(
     #     "admin-otp-verification/",
     #     admin_otp_verification_page,

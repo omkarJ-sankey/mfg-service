@@ -238,6 +238,17 @@ class ConstantMessage:
     STATION_DELETED_SUCCESS = "station delete successfully"
     STATION_UPDATED_SUCCESS = "station update successfully."
 
+    SOMETHING_WENT_WRONG = "Something went wrong while processing your request."
+    LOYALTY_ADDED_SUCCESS = "Loyalty created successfully."
+    LOYALTY_DUPLICATE_CODE = "Loyalty with this unique code already exists."
+    COSTA_COFFEE_ALREADY_EXISTS = "An active Costa Coffee loyalty already exists."
+    LOYALTY_CREATION_FAILED = "Failed to create loyalty."
+
+    LOYALTY_ADDED_SUCCESS = "Loyalty added successfully."
+    LOYALTY_UPDATED_SUCCESS = "Loyalty updated successfully."
+    LOYALTY_NOT_FOUND = "Loyalty not found."
+    SOMETHING_WENT_WRONG = "Something went wrong, please try again later."
+
 METER_TO_MILES_DIVIDER = 1.609 * 1000
 MILES_TO_METER_MULTIPLIER = 1.609 * 1000
 CHARGING_DEADPOINT = 15
@@ -391,6 +402,62 @@ NEED_REVIEW = "Need review"
 FAILED = "Failed"
 
 LOYALTY_TYPES = ['Costa Coffee', 'Free']
+
+# Loyalty Types
+LOYALTY_TYPES = [
+    ("Regular", "Regular"),
+    ("Costa Coffee", "Costa Coffee"),
+    ("Promotional", "Promotional"),
+]
+
+# Offer Types
+OFFER_TYPES = [
+    ("Discount", "Discount"),
+    ("Cashback", "Cashback"),
+    ("Free Product", "Free Product"),
+    ("Other", "Other"),
+]
+
+# Cycle Durations
+CYCLE_DURATIONS = [
+    ("Daily", "Daily"),
+    ("Weekly", "Weekly"),
+    ("Monthly", "Monthly"),
+]
+
+# Barcode Standards
+BAR_CODE_STANDARDS = [
+    ("CODE128", "CODE128"),
+    ("EAN13", "EAN13"),
+    ("UPC", "UPC"),
+]
+
+# Redeem Types
+REDEEM_TYPES = [
+    ("Instant", "Instant"),
+    ("Deferred", "Deferred"),
+]
+
+# Status Choices
+STATUS_CHOICES = [
+    ("Active", "Active"),
+    ("Inactive", "Inactive"),
+]
+
+# Yes/No Choices
+YES = "Yes"
+NO = "No"
+BOOLEAN_CHOICES = [
+    (YES, "Yes"),
+    (NO, "No"),
+]
+
+# Visibility Choices
+VISIBILITY_CHOICES = [
+    (YES, "Visible"),
+    (NO, "Hidden"),
+]
+
 
 # following constant used to set default string for EV power
 # brands in default images functionality
