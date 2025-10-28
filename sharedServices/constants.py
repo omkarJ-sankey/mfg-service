@@ -248,6 +248,11 @@ class ConstantMessage:
     LOYALTY_UPDATED_SUCCESS = "Loyalty updated successfully."
     LOYALTY_NOT_FOUND = "Loyalty not found."
     SOMETHING_WENT_WRONG = "Something went wrong, please try again later."
+    LOYALTY_DELETED_SUCCESS = "Loyalty deleted successfully."
+
+    AUDIT_LIST_FETCH_SUCCESS = "Audit list fetched successfully."
+    AUDIT_DETAIL_FETCH_SUCCESS = "Audit details fetched successfully."
+    AUDIT_REVIEW_SUCCESS = "Audit reviewed successfully."
 
 METER_TO_MILES_DIVIDER = 1.609 * 1000
 MILES_TO_METER_MULTIPLIER = 1.609 * 1000
@@ -401,21 +406,17 @@ IN_PROGRESS = "In progress"
 NEED_REVIEW = "Need review"
 FAILED = "Failed"
 
-LOYALTY_TYPES = ['Costa Coffee', 'Free']
-
 # Loyalty Types
 LOYALTY_TYPES = [
     ("Regular", "Regular"),
     ("Costa Coffee", "Costa Coffee"),
-    ("Promotional", "Promotional"),
+    ("Free", "Free"),
 ]
 
 # Offer Types
 OFFER_TYPES = [
-    ("Discount", "Discount"),
-    ("Cashback", "Cashback"),
-    ("Free Product", "Free Product"),
-    ("Other", "Other"),
+    ("Generic Offers", "Generic Offers"),
+    ("Loyalty Offers", "Loyalty Offers")
 ]
 
 # Cycle Durations
@@ -836,3 +837,39 @@ REREGISTER_TOKENS_ENDPOINT = "/check-token"
 GUEST_USERS = "Guest Users"
 ALL_USERS = "All Users"
 REGISTERED_USERS = "Registered Users"
+
+# constants/audit_constants.py
+
+USER_ROLE_CHOICES = [
+    ("All", "All"),
+    ("Admin", "Admin"),
+    ("Super admin", "Super admin"),
+    ("Operator", "Operator"),
+    ("Finance operator", "Finance operator"),
+    ("Developer", "Developer"),
+]
+
+REVIEW_STATUS_CHOICES = [
+    ("All", "All"),
+    ("Yes", "Yes"),
+    ("No", "No"),
+]
+
+MODULE_CHOICES = [
+    ("Offers", "Offers"),
+    ("Sites", "Sites"),
+    ("Loyalty", "Loyalty"),
+]
+
+ACTION_CHOICES = [
+    ("All", "All"),
+    ("Create", "Create"),
+    ("Update", "Update"),
+    ("Delete", "Delete"),
+    ("APP_USER_DELETION", "APP_USER_DELETION"),
+]
+
+ORDER_CHOICES = [
+    ("Ascending", "Ascending"),
+    ("Descending", "Descending"),
+]

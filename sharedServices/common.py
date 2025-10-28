@@ -1443,6 +1443,24 @@ def api_response(
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import NotFound
 
+
+class PageNumberPagination(PageNumberPagination):
+    """Custom pagination class for controlling the API's pagination behavior."""
+
+    page_size = 20
+    page_size_query_param = "page_size"
+    max_page_size = 100
+
+    def get_paginated_response(self, data):
+        """Customize the paginated response structure."""
+        return {
+            "next": self.get_next_link(),
+            "previous": self.get_previous_link(),
+            "count": self.page.paginator.count,
+            "total_page": self.page.paginator.num_pages,
+            "data": data,
+        }
+
 def paginate_and_serialize(request, queryset, serializer_class, context=None):
     """Paginate the given data and return paginated response using provided serializer.
 
@@ -1462,16 +1480,17 @@ def paginate_and_serialize(request, queryset, serializer_class, context=None):
         return api_response(
                     message="Something went wrong",
                     status=False,
+                    error=str(exc),
                 )
     paginated_data = paginator.paginate_queryset(queryset, request)
     serialized_data = serializer_class(paginated_data, many=True, context=context) if context else serializer_class(paginated_data, many=True)
     return paginator.get_paginated_response(serialized_data.data)
 
-class PageNumberPagination(PageNumberPagination):
-    """Custom pagination class for controlling the API's pagination behavior."""
-
-    page_size = 20
-    page_size_query_param = "page_size"
-    max_page_size = 100
-
-
+def safe_json_load(data):
+    """Safely parse JSON string into Python object."""
+    if not data:
+        return []
+    try:
+        return json.loads(data)
+    except Exception:
+        return []

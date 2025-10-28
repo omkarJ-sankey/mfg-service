@@ -20,7 +20,7 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     cycle_duration = serializers.CharField(required=False, allow_blank=True)
     number_of_paid_purchases = serializers.IntegerField(required=False, default=0)
     qr_refresh_time = serializers.IntegerField(required=False, default=0)
-    status = serializers.CharField(required=True)
+    status = serializers.ChoiceField(choices=STATUS_CHOICES, required=True)
     offer_details = serializers.CharField(required=True, allow_blank=True)
     terms_and_conditions = serializers.CharField(required=True, allow_blank=True)
     redeem_product_code = serializers.CharField(required=False, allow_blank=True)
@@ -34,6 +34,10 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     is_car_wash = serializers.BooleanField(required=False, default=False)
     visibility = serializers.CharField(required=False, allow_blank=True)
     display_on_charging_screen = serializers.BooleanField(required=False, default=False)
+    offer_type = serializers.ChoiceField(choices=OFFER_TYPES, required=False, allow_blank=True)
+    redeem_product_promotion_price = serializers.CharField(required=False,allow_blank=True)
+    product = serializers.CharField(required=False,allow_blank=True)
+
 
     promotion_image = serializers.CharField(required=False, allow_blank=True)
     reward_image = serializers.CharField(required=False, allow_blank=True)
@@ -166,3 +170,50 @@ class EditLoyaltyRequestSerializer(serializers.Serializer):
 
         return data
 
+class LoyaltyListRequestSerializer(serializers.Serializer):
+
+    page = serializers.IntegerField(required=False, default=1)
+    status = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    search = serializers.CharField(required=False, allow_blank=True, default="")
+    from_date = serializers.CharField(required=False, allow_blank=True)
+    to_date = serializers.CharField(required=False, allow_blank=True)
+    order_by_start_date = serializers.CharField(required=False, allow_blank=True)
+    order_by_end_date = serializers.CharField(required=False, allow_blank=True)
+    export = serializers.CharField(required=False, allow_blank=True)
+
+class LoyaltyListResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Loyalty
+        fields = [
+            "id",
+            "loyalty_title",
+            "loyalty_type",
+            "valid_from_date",
+            "valid_to_date",
+            "number_of_paid_purchases",
+            "qr_refresh_time",
+            "bar_code_std",
+            "status",
+            "category",
+            "offer_details",
+            "terms_and_conditions",
+            "redeem_product_code",
+            "redeem_product",
+            "cycle_duration",
+            "redeem_type",
+            "number_of_total_issuances",
+            "visibility",
+            "is_car_wash",
+            "display_on_charging_screen",
+        ]
+
+
+class DeleteLoyalitySerializer(serializers.Serializer):
+    loyalty_pk = serializers.IntegerField(required=True)
+
+class ChangeLoyaltyStatusSerializer(serializers.Serializer):
+    loyalty_id = serializers.IntegerField(required=True)
+    status = serializers.CharField(required=True)
+
+class ViewLoyaltyDetailsSerializer(serializers.Serializer):
+    loyalty_pk = serializers.IntegerField(required=True)

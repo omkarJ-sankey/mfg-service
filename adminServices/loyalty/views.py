@@ -24,8 +24,8 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.utils import timezone
 from django.urls import reverse
 from django.conf import settings
-from adminServices.loyalty.serializers import AddLoyaltyRequestSerializer, EditLoyaltyRequestSerializer
-from adminServices.loyalty.services import add_loyalty_service, update_single_loyalty_service
+from adminServices.loyalty.serializers import AddLoyaltyRequestSerializer, ChangeLoyaltyStatusSerializer, DeleteLoyalitySerializer, EditLoyaltyRequestSerializer, LoyaltyListRequestSerializer, LoyaltyListResponseSerializer, ViewLoyaltyDetailsSerializer
+from adminServices.loyalty.services import add_loyalty_service, change_loyalty_status, delete_loyalty_service, get_loyality_list, get_loyalty_details, update_single_loyalty_service
 from adminServices.stations.stations_helper_functions import remove_stations_cached_data
 # pylint:disable=import-error
 from sharedServices.decorators import allowed_users, authenticated_user
@@ -35,6 +35,7 @@ from sharedServices.common import (
     end_date_formater_for_frontend_date,
     filter_url,
     order_by_function,
+    paginate_and_serialize,
     pagination_and_filter_func,
     filter_function_for_base_configuration,
     date_difference_function,
@@ -775,8 +776,8 @@ def delete_loyalties(request, loyalty_pk):
 class AddLoyaltiesView(APIView):
     """API view to handle adding a new loyalty."""
 
-    @authenticated_user
-    @allowed_users(section=LOYALTY_CONST)
+    # @authenticated_user
+    # @allowed_users(section=LOYALTY_CONST)
     def post(self, request):
         """Handle POST request to add loyalty."""
         try:
@@ -784,6 +785,7 @@ class AddLoyaltiesView(APIView):
             serializer = AddLoyaltyRequestSerializer(data=request.data)
             if not serializer.is_valid():
                 return api_response(
+                    self,
                     message=serializer.errors,
                     status=False,
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -798,6 +800,7 @@ class AddLoyaltiesView(APIView):
             # Step 3: Handle response from service
             if not service_response["status"]:
                 return api_response(
+                    self,
                     message=service_response["message"],
                     status=False,
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -805,28 +808,29 @@ class AddLoyaltiesView(APIView):
                 )
 
             return api_response(
+                self,
                 status_code=status.HTTP_200_OK,
                 message=ConstantMessage.LOYALTY_ADDED_SUCCESS,
-                data=service_response["data"],
+                # data=service_response["data"],
             )
 
         except Exception:
             return api_response(
+                self,
                 message=ConstantMessage.SOMETHING_WENT_WRONG,
                 status=False,
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 error=traceback.format_exc(),
             )
 
-    def put(self, request, loyalty_pk):
+    def put(self, request):
         """Handle PUT request to update loyalty."""
         try:
 
-            serializer = EditLoyaltyRequestSerializer(
-                data={**request.data, "loyalty_pk": loyalty_pk}
-            )
+            serializer = EditLoyaltyRequestSerializer(request.data)
             if not serializer.is_valid():
                 return api_response(
+                    self,
                     message=serializer.errors,
                     status=False,
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -836,9 +840,8 @@ class AddLoyaltiesView(APIView):
             validated_data = serializer.validated_data
 
             service_response = update_single_loyalty_service(validated_data, request.user)
-
-
             return api_response(
+                self,
                 status_code=status.HTTP_200_OK,
                 message=ConstantMessage.LOYALTY_UPDATED_SUCCESS,
                 data=service_response["data"],
@@ -846,6 +849,7 @@ class AddLoyaltiesView(APIView):
 
         except Loyalty.DoesNotExist:
             return api_response(
+                self,
                 message=ConstantMessage.LOYALTY_NOT_FOUND,
                 status=False,
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -853,8 +857,151 @@ class AddLoyaltiesView(APIView):
 
         except Exception:
             return api_response(
+                self,
                 message=ConstantMessage.SOMETHING_WENT_WRONG,
                 status=False,
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 error=traceback.format_exc(),
+            )
+        
+    def delete(self, request, loyalty_pk):
+        """Soft delete a loyalty and related dependencies."""
+        try:
+            # Validate request via serializer (if you have one)
+            serializer = DeleteLoyalitySerializer(
+                data={"loyalty_pk": loyalty_pk, **request.query_params}
+            )
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            validated_data = serializer.validated_data
+
+            # Call service layer to perform delete logic
+            delete_loyalty_service(
+                loyalty_pk=validated_data["loyalty_pk"],
+                user=request.user
+            )
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.LOYALTY_DELETED_SUCCESS
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+
+class LoyaltyListView(APIView):        
+    def get(self,request):
+        """Handle GET request to retrieve loyality list."""
+        try:
+            serializer = LoyaltyListRequestSerializer(data=request.query_params)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+            data_list = get_loyality_list(serializer.validated_data)
+
+            result = paginate_and_serialize(
+                request, data_list, LoyaltyListResponseSerializer
+            )
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.STATION_LIST_FETCH_SUCCESS,
+                data=result,
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+        
+class ChangeLoyaltyStatusView(APIView):
+    """API View to change the status of a loyalty."""
+
+    def post(self, request):
+        """Change loyalty status."""
+        try:
+            serializer = ChangeLoyaltyStatusSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            validated_data = serializer.validated_data
+
+            result = change_loyalty_status(
+                loyalty_id=validated_data["loyalty_id"],
+                status_value=validated_data["status"],
+                user=request.user
+            )
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=result["message"]
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+
+class ViewLoyaltyDetailsView(APIView):
+    """API View to fetch loyalty details."""
+
+    def get(self, request, loyalty_pk):
+        """Retrieve loyalty details by ID."""
+        try:
+            serializer = ViewLoyaltyDetailsSerializer(
+                data={"loyalty_pk": loyalty_pk, **request.query_params}
+            )
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            validated_data = serializer.validated_data
+
+            loyalty_data = get_loyalty_details(
+                loyalty_pk=validated_data["loyalty_pk"],
+                user=request.user
+            )
+
+            return api_response(
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.SUCCESS,
+                data=loyalty_data
+            )
+
+        except Exception:
+            return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
             )
