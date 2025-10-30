@@ -20,17 +20,16 @@ def get_audit_trail_list(validated_data):
 
     audit_records = AuditTrail.objects.all()
 
-
     if user_role:
         audit_records = audit_records.filter(user_role__icontains=user_role)
     if reviewed:
-        audit_records = audit_records.filter(reviewed__iexact=reviewed)
+        audit_records = audit_records.filter(review_status__iexact=reviewed)
     if module:
         audit_records = audit_records.filter(module__iexact=module)
     if action:
         audit_records = audit_records.filter(action__icontains=action)
     if start_date and end_date:
-        audit_records = audit_records.filter(created_at__range=[start_date, end_date])
+        audit_records = audit_records.filter(created_date__range=[start_date, end_date])
 
     if order_by_id:
         if order_by_id == "Ascending":
@@ -150,6 +149,8 @@ def get_audit_trail_detail(validated_data):
             "id": audit_entry.id,
             "user_name": audit_entry.user_name,
             "action":audit_entry.action,
+            "reviewed_by":audit_entry.reviewd_by if audit_entry.reviewd_by else None,
+            "reviewed_date":audit_entry.review_date if audit_entry.review_date else None,
             "created_date": audit_entry.created_date.strftime("%Y-%m-%dT%H:%M:%SZ") if audit_entry.created_date else None,
             "new_data": map_main_data(new_data),
             "old_data": map_main_data(old_data),

@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import serializers
 
-from sharedServices.constants import BAR_CODE_STANDARDS, CYCLE_DURATIONS, LOYALTY_TYPES, NO, OFFER_TYPES, REDEEM_TYPES, STATUS_CHOICES, YES
+from sharedServices.constants import BAR_CODE_STANDARDS, BAR_CODE_STD, BOOLEAN_CHOICES, CATEGORY_CHOICES, CYCLE_DURATIONS, LOYALTY_TYPES, NO, OFFER_TYPES, REDEEM_CHOICES, REDEEM_TYPES, STATUS_CHOICES, YES
 from sharedServices.model_files.loyalty_models import Loyalty
 
 class AddLoyaltyRequestSerializer(serializers.Serializer):
@@ -11,18 +11,18 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     unique_code = serializers.CharField(required=True)
     start_date = serializers.CharField(required=True)
     end_date = serializers.CharField(required=True)
-    occurance_status = serializers.CharField(required=True)
+    occurance_status = serializers.ChoiceField(choices=BOOLEAN_CHOICES, required=False)
     steps_to_redeem = serializers.CharField(required=True)
-    category = serializers.CharField(required=True)
-    bar_code_std = serializers.CharField(required=True)
-    redeem_type = serializers.CharField(required=True)
-    loyalty_type = serializers.CharField(required=True)
-    cycle_duration = serializers.CharField(required=False, allow_blank=True)
-    number_of_paid_purchases = serializers.IntegerField(required=False, default=0)
+    category = serializers.ChoiceField(choices=CATEGORY_CHOICES, required=True)
+    bar_code_std = serializers.ChoiceField(choices=BAR_CODE_STD, required=True)
+    redeem_type = serializers.ChoiceField(choices=REDEEM_CHOICES, required=True)
+    loyalty_type = serializers.ChoiceField(choices=LOYALTY_TYPES, required=True)
+    cycle_duration = serializers.IntegerField(required=True)
+    number_of_paid_purchases = serializers.IntegerField(required=True)
     qr_refresh_time = serializers.IntegerField(required=False, default=0)
     status = serializers.ChoiceField(choices=STATUS_CHOICES, required=True)
-    offer_details = serializers.CharField(required=True, allow_blank=True)
-    terms_and_conditions = serializers.CharField(required=True, allow_blank=True)
+    offer_details = serializers.CharField(required=True)
+    terms_and_conditions = serializers.CharField(required=True)
     redeem_product_code = serializers.CharField(required=False, allow_blank=True)
     redeem_product = serializers.CharField(required=False, allow_blank=True)
     redeem_product_promotional_code = serializers.CharField(required=False, allow_blank=True)
@@ -32,12 +32,11 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     transaction_count_for_costa_kwh_consumption = serializers.IntegerField(required=False, allow_null=True)
     detail_site_check = serializers.BooleanField(required=False, default=False)
     is_car_wash = serializers.BooleanField(required=False, default=False)
-    visibility = serializers.CharField(required=False, allow_blank=True)
+    visibility = serializers.CharField(required=True)
     display_on_charging_screen = serializers.BooleanField(required=False, default=False)
     offer_type = serializers.ChoiceField(choices=OFFER_TYPES, required=False, allow_blank=True)
-    redeem_product_promotion_price = serializers.CharField(required=False,allow_blank=True)
-    product = serializers.CharField(required=False,allow_blank=True)
-
+    redeem_product_promotion_price = serializers.CharField(required=False, allow_blank=True)
+    product = serializers.CharField(required=False, allow_blank=True)
 
     promotion_image = serializers.CharField(required=False, allow_blank=True)
     reward_image = serializers.CharField(required=False, allow_blank=True)
@@ -45,6 +44,26 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     loyalty_products = serializers.ListField(child=serializers.DictField(), required=False)
     occurrences = serializers.ListField(child=serializers.DictField(), required=False)
     stations = serializers.ListField(child=serializers.CharField(), required=False)
+
+    def validate(self, attrs):
+        """Custom cross-field validation logic."""
+        occurance_status = attrs.get("occurance_status")
+        occurrences = attrs.get("occurrences")
+
+        if occurance_status == "Yes":
+            if not occurrences or not isinstance(occurrences, list) or len(occurrences) == 0:
+                raise serializers.ValidationError({
+                    "occurrences": "This field is required when occurance_status is 'Yes'."
+                })
+
+            for i, occ in enumerate(occurrences, start=1):
+                missing_fields = [f for f in ["date", "start_time", "end_time"] if f not in occ or not occ[f]]
+                if missing_fields:
+                    raise serializers.ValidationError({
+                        "occurrences": f"Occurrence #{i} is missing required fields: {', '.join(missing_fields)}."
+                    })
+
+        return attrs
 
 
 

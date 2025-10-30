@@ -873,3 +873,21 @@ ORDER_CHOICES = [
     ("Ascending", "Ascending"),
     ("Descending", "Descending"),
 ]
+
+CATEGORY_CHOICES = [
+    ("Valet","Valet"),
+    ("Costa","Costa"),
+    ("EV","EV"),
+    ("Other","Other")
+]
+
+BAR_CODE_STD = [
+    ("EAN8","EAN8"),
+    ("EAN13","EAN18")
+]
+
+REDEEM_CHOICES = [
+    ("Count","Count"),
+    ("Amount","Amount"),
+    ("Kwh","Kwh")
+]

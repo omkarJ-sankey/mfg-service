@@ -59,12 +59,12 @@ def add_loyalty_service(data, user):
         if getattr(data, "promotion_image", None):
             image_data = image_converter(data.promotion_image)
             image = optimize_image(
-                image_data[0],
+                image_data[4],
                 f"{data.loyalty_title}.jpg",
                 "LOYALTY_IMAGE",
             )
             station_loyalty_card_image = optimize_image(
-                image_data[0],
+                image_data[4],
                 f"{data.loyalty_title}_card.jpg",
                 "PROMOTION_IMAGE",
             )
