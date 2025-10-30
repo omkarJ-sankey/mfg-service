@@ -233,14 +233,14 @@ def return_services_from_configurations():
 def return_shops_from_configurations():
     """this function returns shops from configurations"""
     return ServiceConfiguration.objects.filter(
-        ~Q(service_type="Amenity")
-    ).values("id", "service_name", "image_path", "service_type")
+        ~Q(service_type="Shops")
+    ).values("service_id", "service_name", "image_path", "service_type")
 
 
 def return_amenities_from_configurations():
     """this function returns amenities from configurations"""
     return ServiceConfiguration.objects.filter(service_type="Amenity").values(
-        "id", "service_name", "image_path", "service_type"
+        "service_id", "service_name", "image_path", "service_type"
     )
 
 

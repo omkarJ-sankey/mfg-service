@@ -395,14 +395,17 @@ def change_loyalty_status_view(request):
 def return_shop_and_amenity_list():
     """this function returns list of shops and amenities"""
     shops_list = [
-        [i["id"], i["service_name"]]
+        i["service_name"]
         for i in return_shops_from_configurations()
     ]
     amenities_list = [
-        [i["id"], i["service_name"]]
+        i["service_name"]
         for i in return_amenities_from_configurations()
     ]
-    return [shops_list, amenities_list]
+    return {
+        "shop_list": shops_list,
+        "amenities_list": amenities_list
+    }
 
 
 def return_loyalty_types():
@@ -991,15 +994,33 @@ class ViewLoyaltyDetailsView(APIView):
                 loyalty_pk=validated_data["loyalty_pk"],
                 user=request.user
             )
-
             return api_response(
                 status_code=status.HTTP_200_OK,
                 message=ConstantMessage.SUCCESS,
                 data=loyalty_data
             )
-
         except Exception:
             return api_response(
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )
+    
+class GetShopAmentityList(APIView):
+    def get(self, request):
+        """Retrieve Shop list from Service configuration."""
+        try:
+            shop_amentity_list = return_shop_and_amenity_list()
+            return api_response(
+                self,
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.SUCCESS,
+                data=shop_amentity_list
+            )
+        except Exception:
+            return api_response(
+                self,
                 message=ConstantMessage.SOMETHING_WENT_WRONG,
                 status=False,
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -17,6 +17,7 @@ from django.urls import path
 from .views import (
     AddLoyaltiesView,
     ChangeLoyaltyStatusView,
+    GetShopAmentityList,
     LoyaltyListView,
     ViewLoyaltyDetailsView,
     loyalties,
@@ -56,4 +57,7 @@ urlpatterns = [
         delete_loyalties,
         name="delete_loyalties",
     ),
+    path(
+        "get-shop-amentity-list",GetShopAmentityList.as_view(),name="get_shop_amentity_list"
+    )
 ]

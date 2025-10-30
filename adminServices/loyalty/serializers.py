@@ -12,6 +12,7 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     start_date = serializers.CharField(required=True)
     end_date = serializers.CharField(required=True)
     occurance_status = serializers.ChoiceField(choices=BOOLEAN_CHOICES, required=False)
+
     steps_to_redeem = serializers.CharField(required=True)
     category = serializers.ChoiceField(choices=CATEGORY_CHOICES, required=True)
     bar_code_std = serializers.ChoiceField(choices=BAR_CODE_STD, required=True)
@@ -23,10 +24,10 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
     status = serializers.ChoiceField(choices=STATUS_CHOICES, required=True)
     offer_details = serializers.CharField(required=True)
     terms_and_conditions = serializers.CharField(required=True)
-    redeem_product_code = serializers.CharField(required=False, allow_blank=True)
-    redeem_product = serializers.CharField(required=False, allow_blank=True)
-    redeem_product_promotional_code = serializers.CharField(required=False, allow_blank=True)
-    expiry_in_days = serializers.IntegerField(required=False, default=0)
+    redeem_product_code = serializers.CharField(required=True)
+    redeem_product = serializers.CharField(required=True)
+    redeem_product_promotional_code = serializers.CharField(required=True)
+    expiry_in_days = serializers.IntegerField(required=True)
     loyalty_list_footer_message = serializers.CharField(required=False, allow_blank=True)
     trigger_sites = serializers.ListField(child=serializers.CharField(), required=False)
     transaction_count_for_costa_kwh_consumption = serializers.IntegerField(required=False, allow_null=True)
@@ -40,7 +41,8 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
 
     promotion_image = serializers.CharField(required=False, allow_blank=True)
     reward_image = serializers.CharField(required=False, allow_blank=True)
-    shop = serializers.ListField(child=serializers.CharField(), required=True)
+    shop = serializers.ListField(child=serializers.CharField(), required=False)
+    amenities = serializers.ListField(child=serializers.CharField(),required=False)
     loyalty_products = serializers.ListField(child=serializers.DictField(), required=False)
     occurrences = serializers.ListField(child=serializers.DictField(), required=False)
     stations = serializers.ListField(child=serializers.CharField(), required=False)
@@ -49,7 +51,7 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
         """Custom cross-field validation logic."""
         occurance_status = attrs.get("occurance_status")
         occurrences = attrs.get("occurrences")
-
+        loyalty_products = attrs.get("loyalty_products")
         if occurance_status == "Yes":
             if not occurrences or not isinstance(occurrences, list) or len(occurrences) == 0:
                 raise serializers.ValidationError({
@@ -60,7 +62,22 @@ class AddLoyaltyRequestSerializer(serializers.Serializer):
                 missing_fields = [f for f in ["date", "start_time", "end_time"] if f not in occ or not occ[f]]
                 if missing_fields:
                     raise serializers.ValidationError({
-                        "occurrences": f"Occurrence #{i} is missing required fields: {', '.join(missing_fields)}."
+                        "occurrences": f"Occurrence is missing required fields: {', '.join(missing_fields)}."
+                    })
+
+        if loyalty_products:
+            required_fields = [
+                "product_plu",
+                "product_bar_code",
+                "price",
+                "product",
+                "status"
+            ]
+            for i, product in enumerate(loyalty_products, start=1):
+                missing = [f for f in required_fields if f not in product or product[f] in [None, ""]]
+                if missing:
+                    raise serializers.ValidationError({
+                        "loyalty_products": f"Product  is missing required fields: {', '.join(missing)}."
                     })
 
         return attrs
