@@ -209,53 +209,29 @@ def add_loyalty_service(data, user):
 
 
 
-def update_single_loyalty_service(data, loyalty, loyalty_pk, shops, user):
+def update_single_loyalty_service(data, user):
     """Service to update single loyalty (same business logic preserved)."""
     try:
         start_date = date_formater_for_frontend_date(data.start_date)
         end_date = end_date_formater_for_frontend_date(data.end_date)
-
-        if data.loyalty_type == COSTA_COFFEE:
-            costa_loyalty_exists = Loyalty.objects.filter(
-                ~Q(id=loyalty_pk),
-                loyalty_type=COSTA_COFFEE,
-                status=ACTIVE,
-                deleted=NO,
-            )
-            if costa_loyalty_exists.exists():
-                return JsonResponse({
-                    "status": 0,
-                    "message": "It’s not possible to add another Costa Coffee loyalty as one Costa Coffee loyalty is active.",
-                    "url": reverse("station_list"),
-                })
-
-        # --- Unique code check ---
-        loyalty_exists = Loyalty.objects.filter(
-            ~Q(id=loyalty_pk), unique_code=data.unique_code
-        )
-        if loyalty_exists.exists():
-            return JsonResponse({
-                "status": 0,
-                "message": "Loyalty with provided unique code already exists",
-                "url": reverse("station_list"),
-            })
+        loyalty_pk = data.get("loyalty_id")
+        loyalty : Loyalty = data.get("loyalty_instance")
 
         old_data = audit_data_formatter(LOYALTY_CONST, loyalty_pk)
 
-        # --- Image updates (promotion + reward) ---
         image_data = None
         if data.promotion_image:
             if data.promotion_image != loyalty["image"]:
                 image_data = image_converter(data.promotion_image)
         else:
-            if Loyalty.objects.filter(id=loyalty_pk).first().image:
-                Loyalty.objects.filter(id=loyalty_pk).first().image.delete()
-                Loyalty.objects.filter(id=loyalty_pk).update(image=None)
+            if loyalty.image:
+                loyalty.image.delete()
+                loyalty.image = None
+                loyalty.save()
 
         if image_data:
-            existing_loyalty = Loyalty.objects.filter(id=loyalty_pk).first()
-            if existing_loyalty.image:
-                existing_loyalty.image.delete()
+            if loyalty.image:
+                loyalty.image.delete()
 
             image = optimize_image(
                 image_data[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
@@ -268,9 +244,9 @@ def update_single_loyalty_service(data, loyalty, loyalty_pk, shops, user):
                 PROMOTION_IMAGE,
             )
 
-            existing_loyalty.image = image
-            existing_loyalty.station_loyalty_card_image = station_loyalty_card_image
-            existing_loyalty.save()
+            loyalty.image = image
+            loyalty.station_loyalty_card_image = station_loyalty_card_image
+            loyalty.save()
 
         # --- Reward image update ---
         reward_image_data = None
@@ -278,14 +254,13 @@ def update_single_loyalty_service(data, loyalty, loyalty_pk, shops, user):
             if data.reward_image != loyalty["reward_image"]:
                 reward_image_data = image_converter(data.reward_image)
         else:
-            if Loyalty.objects.filter(id=loyalty_pk).first().reward_image:
-                Loyalty.objects.filter(id=loyalty_pk).first().reward_image.delete()
-                Loyalty.objects.filter(id=loyalty_pk).update(reward_image=None)
+            if loyalty.reward_image:
+                loyalty.reward_image.delete()
+                loyalty.update(reward_image=None)
 
         if reward_image_data:
-            existing_loyalty = Loyalty.objects.filter(id=loyalty_pk).first()
-            if existing_loyalty.reward_image:
-                existing_loyalty.reward_image.delete()
+            if loyalty.reward_image:
+                loyalty.reward_image.delete()
 
             reward_image = optimize_image(
                 reward_image_data[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
@@ -293,8 +268,8 @@ def update_single_loyalty_service(data, loyalty, loyalty_pk, shops, user):
                 LOYALTY_REWARD_IMAGE,
                 reward_image_data[0],
             )
-            existing_loyalty.reward_image = reward_image
-            existing_loyalty.save()
+            loyalty.reward_image = reward_image
+            loyalty.save()
 
         # --- Update main loyalty record ---
         Loyalty.objects.filter(id=loyalty_pk).update(
@@ -317,7 +292,7 @@ def update_single_loyalty_service(data, loyalty, loyalty_pk, shops, user):
             redeem_product=data.redeem_product,
             redeem_product_promotional_code=data.redeem_product_promotional_code,
             expiry_in_days=data.expiry_in_days,
-            shop_ids=shops,
+            shop_ids=data.shops,
             loyalty_type=data.loyalty_type,
             number_of_total_issuances=data.number_of_total_issuances,
             reward_activated_notification_expiry=data.reward_activated_notification_expiry,
@@ -460,7 +435,7 @@ def update_single_loyalty_service(data, loyalty, loyalty_pk, shops, user):
                 old_data,
             )
 
-        return None  # Success, handled by view
+        return None
 
     except Exception as e:
         traceback.print_exc()
@@ -481,19 +456,13 @@ def get_loyality_list(validated_data):
     status_val = validated_data.get("status", None)
     order_by_start_date = validated_data.get("order_by_start_date", None)
     order_by_end_date = validated_data.get("order_by_end_date", None)
-    do_export = validated_data.get("export", None)
-
     dashboard_data_days_limit = int(
         filter_function_for_base_configuration(
             DASHBOARD_DATA_DAYS_LIMIT, DEFAULT_DASHBOARD_DATA_DAYS_LIMIT
         )
     )
     loyalty_list = return_loyalty_list()
-    updated_url = ""
 
-    # -----------------------------
-    # 🕓 Date Validation Logic
-    # -----------------------------
     if (
         to_date != ""
         and (
@@ -540,12 +509,10 @@ def get_loyality_list(validated_data):
         loyalty_list = loyalty_list.filter(
             valid_from_date__gte=date_formater_for_frontend_date(from_date)
         )
-        updated_url += f"&from_date={from_date}"
 
     if to_date:
         formatted_to_date = date_formater_for_frontend_date(to_date)
         loyalty_list = loyalty_list.filter(valid_from_date__lte=formatted_to_date)
-        updated_url += f"&to_date={to_date}"
 
     if search:
         loyalty_list = loyalty_list.filter(loyalty_title__icontains=search)
@@ -561,33 +528,39 @@ def get_loyality_list(validated_data):
         ],
     )
     loyalty_list = ordered_loyalties["ordered_table"]
-    export_response = None
-    if do_export == YES:
-        export_response = export_loyalty_data({"filtered_table_for_export": loyalty_list})
+    # export_response = None
+    # if do_export == YES:
+    #     export_response = export_loyalty_data({"filtered_table_for_export": loyalty_list})
     
-    return {
-        "loyalties": loyalty_list,              
-        "updated_url": updated_url,              
-        "export_response": export_response,     
-        "dashboard_limit": dashboard_data_days_limit,
-        "from_date": from_date,
-        "to_date": to_date,
-    }
+    # return {
+    #     "loyalties": loyalty_list,              
+    #     "updated_url": updated_url,              
+    #     "export_response": export_response,     
+    #     "dashboard_limit": dashboard_data_days_limit,
+    #     "from_date": from_date,
+    #     "to_date": to_date,
+    # }
+    return loyalty_list
 
 
 
-def delete_loyalty_service(loyalty_pk, user):
+def delete_loyalty_service(validated_data, user):
     """Service to perform soft deletion of loyalty and its related objects."""
     # Fetch loyalty
-    loyalty = Loyalty.objects.filter(id=loyalty_pk).first()
+    loyalty_id = validated_data.get("loyalty_id")
+    user = {
+            "id": 1,
+            "full_name": "Test User",
+            "role_id": {"role_name": "Admin"}
+        }
+    loyalty = Loyalty.objects.filter(loyalty_id=loyalty_id).first()
     if not loyalty:
         raise ValueError("Loyalty not found")
 
-    Loyalty.objects.filter(id=loyalty_pk).update(
-        deleted=YES,
-        updated_date=timezone.localtime(timezone.now()),
-        updated_by=user.full_name,
-    )
+    loyalty.deleted=YES
+    loyalty.updated_date = timezone.localtime(timezone.now())
+    loyalty.updated_by = user["full_name"]
+    loyalty.save()
 
     if loyalty.loyalty_type == COSTA_COFFEE:
         UserLoyaltyTransactions.objects.filter(
@@ -600,28 +573,28 @@ def delete_loyalty_service(loyalty_pk, user):
             updated_date=timezone.localtime(timezone.now()),
         )
 
-        PushNotifications.objects.filter(
-            id__in=[
-                loyalty.reward_unlocked_notification_id.id,
-                loyalty.reward_expiration_notification_id.id,
-            ]
-        ).update(deleted=YES)
+        # PushNotifications.objects.filter(
+        #     id__in=[
+        #         loyalty.reward_unlocked_notification_id.id,
+        #         loyalty.reward_expiration_notification_id.id,
+        #     ]
+        # ).update(deleted=YES)
 
-    LoyaltyAvailableOn.objects.filter(loyalty_id_id=loyalty_pk).update(
+    LoyaltyAvailableOn.objects.filter(loyalty_id_id=loyalty_id).update(
         deleted=YES,
         updated_date=timezone.localtime(timezone.now()),
-        updated_by=user.full_name,
+        updated_by=user["full_name"],
     )
 
     prev_audit_data = AuditTrail.objects.filter(
-        data_db_id=f"{LOYALTY_CONST}-{loyalty_pk}"
+        data_db_id=f"{LOYALTY_CONST}-{loyalty_id}"
     ).last()
 
     if prev_audit_data and prev_audit_data.new_data:
         add_audit_data(
             user,
             (loyalty.unique_code + ", " + loyalty.loyalty_title),
-            f"{LOYALTY_CONST}-{loyalty_pk}",
+            f"{LOYALTY_CONST}-{loyalty_id}",
             AUDIT_DELETE_CONSTANT,
             LOYALTY_CONST,
             None,
@@ -629,27 +602,32 @@ def delete_loyalty_service(loyalty_pk, user):
         )
 
     # Clear cache
-    remove_loyalties_cached_data()
-    remove_stations_cached_data()
+    # remove_loyalties_cached_data()
+    # remove_stations_cached_data()
 
     return {
-        "loyalty_id": loyalty.id,
+        "loyalty_id": loyalty.loyalty_id,
         "loyalty_code": loyalty.unique_code,
-        "deleted_by": user.full_name,
+        "deleted_by": user,
         "deleted_at": timezone.localtime(timezone.now()),
     }
 
-def change_loyalty_status(loyalty_id, status_value, user):
+def change_loyalty_status(validated_data, user):
     """Service to change loyalty status and manage related updates."""
-    loyalty = Loyalty.objects.filter(id=loyalty_id).first()
-    if not loyalty:
-        raise ValueError("Loyalty not found")
+    user = {
+            "id": 1,
+            "full_name": "Test User",
+            "role_id": {"role_name": "Admin"}
+        }
+    loyalty_id = validated_data.get("loyalty_id")
+    status = validated_data.get("status")
+    loyalty : Loyalty = validated_data.get("loyalty_instance")
 
     old_data = audit_data_formatter(LOYALTY_CONST, loyalty_id)
 
     # Check for existing active Costa loyalty
     costa_loyalty_exists = Loyalty.objects.filter(
-        ~Q(id=loyalty_id),
+        ~Q(loyalty_id=loyalty_id),
         loyalty_type=COSTA_COFFEE,
         status=ACTIVE,
         deleted=NO,
@@ -657,19 +635,18 @@ def change_loyalty_status(loyalty_id, status_value, user):
 
     # Validation logic
     if (
-        status_value != "Active"
+        status != "Active"
         or loyalty.loyalty_type != COSTA_COFFEE
         or (
             loyalty.loyalty_type == COSTA_COFFEE
-            and status_value == "Active"
+            and status == "Active"
             and costa_loyalty_exists is None
         )
     ):
         # Update loyalty status
-        Loyalty.objects.filter(id=loyalty_id).update(
-            status=status_value,
-            updated_date=timezone.localtime(timezone.now()),
-        )
+        loyalty.status=status
+        loyalty.updated_date=timezone.localtime(timezone.now())
+        loyalty.save()
 
         new_data = audit_data_formatter(LOYALTY_CONST, loyalty_id)
 
@@ -684,44 +661,43 @@ def change_loyalty_status(loyalty_id, status_value, user):
                 old_data,
             )
 
-        remove_loyalties_cached_data()
+        # remove_loyalties_cached_data()
 
-        return {"status": True, "message": "Successfully updated loyalty status!"}
+        return {"status": True, "message": "Successfully updated loyalty status"}
 
     else:
-        return {"status": False, "message": "Another Costa loyalty is already active!"}
+        return {"status": False, "message": "Another Costa loyalty is already active"}
     
 def return_shop_and_amenity_list():
     """this function returns list of shops and amenities"""
     shops_list = [
-        [i["id"], i["service_name"]]
+        [i["service_id"], i["service_name"]]
         for i in return_shops_from_configurations()
     ]
     amenities_list = [
-        [i["id"], i["service_name"]]
+        [i["service_id"], i["service_name"]]
         for i in return_amenities_from_configurations()
     ]
     return [shops_list, amenities_list]
 
-def get_loyalty_details(loyalty_pk, user):
+def get_loyalty_details(data, user):
     """Service to fetch loyalty details with shops and amenities."""
-    loyalty_obj = Loyalty.objects.filter(id=loyalty_pk).values().first()
-    if not loyalty_obj:
-        raise ValueError("Loyalty not found")
+    loyalty_id = data.get("loyalty_id")
+    loyalty_obj = Loyalty.objects.filter(loyalty_id=loyalty_id).values().first()
 
     # Get raw data
-    loyalty = return_loyalty_data(loyalty_obj, loyalty_pk, False)
+    loyalty = return_loyalty_data(loyalty_obj, loyalty_id, False)
 
     # Shops and amenities lists
     shops_list, amenities_list = return_shop_and_amenity_list()
     shops = [shop[1] for shop in shops_list if shop[1] in loyalty.get("shop", [])]
     amenities = [a[1] for a in amenities_list if a[1] in loyalty.get("shop", [])]
 
-    url_data = filter_url(user.role_id.access_content.all(), LOYALTY_CONST)
+    # url_data = filter_url(user.role_id.access_content.all(), LOYALTY_CONST)
 
     return {
         "loyalty": loyalty,
         "shops": shops,
         "amenities": amenities,
-        "url_data": url_data
+        # "url_data": url_data
     }

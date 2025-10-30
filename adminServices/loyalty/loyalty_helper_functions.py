@@ -49,7 +49,7 @@ CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 def return_loyalty_data(loyalty_data, loyalty_pk, is_update=True):
     """this function returns loyalty data"""
     available_on_data = LoyaltyAvailableOn.objects.filter(
-        loyalty_id_id=loyalty_data["id"], deleted=NO
+        loyalty_id_id=loyalty_data["loyalty_id"], deleted=NO
     )
     ops_regions = list(
         set(available_on_data.values_list("operation_region", flat=True))
@@ -80,12 +80,12 @@ def return_loyalty_data(loyalty_data, loyalty_pk, is_update=True):
             for shop in return_services_from_configurations()
             if (
                 str(shop["service_name"]) in shop_ids
-                or str(shop["id"]) in shop_ids
+                or str(shop["service_id"]) in shop_ids
             )
         ]
     loyalty_products = list(
         LoyaltyProducts.objects.filter(
-            loyalty_id_id=loyalty_data["id"], deleted=NO
+            loyalty_id_id=loyalty_data["loyalty_id"], deleted=NO
         ).values(
             "id",
             "product_plu",
@@ -108,7 +108,7 @@ def return_loyalty_data(loyalty_data, loyalty_pk, is_update=True):
             ),
         }
         for occurrence in LoyaltyOccurrences.objects.filter(
-            loyalty_id_id=loyalty_data["id"], deleted=NO
+            loyalty_id_id=loyalty_data["loyalty_id"], deleted=NO
         ).values(
             "id",
             "date",
@@ -124,7 +124,7 @@ def return_loyalty_data(loyalty_data, loyalty_pk, is_update=True):
     loyalty_data["shop"] = shops
     loyalty_data["loyalty_products"] = loyalty_products
     loyalty_data["occurrences"] = occurrences
-    loyalty_db_data = Loyalty.objects.filter(id__exact=loyalty_pk).first()
+    loyalty_db_data = Loyalty.objects.filter(loyalty_id__exact=loyalty_pk).first()
     loyalty_data["trigger_sites"] = loyalty_db_data.trigger_sites
     loyalty_data["transaction_count_for_costa_kwh_consumption"] = loyalty_db_data.transaction_count_for_costa_kwh_consumption
     loyalty_data["detail_site_check"] = loyalty_db_data.detail_site_check
@@ -226,7 +226,7 @@ def return_loyalty_data(loyalty_data, loyalty_pk, is_update=True):
 def return_services_from_configurations():
     """this function returns shops from configurations"""
     return ServiceConfiguration.objects.filter().values(
-        "id", "service_name", "image_path", "service_type"
+        "service_id", "service_name", "image_path", "service_type"
     )
 
 
