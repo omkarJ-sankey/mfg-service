@@ -16,6 +16,10 @@ from django.urls import path
 # Views and APIs used for particular action and operation
 from .views import (
     AddLoyaltiesView,
+    ChangeLoyaltyStatusView,
+    GetShopAmentityList,
+    LoyaltyListView,
+    ViewLoyaltyDetailsView,
     loyalties,
     change_loyalty_status_view,
     add_loyalties,
@@ -28,6 +32,7 @@ from .views import (
 
 urlpatterns = [
     path("", loyalties, name="loyalties_list"),
+<<<<<<< HEAD
     path(
         "change--loyalty-status-view/",
         change_loyalty_status_view,
@@ -35,11 +40,23 @@ urlpatterns = [
     ),
     path("add-loyalties/", add_loyalties, name="add_loyalties"),
      path("add-loyalties/", AddLoyaltiesView.as_view(), name="add_loyalties"),
+=======
+    path("loyality-list/",LoyaltyListView.as_view(), name="loyalties_list"),
+    # path(
+    #     "change--loyalty-status-view/",
+    #     change_loyalty_status_view,
+    #     name="change_loyalty_status_view",
+    # ),
+    path("change-loyalty-status/",ChangeLoyaltyStatusView.as_view(), name="change_layalty_status"),
+    # path("add-loyalties/", add_loyalties, name="add_loyalties"),
+    path("add-loyalties/", AddLoyaltiesView.as_view(), name="add_loyalties"),
+>>>>>>> 045d72286b3cf3b4fb4a9e36daad64bb4fc63382
     path(
         "view-loyalties/<int:loyalty_pk>/",
         view_loyalties,
         name="view_loyalties",
     ),
+    path("view-loyalties/",ViewLoyaltyDetailsView.as_view(),name="view_loyalties"),
     path(
         "edit-loyalties/<int:loyalty_pk>/",
         edit_loyalties,
@@ -50,4 +67,7 @@ urlpatterns = [
         delete_loyalties,
         name="delete_loyalties",
     ),
+    path(
+        "get-shop-amentity-list",GetShopAmentityList.as_view(),name="get_shop_amentity_list"
+    )
 ]

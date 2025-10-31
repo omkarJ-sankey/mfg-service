@@ -20,12 +20,16 @@ from django.http import JsonResponse
 import traceback
 
 # pylint:disable=import-error
+from adminServices.audit_trail.serializers import AuditTrailDetailSerializer, AuditTrailListRequestSerializer, AuditTrailListResponseSerializer
+from adminServices.audit_trail.services import get_audit_trail_detail, get_audit_trail_list, marked_as_reviewed
 from sharedServices.model_files.audit_models import AuditTrail
 from sharedServices.model_files.admin_user_models import RoleAccessTypes
 from sharedServices.decorators import allowed_users, authenticated_user
 from sharedServices.common import (
+    api_response,
     filter_url,
     order_by_function,
+    paginate_and_serialize,
     pagination_and_filter_func,
     date_formater_for_frontend_date,
     string_to_array_converter,
@@ -40,6 +44,7 @@ from sharedServices.constants import (
     COMMON_ERRORS,
     ERROR_TEMPLATE_URL,
     JSON_ERROR_OBJECT,
+    ConstantMessage,
 )
 
 
@@ -281,3 +286,108 @@ def mark_as_reviewed(request):
         return JsonResponse({"status": 1, "message": "ok"})
     except COMMON_ERRORS:
         return JSON_ERROR_OBJECT
+
+
+from rest_framework.views import APIView
+from rest_framework import status
+import traceback
+
+
+class AuditTrailListView(APIView):
+    """Handle GET request to retrieve Audit Trail list."""
+
+    def get(self, request):
+        try:
+            serializer = AuditTrailListRequestSerializer(data=request.query_params)
+            if not serializer.is_valid():
+                return api_response(
+                    self,
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors,
+                )
+
+            data_list = get_audit_trail_list(serializer.validated_data)
+            result = paginate_and_serialize(
+                request, data_list, AuditTrailListResponseSerializer
+            )
+
+            return api_response(
+                self,
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.AUDIT_LIST_FETCH_SUCCESS,
+                data=result,
+            )
+
+        except Exception:
+            return api_response(
+                self,
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc(),
+            )
+        
+class AuditTrailDetailView(APIView):
+    """Retrieve detailed audit trail record including old and new data."""
+
+    def get(self, request):
+        try:
+            serializer = AuditTrailDetailSerializer(data=request.query_params)
+            if not serializer.is_valid():
+                return api_response(
+                    self,
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors,
+                )
+
+            data_list = get_audit_trail_detail(serializer.validated_data)
+            return api_response(
+                self,
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.AUDIT_DETAIL_FETCH_SUCCESS,
+                data=data_list,
+            )
+
+        except Exception:
+            return api_response(
+                self,
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc(),
+            )
+
+class MarkedAsReviewedView(APIView):
+    """Retrieve detailed audit trail record including old and new data."""
+
+    def put(self, request):
+        try:
+            serializer = AuditTrailDetailSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    self,
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors,
+                )
+
+            marked_as_reviewed(serializer.validated_data)
+            return api_response(
+                self,
+                status_code=status.HTTP_200_OK,
+                message=ConstantMessage.AUDIT_REVIEW_SUCCESS,
+            )
+
+        except Exception:
+            return api_response(
+                self,
+                message=ConstantMessage.SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc(),
+            )

@@ -66,7 +66,7 @@ def get_stations_object():
     """this function gives formatted station data"""
     stations_data = {}
     db_stations = Stations.objects.filter(deleted=NO).only(
-        "id",
+        "station_dbid",
         "station_id",
         "operation_region",
         "region",
@@ -75,7 +75,7 @@ def get_stations_object():
     )
     for station in db_stations:
         stations_data[station.station_id] = {
-            "id": station.id,
+            "id": station.station_dbid,
             "station_id": station.station_id,
             "operation_region": station.operation_region,
             "region": station.region,
