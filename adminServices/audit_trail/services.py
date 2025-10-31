@@ -20,13 +20,13 @@ def get_audit_trail_list(validated_data):
 
     audit_records = AuditTrail.objects.all()
 
-    if user_role:
+    if user_role and user_role != "All":
         audit_records = audit_records.filter(user_role__icontains=user_role)
-    if reviewed:
+    if reviewed and reviewed != "All":
         audit_records = audit_records.filter(review_status__iexact=reviewed)
-    if module:
+    if module and module != "All":
         audit_records = audit_records.filter(module__iexact=module)
-    if action:
+    if action and action != "All":
         audit_records = audit_records.filter(action__icontains=action)
     if start_date and end_date:
         audit_records = audit_records.filter(created_date__range=[start_date, end_date])
