@@ -65,6 +65,8 @@ ALLOWED_HOSTS = ["*",
     config("DJANGO_APP_API_URL"),
     config("DJANGO_APP_ADMIN_DEFAULT_DOMAIN_URL"),
     config("DJANGO_APP_HEALTH_CHECK_ADMIN_URL"),
+    'd1730543c59d.ngrok-free.app',
+    
 ]
  
 CSRF_TRUSTED_ORIGINS = [config("DJANGO_APP_CONTACTLESS_BACKEND_URL")]

@@ -2,63 +2,174 @@ from rest_framework import serializers
 from sharedServices.constants import ConstantMessage, IS_MFG_KEYS
 from sharedServices.model_files.station_models import Stations
 
+class ConnectorSerializer(serializers.Serializer):
+    connector_type = serializers.ChoiceField(
+        choices=['AC', 'Rapid', 'Ultra-Rapid'],
+        required=True,
+        help_text="Type of connector"
+    )
+    connector_id = serializers.CharField(required=True, help_text="Connector ID")
+    connector_name = serializers.CharField(required=True, help_text="Connector Name")
+    status = serializers.CharField(required=True, help_text="Connector Status")
+    plug_type_name = serializers.CharField(required=True, help_text="Plug Type Name")
+    maximum_charge_rate = serializers.FloatField(required=True, help_text="Maximum Charge Rate in kWh")
+    tariff_amount = serializers.FloatField(required=True, help_text="Tariff Amount")
+    tariff_currency = serializers.CharField(required=True, help_text="Currency for Tariff")
+    connector_sort_order = serializers.IntegerField(required=True, help_text="Sort Order")
+    evse_uid = serializers.CharField(required=True, help_text="OCPI EVSE UID")
+    ocpi_connector_id = serializers.CharField(required=True, help_text="OCPI Connector ID")
+
 class ChargePointSerializer(serializers.Serializer):
-    ampeco_charge_point_id = serializers.CharField(required=False, default="")
-    ampeco_charge_point_name = serializers.CharField(required=False, default="")
+    charge_point_id = serializers.CharField(required=True, help_text="Charge Point ID")
+    charge_point_name = serializers.CharField(required=True, help_text="Charge Point Name")
+    status = serializers.CharField(required=True, help_text="Charge Point Status")
+    device_id = serializers.CharField(required=True, help_text="Device ID")
+    payter_terminal_id = serializers.CharField(required=True, help_text="Payter Terminal ID")
+    ampeco_charge_point_id = serializers.CharField(required=False, default="", help_text="Ampeco Charge Point ID")
+    ampeco_charge_point_name = serializers.CharField(required=False, default="", help_text="Ampeco Charge Point Name")
+
+    connectors = ConnectorSerializer(
+        many=True,
+        required=False,
+        default=[],
+        help_text="List of connectors for this charge point"
+    )
 
 class BackOfficeSerializer(serializers.Serializer):
     back_office = serializers.CharField(required=True)
     location_id = serializers.CharField(required=True)
 
+class ServiceSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+    service_name = serializers.CharField(required=True)
+    image_path = serializers.CharField(required=True)
+    service_type = serializers.CharField(required=True)
+
+class ValetingTerminalSerializer(serializers.Serializer):
+    payter_serial_number = serializers.CharField(required=True, help_text="Payter Serial Number")
+    valeting_amenities = serializers.CharField(required=True, help_text="Valeting Amenities")
+    status = serializers.CharField(required=True, help_text="Terminal Status (Active/Inactive)")
+
+class ValetingMachineSerializer(serializers.Serializer):
+    machine_id = serializers.IntegerField(required=True, help_text="Machine ID")
+    machine_name = serializers.CharField(required=True, help_text="Machine Name")
+    machine_number = serializers.CharField(required=True, help_text="Machine Number")
+    status = serializers.CharField(required=True, help_text="Machine Status (Active/Inactive)")
+
+class DayWorkingHoursSerializer(serializers.Serializer):
+    full_hours = serializers.BooleanField(required=True, help_text="Is the station open 24 hours for this day?")
+    start_time = serializers.CharField(required=False, allow_blank=True, help_text="Start time if not full hours, e.g., 08:00")
+    end_time = serializers.CharField(required=False, allow_blank=True, help_text="End time if not full hours, e.g., 18:00")
+
+
+class WorkingHoursSerializer(serializers.Serializer):
+    monday_friday = DayWorkingHoursSerializer(required=True, help_text="Working hours for Monday to Friday")
+    saturday = DayWorkingHoursSerializer(required=True, help_text="Working hours for Saturday")
+    sunday = DayWorkingHoursSerializer(required=True, help_text="Working hours for Sunday")
+
+
+
 class AddStationRequestSerializer(serializers.Serializer):
-    station_id = serializers.CharField(required=True)
-    station_name = serializers.CharField(required=True)
-    station_type = serializers.CharField(required=True)
-    brand = serializers.CharField(required=True)
-    owner = serializers.CharField(required=True)
-    latitude = serializers.FloatField(required=True)
-    longitude = serializers.FloatField(required=True)
-    email = serializers.EmailField(required=False, allow_blank=True)
-    phone = serializers.CharField(required=False, allow_blank=True)
-    ampeco_site_id = serializers.CharField(required=False, allow_blank=True)
-    ampeco_site_title = serializers.CharField(required=False, allow_blank=True)
-    images = serializers.ListField(child=serializers.CharField(), required=False, default=[])
-    chargepoints = ChargePointSerializer(many=True, required=False, default=[])
-    backoffice = BackOfficeSerializer(many=True, required=False, default=[])
-    address_line1 = serializers.CharField(required=True)
-    address_line2 = serializers.CharField(required=False, allow_blank=True)
-    address_line3 = serializers.CharField(required=False, allow_blank=True)
-    town = serializers.CharField(required=True)
-    postal_code = serializers.CharField(required=True)
-    country = serializers.CharField(required=True)
-    status = serializers.CharField(required=True)
-    overstay_fee = serializers.FloatField(required=False, default=0)
-    valeting = serializers.CharField(required=False, default="NO")
-    parking_details = serializers.CharField(required=False, allow_blank=True)
-    site_id = serializers.CharField(required=False, allow_blank=True)
-    site_title = serializers.CharField(required=False, allow_blank=True)
+
+    station_id = serializers.CharField(required=True, help_text="Enter Station ID")
+    station_name = serializers.CharField(required=True, help_text="Enter Station Name")
+
+    address_line1 = serializers.CharField(required=True, help_text="Address Line 1")
+    address_line2 = serializers.CharField(required=False, allow_blank=True, help_text="Address Line 2")
+    address_line3 = serializers.CharField(required=False, allow_blank=True, help_text="Address Line 3")
+    latitude = serializers.FloatField(required=True, help_text="Latitude")
+    longitude = serializers.FloatField(required=True, help_text="Longitude")
+    town = serializers.CharField(required=True, help_text="Enter Town")
+    postal_code = serializers.CharField(required=True, help_text="Enter Postal Code")
+    country = serializers.CharField(required=True, help_text="Country")
+    working_hours = WorkingHoursSerializer(required=False, help_text="Working hours per day")
+    status = serializers.CharField(required=True, help_text="Active/Inactive/Coming Soon")
+    brand = serializers.CharField(required=True, help_text="Select Brand")
+    owner = serializers.CharField(required=True, help_text="Select Owner")
+    email = serializers.EmailField(required=False, allow_blank=True, help_text="Enter Email")
+    phone = serializers.CharField(required=False, allow_blank=True, help_text="Enter Phone")
+    station_type = serializers.CharField(required=True, help_text="MFG EV / Forecourt")
+    payment_terminal = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+        default=[],
+        help_text="e.g. ['Payter', 'Receipt Hero']"
+    )
+    receipt_hero_site_name = serializers.CharField(required=False, allow_blank=True, help_text="Receipt Hero Site Name")
+    valeting = serializers.CharField(required=False, default="NO", help_text="Yes/No")
+    valeting_terminals = ValetingTerminalSerializer(many=True, required=False, default=[], help_text="List of valeting terminal details")
+    valeting_machines = ValetingMachineSerializer(many=True, required=False, default=[], help_text="List of valeting machine details")
+
+    site_id = serializers.CharField(required=False, allow_blank=True, help_text="Driivz Site ID")
+    ampeco_site_id = serializers.CharField(required=False, allow_blank=True, help_text="Ampeco Site ID")
+    ampeco_site_title = serializers.CharField(required=False, allow_blank=True, help_text="Ampeco Site Title")
+
+    overstay_fee = serializers.FloatField(required=False, default=0, help_text="Enter Overstay Fee")
+    parking_details = serializers.CharField(required=False, allow_blank=True, help_text="Enter Parking Details")
+    site_title = serializers.CharField(required=False, allow_blank=True, help_text="Enter Site Title")
     operation_region = serializers.CharField(required=False, allow_blank=True)
     region = serializers.CharField(required=False, allow_blank=True)
     regional_manager = serializers.CharField(required=False, allow_blank=True)
     area = serializers.CharField(required=False, allow_blank=True)
     area_regional_manager = serializers.CharField(required=False, allow_blank=True)
-    receipt_hero_site_name = serializers.CharField(required=False, allow_blank=True)
-    valeting_site_id = serializers.CharField(required=False, allow_blank=True)
-    payment_terminal = serializers.ListField(child=serializers.CharField(), required=False, default=[])
+    backoffice = BackOfficeSerializer(
+        many=True,
+        required=False,
+        default=[],
+        help_text="List of back office objects with back_office & location_id"
+    )
+    chargepoints = ChargePointSerializer(
+        many=True,
+        required=False,
+        default=[],
+        help_text="List of chargepoint objects"
+    )
+    station_images = serializers.ListField(
+        child=serializers.DictField(child=serializers.CharField()),
+        required=False,
+        default=[],
+        help_text="List of image details"
+    )
+    amenities = ServiceSerializer(
+        many=True,
+        required=False,
+        default=[],
+        help_text="List of amenities"
+    )
 
-    # Validation: station ID unique
+    retails = ServiceSerializer(
+        many=True,
+        required=False,
+        default=[],
+        help_text="List of retail stores"
+    )
+
+    food_to_go = ServiceSerializer(
+        many=True,
+        required=False,
+        default=[],
+        help_text="List of food-to-go stores"
+    )
     def validate_station_id(self, value):
         if Stations.objects.filter(station_id=value).exists():
             raise serializers.ValidationError(ConstantMessage.STATION_ALREADY_EXISTS)
         return value
 
-    # Validation: EV Power must have chargepoints
     def validate(self, attrs):
         if attrs.get("station_type") in IS_MFG_KEYS and attrs.get("brand") == "EV Power":
             if not attrs.get("chargepoints"):
                 raise serializers.ValidationError(ConstantMessage.NO_CHARGEPOINTS_PROVIDED)
-        return attrs
+        if "Receipt Hero" in attrs.get("payment_terminal", []):
+            if not attrs.get("receipt_hero_site_name"):
+                raise serializers.ValidationError("Receipt Hero Site Name is required when using Receipt Hero terminal.")
 
+        if attrs.get("valeting", "NO").upper() == "YES":
+            if not attrs.get("valeting_terminals"):
+                raise serializers.ValidationError("Valeting terminal details required when valeting is enabled.")
+            if not attrs.get("valeting_machines"):
+                raise serializers.ValidationError("Valeting machine details required when valeting is enabled.")
+
+        return attrs
 
 class UploadSheetRequestSerializer(serializers.Serializer):
     file = serializers.FileField(required=True)

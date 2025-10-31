@@ -686,131 +686,189 @@ def add_station_connectors(connectors):
     station_bulk_upload_progress.update(uploaded_rows_count=current_count)
 
 
-def create_single_station_func(data, is_mfg, is_ev, user, back_office_data):
-    """this functions inserts stations in db"""
+# def create_single_station_func(data, is_mfg, is_ev, user, back_office_data):
+#     """this functions inserts stations in db"""
 
-    station_create = None
-    if data.station_type_is_mfg:
-        site_details = data.stationTypeSiteData
-        try:
-            station_create = Stations.objects.create(
-                station_id=data.station_id,
-                station_name=data.station_name,
-                station_address1=data.address_line1,
-                station_address2=data.address_line2,
-                station_address3=data.address_line3,
-                town=data.town,
-                post_code=data.postal_code,
-                country=data.country,
-                brand=data.brand,
-                owner=data.owner,
-                latitude=data.latitude,
-                longitude=data.longitude,
-                email=data.email,
-                phone=data.phone,
-                status=data.status,
-                overstay_fee=data.overstay_fee,
-                station_type=data.station_type,
-                site_title=site_details.site_title,
-                operation_region=site_details.operation_region,
-                region=site_details.region,
-                regional_manager=site_details.regional_manager,
-                area=site_details.area,
-                area_regional_manager=site_details.area_regional_manager,
-                is_mfg=is_mfg,
-                is_ev=is_ev,
-                created_date=timezone.localtime(timezone.now()),
-                updated_by=user.full_name,
-                valeting=data.valeting,
-                site_id=(
-                    None
-                    if data.station_type in NON_EV_STATION_TYPE
-                    else data.site_id
-                ),
-                ocpi_locations = (None if data.station_type in NON_EV_STATION_TYPE
-                    else back_office_data
-                ),
-                payment_terminal=array_to_string_converter(
-                    data.payment_terminal if data.payment_terminal else []
-                ),
-                receipt_hero_site_name=(
-                    data.rh_site_name
-                    if data.rh_site_name
-                    and WORLDLINE_PAYMENT_TERMINAL in data.payment_terminal
-                    else None
-                ),
-                valeting_site_id=data.valeting_site_id,
-                ampeco_site_id=data.ampeco_site_id,
-                ampeco_site_title=data.ampeco_site_title,
-                parking_details=data.parking_details,
-            )
-        except Exception as e:
-            print(f"Failed to create station: {e}")
-    else:
-        station_create = Stations.objects.create(
-            station_id=data.station_id,
-            station_name=data.station_name,
-            station_address1=data.address_line1,
-            station_address2=data.address_line2,
-            station_address3=data.address_line3,
-            town=data.town,
-            post_code=data.postal_code,
-            country=data.country,
-            brand=data.brand,
-            owner=data.owner,
-            latitude=data.latitude,
-            longitude=data.longitude,
-            email=data.email,
-            phone=data.phone,
-            status=data.status,
-            overstay_fee=data.overstay_fee,
-            station_type=data.station_type,
-            is_mfg=is_mfg,
-            is_ev=is_ev,
-            created_date=timezone.localtime(timezone.now()),
-            updated_by=user.full_name,
-            valeting=data.valeting,
-            site_id=(
-                None
-                if data.station_type in NON_EV_STATION_TYPE
-                else data.site_id
-            ),
-            payment_terminal=array_to_string_converter(
-                data.payment_terminal if data.payment_terminal else []
-            ),
-            receipt_hero_site_name=(
-                data.rh_site_name
-                if data.rh_site_name
-                and WORLDLINE_PAYMENT_TERMINAL in data.payment_terminal
-                else None
-            ),
-            valeting_site_id=data.valeting_site_id,
-            ampeco_site_id=data.ampeco_site_id,
-            ampeco_site_title=data.ampeco_site_title,
-            parking_details=data.parking_details,
-        )
-    locations = []
-    try:
-        if back_office_data is not None and is_ev == YES:
-            for key,value in back_office_data.items():
-                country_code,party_id = get_back_office_data(key)
-                OCPILocation.objects.filter(
-                    country_code = country_code, party_id = party_id, location_id = value
-                ).update(
-                    station_mapping_id = station_create
-                )
-                location = OCPILocation.objects.filter(
-                    country_code = country_code, party_id = party_id, location_id = value
-                )
-                evses = OCPIEVSE.objects.filter(location_id__in = location)
-                ocpi_connector = OCPIConnector.objects.filter(evse_id__in = evses)
-                evses.update(chargepoint_mapping_id = None)
-                ocpi_connector.update(connector_mapping_id = None)
-                locations.append(location.first().id)
-        return station_create, locations
-    except Exception as e :
-        traceback.print_exc()
+#     station_create = None
+#     if data.station_type_is_mfg:
+#         site_details = data.stationTypeSiteData
+#         try:
+#             station_create = Stations.objects.create(
+#                 station_id=data.station_id,
+#                 station_name=data.station_name,
+#                 station_address1=data.address_line1,
+#                 station_address2=data.address_line2,
+#                 station_address3=data.address_line3,
+#                 town=data.town,
+#                 post_code=data.postal_code,
+#                 country=data.country,
+#                 brand=data.brand,
+#                 owner=data.owner,
+#                 latitude=data.latitude,
+#                 longitude=data.longitude,
+#                 email=data.email,
+#                 phone=data.phone,
+#                 status=data.status,
+#                 overstay_fee=data.overstay_fee,
+#                 station_type=data.station_type,
+#                 site_title=site_details.site_title,
+#                 operation_region=site_details.operation_region,
+#                 region=site_details.region,
+#                 regional_manager=site_details.regional_manager,
+#                 area=site_details.area,
+#                 area_regional_manager=site_details.area_regional_manager,
+#                 is_mfg=is_mfg,
+#                 is_ev=is_ev,
+#                 created_date=timezone.localtime(timezone.now()),
+#                 updated_by=user.full_name,
+#                 valeting=data.valeting,
+#                 site_id=(
+#                     None
+#                     if data.station_type in NON_EV_STATION_TYPE
+#                     else data.site_id
+#                 ),
+#                 ocpi_locations = (None if data.station_type in NON_EV_STATION_TYPE
+#                     else back_office_data
+#                 ),
+#                 payment_terminal=array_to_string_converter(
+#                     data.payment_terminal if data.payment_terminal else []
+#                 ),
+#                 receipt_hero_site_name=(
+#                     data.rh_site_name
+#                     if data.rh_site_name
+#                     and WORLDLINE_PAYMENT_TERMINAL in data.payment_terminal
+#                     else None
+#                 ),
+#                 valeting_site_id=data.valeting_site_id,
+#                 ampeco_site_id=data.ampeco_site_id,
+#                 ampeco_site_title=data.ampeco_site_title,
+#                 parking_details=data.parking_details,
+#             )
+#         except Exception as e:
+#             print(f"Failed to create station: {e}")
+#     else:
+#         station_create = Stations.objects.create(
+#             station_id=data.station_id,
+#             station_name=data.station_name,
+#             station_address1=data.address_line1,
+#             station_address2=data.address_line2,
+#             station_address3=data.address_line3,
+#             town=data.town,
+#             post_code=data.postal_code,
+#             country=data.country,
+#             brand=data.brand,
+#             owner=data.owner,
+#             latitude=data.latitude,
+#             longitude=data.longitude,
+#             email=data.email,
+#             phone=data.phone,
+#             status=data.status,
+#             overstay_fee=data.overstay_fee,
+#             station_type=data.station_type,
+#             is_mfg=is_mfg,
+#             is_ev=is_ev,
+#             created_date=timezone.localtime(timezone.now()),
+#             updated_by=user.full_name,
+#             valeting=data.valeting,
+#             site_id=(
+#                 None
+#                 if data.station_type in NON_EV_STATION_TYPE
+#                 else data.site_id
+#             ),
+#             payment_terminal=array_to_string_converter(
+#                 data.payment_terminal if data.payment_terminal else []
+#             ),
+#             receipt_hero_site_name=(
+#                 data.rh_site_name
+#                 if data.rh_site_name
+#                 and WORLDLINE_PAYMENT_TERMINAL in data.payment_terminal
+#                 else None
+#             ),
+#             valeting_site_id=data.valeting_site_id,
+#             ampeco_site_id=data.ampeco_site_id,
+#             ampeco_site_title=data.ampeco_site_title,
+#             parking_details=data.parking_details,
+#         )
+#     locations = []
+#     try:
+#         if back_office_data is not None and is_ev == YES:
+#             for key,value in back_office_data.items():
+#                 country_code,party_id = get_back_office_data(key)
+#                 OCPILocation.objects.filter(
+#                     country_code = country_code, party_id = party_id, location_id = value
+#                 ).update(
+#                     station_mapping_id = station_create
+#                 )
+#                 location = OCPILocation.objects.filter(
+#                     country_code = country_code, party_id = party_id, location_id = value
+#                 )
+#                 evses = OCPIEVSE.objects.filter(location_id__in = location)
+#                 ocpi_connector = OCPIConnector.objects.filter(evse_id__in = evses)
+#                 evses.update(chargepoint_mapping_id = None)
+#                 ocpi_connector.update(connector_mapping_id = None)
+#                 locations.append(location.first().id)
+#         return station_create, locations
+#     except Exception as e :
+#         traceback.print_exc()
     
+def create_single_station_func(data, is_mfg, is_ev, user, back_office_data):
+    """Insert station record in DB"""
+
+    try:
+        station_create = Stations.objects.create(
+            station_id=data.get('station_id'),
+            station_name=data.get('station_name'),
+            station_address1=data.get('address_line1'),
+            station_address2=data.get('address_line2'),
+            station_address3=data.get('address_line3'),
+            town=data.get('town'),
+            post_code=data.get('postal_code'),
+            country=data.get('country'),
+            brand=data.get('brand'),
+            owner=data.get('owner'),
+            latitude=data.get('latitude'),
+            longitude=data.get('longitude'),
+            email=data.get('email'),
+            phone=data.get('phone'),
+            status=data.get('status'),
+            overstay_fee=data.get('overstay_fee', 0),
+            station_type=data.get('station_type'),
+            site_title=data.get('site_title'),
+            operation_region=data.get('operation_region'),
+            region=data.get('region'),
+            regional_manager=data.get('regional_manager'),
+            area=data.get('area'),
+            area_regional_manager=data.get('area_regional_manager'),
+            valeting=data.get('valeting'),
+            site_id=data.get('site_id'),
+            ampeco_site_id=data.get('ampeco_site_id'),
+            ampeco_site_title=data.get('ampeco_site_title'),
+        )
+
+        # Update OCPI locations & connectors
+        locations = []
+        if back_office_data and is_ev == YES:
+            for key, value in back_office_data.items():
+                country_code, party_id = get_back_office_data(key)
+                OCPILocation.objects.filter(
+                    country_code=country_code,
+                    party_id=party_id,
+                    location_id=value
+                ).update(station_mapping_id=station_create)
+                loc = OCPILocation.objects.filter(country_code=country_code, party_id=party_id, location_id=value).first()
+                if loc:
+                    locations.append(loc.id)
+                    # Clear previous EVSE & connector mapping
+                    evses = OCPIEVSE.objects.filter(location_id=loc.id)
+                    OCPIConnector.objects.filter(evse_id__in=evses).update(connector_mapping_id=None)
+                    evses.update(chargepoint_mapping_id=None)
+
+        return station_create, locations
+
+    except Exception as e:
+        traceback.print_exc()
+        raise ValueError(f"Station creation failed: {e}")
+
 
 
 def update_single_station_func(data, is_mfg, is_ev, user, station_pk_operator):
@@ -937,121 +995,120 @@ def working_hours_handler(start_time, end_time):
         status = "Closed"
     return status
 
-
 def insert_station_working_hours_entry(data, user, station_create):
-    """this function help to insert working hour details for station"""
-    monday_friday = ""
-    saturday = ""
-    sunday = ""
-    # Checking whether station is 24 hours open or not
-    if data.working_hours.monday_friday.full_hours:
+    """Insert working hour details for a station"""
+
+    HOURS_24 = "24 hours"
+
+    # Get working_hours dict safely
+    working_hours = data.get("working_hours", {})
+    print("working hours-->",working_hours)
+
+    # Monday-Friday
+    mf = working_hours.get("Monday - Friday", {})
+    if mf.get("full_hours", False):
         monday_friday = HOURS_24
     else:
         monday_friday = working_hours_handler(
-            data.working_hours.monday_friday.start_time,
-            data.working_hours.monday_friday.end_time,
+            mf.get("start_time"),
+            mf.get("end_time"),
         )
-
-    if data.working_hours.saturday.full_hours:
+    print("monday full hours-->",monday_friday)
+    # Saturday
+    sat = working_hours.get("Saturday", {})
+    if sat.get("full_hours", False):
         saturday = HOURS_24
     else:
         saturday = working_hours_handler(
-            data.working_hours.saturday.start_time,
-            data.working_hours.saturday.end_time,
+            sat.get("start_time"),
+            sat.get("end_time"),
         )
-
-    if data.working_hours.sunday.full_hours:
+    print("saturday full hours-->",saturday)
+    # Sunday
+    sun = working_hours.get("Sunday", {})
+    if sun.get("full_hours", False):
         sunday = HOURS_24
     else:
         sunday = working_hours_handler(
-            data.working_hours.sunday.start_time,
-            data.working_hours.sunday.end_time,
+            sun.get("start_time"),
+            sun.get("end_time"),
         )
-
-    # Insertion in database
+    print("xyz--->full hours", sunday)
+    # Insert in DB
     StationWorkingHours.objects.create(
         station_id=station_create,
         monday_friday=monday_friday,
         saturday=saturday,
         sunday=sunday,
         created_date=timezone.localtime(timezone.now()),
-        updated_by=user.full_name,
+        updated_by="user.full_name",
     )
 
 
-def insert_station_connector_data(data, user, station_create,location_ids,back_office_name):
-    """this function helps to insert station chargepoints"""
-
-    # Condition to check the station is not forecourt so
-    # that we can add chargepoints to the station
+def insert_station_connector_data(data, user, station_create, location_ids, back_office_name):
+    """Insert station chargepoints and connectors"""
     try:
-        evses = OCPIEVSE.objects.filter(
-            location_id__in = location_ids
-        )
-        ocpi_connectors = OCPIConnector.objects.filter(evse_id__in = evses)
-        if data.station_type != "MFG Forecourt":
-            # Logic to insert chargepoints
-            for chargepoint in data.chargepoints:
-                if not chargepoint.deleted:
-                    charge_point = ChargePoint.objects.create(
+        evses = OCPIEVSE.objects.filter(location_id__in=location_ids)
+        ocpi_connectors = OCPIConnector.objects.filter(evse_id__in=evses)
+
+        # Only insert chargepoints if station is not a forecourt
+        if data.get("station_type") != "MFG Forecourt":
+            for chargepoint in data.get("chargepoints", []):
+                # Default to empty dict if key missing
+                chargepoint = chargepoint or {}
+                
+                charge_point = ChargePoint.objects.create(
+                    station_id=station_create,
+                    charger_point_id=chargepoint.get("charge_point_id"),
+                    charger_point_name=chargepoint.get("charge_point_name"),
+                    charger_point_status=chargepoint.get("status"),
+                    back_office=back_office_name.upper(),
+                    device_id=chargepoint.get("device_id"),
+                    payter_terminal_id=chargepoint.get("payter_terminal_id")
+                    if "Payter" in data.get("payment_terminal", [])
+                    else None,
+                    created_date=timezone.localtime(timezone.now()),
+                    updated_by=user.full_name,
+                    ampeco_charge_point_id=chargepoint.get("ampeco_charge_point_id", ""),
+                    ampeco_charge_point_name=chargepoint.get("ampeco_charge_point_name", ""),
+                    worldline_terminal_id=chargepoint.get("worldline_terminal_id")
+                    if "Worldline" in data.get("payment_terminal", [])
+                    else None,
+                )
+
+                for connector in chargepoint.get("connectors", []):
+                    connector = connector or {}
+                    tariff_amount = float(connector.get("tariff_amount", 0))
+                    
+                    station_connector = StationConnector.objects.create(
                         station_id=station_create,
-                        charger_point_id=chargepoint.charge_point_id,
-                        charger_point_name=chargepoint.charge_point_name,
-                        charger_point_status=chargepoint.status,
-                        back_office=back_office_name.upper(),
-                        device_id=chargepoint.device_id,
-                        payter_terminal_id=(
-                            chargepoint.payter_terminal_id
-                            if PAYTER_PAYMENT_TERMINAL in data.payment_terminal
-                            else None
-                        ),
+                        charge_point_id=charge_point,
+                        connector_id=connector.get("connector_id"),
+                        connector_name=connector.get("connector_name"),
+                        connector_type=connector.get("connector_type"),
+                        plug_type_name=connector.get("plug_type_name"),
+                        status=connector.get("status"),
+                        max_charge_rate=connector.get("maximum_charge_rate"),
+                        connector_sorting_order=connector.get("connector_sort_order"),
+                        tariff_amount=tariff_amount,
+                        tariff_currency=connector.get("tariff_currency"),
                         created_date=timezone.localtime(timezone.now()),
                         updated_by=user.full_name,
-                        ampeco_charge_point_id=chargepoint.ampeco_charge_point_id,
-                        ampeco_charge_point_name=chargepoint.ampeco_charge_point_name,    
-                        worldline_terminal_id=(
-                            chargepoint.worldline_terminal_id
-                            if WORLDLINE_PAYMENT_TERMINAL in data.payment_terminal
-                            else None
-                        ),                    
+                        back_office=back_office_name.upper(),
+                        connector_evse_uid=connector.get("evse_uid"),
                     )
-                    for connector in chargepoint.connectors:
-                        if not connector.deleted:
-                            tariff_amount = (
-                                float(connector.tariff_amount)
-                                if connector.tariff_amount
-                                else 0
-                            )
-                            station_connector = StationConnector.objects.create(
-                                station_id=station_create,
-                                charge_point_id=charge_point,
-                                connector_id=connector.connector_id,
-                                connector_name=connector.connector_name,
-                                connector_type=connector.connector_type,
-                                plug_type_name=connector.plug_type_name,
-                                status=connector.status,
-                                max_charge_rate=connector.maximum_charge_rate,
-                                connector_sorting_order=(
-                                    connector.connector_sorting_order
-                                ),
-                                tariff_amount=tariff_amount,
-                                tariff_currency=connector.tariff_currency,
-                                created_date=timezone.localtime(timezone.now()),
-                                updated_by=user.full_name,
-                                back_office = back_office_name.upper(),
-                                connector_evse_uid = connector.evse_uid
-                            )
-                            update_evse_and_connectors(
-                                evses,
-                                ocpi_connectors,
-                                connector,
-                                charge_point,
-                                station_connector,
-                                station_create
-                            )
-        
+
+                    update_evse_and_connectors(
+                        evses,
+                        ocpi_connectors,
+                        connector,
+                        charge_point,
+                        station_connector,
+                        station_create
+                    )
+
     except Exception as e:
-        print("Failed to insert station connector data: ", e)            
+        print("Failed to insert station connector data:", e)
 
 
 def insert_valeting_terminals_data(data, user, station_create):

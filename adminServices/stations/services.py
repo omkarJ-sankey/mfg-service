@@ -21,34 +21,96 @@ from django.db.models import Q
 
 from sharedServices.model_files.valeting_models import ValetingMachine
 
+# def add_station_service(validated_data, user):
+#     """add station view"""
+#     station_id = validated_data.get("station_id")
+#     station_name = validated_data.get("station_name")
+#     station_type = validated_data.get("station_type")
+#     brand = validated_data.get("brand")
+#     chargepoints = validated_data.get("chargepoints", [])
+#     backoffice_list = validated_data.get("backoffice", [])
+
+#     # Determine station type flags
+#     is_mfg = "YES" if station_type in IS_MFG_KEYS else "NO"
+#     is_ev = "YES" if check_is_ev_status(validated_data) else "NO"
+
+#     # Prepare backoffice mapping
+#     back_office_data = {item['back_office']: item['location_id'] for item in backoffice_list}
+
+#     try:
+#         # Call existing station creation function
+#         station_create, locations = create_single_station_func(validated_data, is_mfg, is_ev, user, back_office_data)
+
+#         # Insert working hours / additional station data
+#         back_office = list(back_office_data.keys())[0] if back_office_data else None
+#         if station_create:
+#             response_op = create_station(user, station_create, validated_data, locations, back_office)
+#             if response_op:  # If create_station returns custom response
+#                 return response_op
+
+#             # Audit logging
+#             new_data = audit_data_formatter(SITES_CONST, station_create.station_id)
+#             add_audit_data(
+#                 user,
+#                 f"{station_create.station_id}, {station_create.station_name}",
+#                 f"{SITES_CONST}-{station_create.id}",
+#                 AUDIT_ADD_CONSTANT,
+#                 SITES_CONST,
+#                 new_data,
+#                 None,
+#             )
+
+#         # Clear cached stations
+#         remove_stations_cached_data()
+
+#         return {"status": True, "message": ConstantMessage.STATION_CREATED_SUCCESSFULLY, "data": {"station_id": station_create.station_id}}
+
+#     except (DatabaseError, DataError):
+#         return {"status": False, "message": ConstantMessage.STATION_CREATION_FAILED}
+    
+
 def add_station_service(validated_data, user):
-    """add station view"""
+    """Add station view"""
+    print("enter in functions-->",validated_data)
+
     station_id = validated_data.get("station_id")
     station_name = validated_data.get("station_name")
     station_type = validated_data.get("station_type")
     brand = validated_data.get("brand")
     chargepoints = validated_data.get("chargepoints", [])
     backoffice_list = validated_data.get("backoffice", [])
+    valeting_terminals = validated_data.get("valeting_terminals", [])
+    valeting_machines = validated_data.get("valeting_machines", [])
+    amenities = validated_data.get("amenities", [])
+    retails = validated_data.get("retails", [])
+    food_to_go = validated_data.get("food_to_go", [])
+    station_images = validated_data.get("station_images", [])
 
-    # Determine station type flags
     is_mfg = "YES" if station_type in IS_MFG_KEYS else "NO"
     is_ev = "YES" if check_is_ev_status(validated_data) else "NO"
-
-    # Prepare backoffice mapping
+    print("-----------3241235-->")
+    # Map backoffice to {back_office_name: location_id}
     back_office_data = {item['back_office']: item['location_id'] for item in backoffice_list}
-
+    print("-->1")
     try:
-        # Call existing station creation function
+        # Create station record
+        # print("validated response-->",validated_data)
+        print("98456778--------->")
         station_create, locations = create_single_station_func(validated_data, is_mfg, is_ev, user, back_office_data)
-
-        # Insert working hours / additional station data
-        back_office = list(back_office_data.keys())[0] if back_office_data else None
+        print("station create-->",station_create, locations)
         if station_create:
-            response_op = create_station(user, station_create, validated_data, locations, back_office)
-            if response_op:  # If create_station returns custom response
+            # Insert additional station data
+            response_op = create_station(
+                postdata=validated_data,
+                user=user,
+                station_obj=station_create,
+                location_data=locations,
+                back_office_name=list(back_office_data.keys())[0] if back_office_data else None
+            )
+            if response_op:
                 return response_op
 
-            # Audit logging
+            # Audit log
             new_data = audit_data_formatter(SITES_CONST, station_create.station_id)
             add_audit_data(
                 user,
@@ -57,17 +119,20 @@ def add_station_service(validated_data, user):
                 AUDIT_ADD_CONSTANT,
                 SITES_CONST,
                 new_data,
-                None,
+                None
             )
 
-        # Clear cached stations
+        # Clear cache
         remove_stations_cached_data()
 
-        return {"status": True, "message": ConstantMessage.STATION_CREATED_SUCCESSFULLY, "data": {"station_id": station_create.station_id}}
+        return {
+            "status": True,
+            "message": ConstantMessage.STATION_CREATED_SUCCESSFULLY,
+            "data": {"station_id": station_create.station_id}
+        }
 
-    except (DatabaseError, DataError):
-        return {"status": False, "message": ConstantMessage.STATION_CREATION_FAILED}
-    
+    except (DatabaseError, DataError, ValueError) as e:
+        return {"status": False, "message": str(e)}
 
 
 def upload_sheet_service(file_obj, user):
