@@ -32,15 +32,6 @@ from .views import (
 
 urlpatterns = [
     path("", loyalties, name="loyalties_list"),
-<<<<<<< HEAD
-    path(
-        "change--loyalty-status-view/",
-        change_loyalty_status_view,
-        name="change_loyalty_status_view",
-    ),
-    path("add-loyalties/", add_loyalties, name="add_loyalties"),
-     path("add-loyalties/", AddLoyaltiesView.as_view(), name="add_loyalties"),
-=======
     path("loyality-list/",LoyaltyListView.as_view(), name="loyalties_list"),
     # path(
     #     "change--loyalty-status-view/",
@@ -50,7 +41,6 @@ urlpatterns = [
     path("change-loyalty-status/",ChangeLoyaltyStatusView.as_view(), name="change_layalty_status"),
     # path("add-loyalties/", add_loyalties, name="add_loyalties"),
     path("add-loyalties/", AddLoyaltiesView.as_view(), name="add_loyalties"),
->>>>>>> 045d72286b3cf3b4fb4a9e36daad64bb4fc63382
     path(
         "view-loyalties/<int:loyalty_pk>/",
         view_loyalties,

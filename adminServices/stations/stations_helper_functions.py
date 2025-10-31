@@ -932,50 +932,86 @@ def get_station_address_from_post_code(data_frame, i):
 from django.db import transaction, DatabaseError, DataError
 from sharedServices.constants import ConstantMessage as CM
 
+# def create_station(postdata, user, station_obj, location_data, back_office_name):
+#     """
+#     Optimized version: batch DB operations, avoid repeated queries
+#     Returns: dict with status and message
+#     """
+#     response = None
+#     try:
+#         with transaction.atomic():
+#             # 1. Working hours insertion
+#             insert_station_working_hours_entry(postdata, user, station_obj)
+
+#             # 2. Connector data insertion
+#             insert_station_connector_data(postdata, user, station_obj, location_data, back_office_name)
+
+#             # 3. Images processing
+#             image_objects = []
+#             for image in getattr(postdata, 'images', []):
+#                 img_data = image_converter(image)
+#                 w, h = img_data[2], img_data[3]
+#                 if not (400 <= w <= 700 and 700 <= h <= 1400):
+#                     raise ValueError("Image with improper size is provided")
+#                 optimized_img = optimize_image(
+#                     img_data[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
+#                     f"{station_obj.station_id}{randon_string_generator()}.{img_data[1]}",
+#                     STATION_INFO_IMAGE
+#                 )
+#                 image_objects.append(
+#                     StationImages(
+#                         station_id=station_obj,
+#                         image=optimized_img,
+#                         image_width=w,
+#                         image_height=h,
+#                         created_date=timezone.localtime(timezone.now()),
+#                         updated_by=user.full_name
+#                     )
+#                 )
+#             # Bulk create images
+#             if image_objects:
+#                 StationImages.objects.bulk_create(image_objects)
+
+#             # 4. Insert services
+#             insert_station_services_data(postdata, user, station_obj)
+
+#             # 5. Valeting terminals & machines
+#             insert_valeting_terminals_data(postdata, user, station_obj)
+#             insert_valeting_machines_data(postdata, user, station_obj)
+
+#     except (DataError, DatabaseError, ValueError) as e:
+#         return {"status": False, "message": str(e)}
+
+#     return {"status": True, "message": CM.STATION_CREATED_SUCCESSFULLY}
+
 def create_station(postdata, user, station_obj, location_data, back_office_name):
-    """
-    Optimized version: batch DB operations, avoid repeated queries
-    Returns: dict with status and message
-    """
-    response = None
     try:
         with transaction.atomic():
-            # 1. Working hours insertion
             insert_station_working_hours_entry(postdata, user, station_obj)
-
-            # 2. Connector data insertion
             insert_station_connector_data(postdata, user, station_obj, location_data, back_office_name)
-
-            # 3. Images processing
+            print("true1")
             image_objects = []
-            for image in getattr(postdata, 'images', []):
+            for image in getattr(postdata, 'station_images', []):
                 img_data = image_converter(image)
-                w, h = img_data[2], img_data[3]
-                if not (400 <= w <= 700 and 700 <= h <= 1400):
-                    raise ValueError("Image with improper size is provided")
                 optimized_img = optimize_image(
                     img_data[IMAGE_OBJECT_POSITION_IN_IMG_CONVRTER_FUN],
                     f"{station_obj.station_id}{randon_string_generator()}.{img_data[1]}",
                     STATION_INFO_IMAGE
                 )
+                print("true2-->",img_data, "and optimize-->",optimized_img)
                 image_objects.append(
                     StationImages(
                         station_id=station_obj,
                         image=optimized_img,
-                        image_width=w,
-                        image_height=h,
+                        image_width=img_data[2],
+                        image_height=img_data[3],
                         created_date=timezone.localtime(timezone.now()),
                         updated_by=user.full_name
                     )
                 )
-            # Bulk create images
             if image_objects:
                 StationImages.objects.bulk_create(image_objects)
-
-            # 4. Insert services
             insert_station_services_data(postdata, user, station_obj)
-
-            # 5. Valeting terminals & machines
             insert_valeting_terminals_data(postdata, user, station_obj)
             insert_valeting_machines_data(postdata, user, station_obj)
 
@@ -985,20 +1021,21 @@ def create_station(postdata, user, station_obj, location_data, back_office_name)
     return {"status": True, "message": CM.STATION_CREATED_SUCCESSFULLY}
 
 
-
 def check_is_ev_status(postdata_from_front_end):
-    """this function checks station is ev status"""
+    """Check if the station is EV based on type and chargepoints"""
     charge_points = filter(
-        lambda charge_point: charge_point.deleted is False,
-        postdata_from_front_end.chargepoints,
+        lambda charge_point: not charge_point.get("deleted", False),
+        postdata_from_front_end.get("chargepoints", [])
     )
+
     return bool(
         (
-            postdata_from_front_end.station_type == "Non MFG"
-            or postdata_from_front_end.station_type in IS_EV_KEYS
+            postdata_from_front_end.get("station_type") == "Non MFG"
+            or postdata_from_front_end.get("station_type") in IS_EV_KEYS
         )
         and len(list(charge_points)) > 0
     )
+
 
 
 def update_database_stations(

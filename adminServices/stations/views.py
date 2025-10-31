@@ -1422,6 +1422,7 @@ class AddStationAPIView(APIView):
             serializer = AddStationRequestSerializer(data=request.data)
             if not serializer.is_valid():
                 return api_response(
+                    self,
                     message=serializer.errors,
                     status=False,
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -1431,13 +1432,16 @@ class AddStationAPIView(APIView):
             result = add_station_service(serializer.validated_data, request.user)
 
             return api_response(
+                self,
                 message=result.get("message"),
                 status=result.get("status"),
                 status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,
                 data=result.get("data", None)
             )
-        except Exception:
+        except Exception as e:
+            print("Expentions--?",e)
             return api_response(
+                self,
                 message=ConstantMessage.SOMETHING_WENT_WRONG,
                 status=False,
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
