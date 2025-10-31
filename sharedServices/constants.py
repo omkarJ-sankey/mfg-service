@@ -36,6 +36,8 @@ ERROR_TEMPLATE_URL = "dashboard/internal_error_template.html"
 JSON_ERROR_OBJECT = JsonResponse(
     {"status": 1, "message": "Something went wrong"}
 )
+SOMETHING_WENT_WRONG = "Something went wrong"
+OTP_SENT_SUCCESSFULLY = "OTP sent successfully"
 INVALID_DATE_TIME = JsonResponse(
     {"status": 406, "message": "Please select valid date and time"}
 )
@@ -187,6 +189,70 @@ BUYING_EMAIL = "Buying email"
 NEW_LOGGED_IN_USER = "new user"
 ADMIN_OTP = "admin otp"
 
+class ConstantMessage:
+    EMAIL_NOT_FOUND = "Email not found"
+    FIRST_TIME_LOGIN = "Please set your password first"
+    INVALID_PASSWORD = "Please enter valid password"
+    OTP_SENT_SUCCESSFULLY = "OTP sent successfully"
+    FAILED_SENDING_EMAIL = "Failed sending email"
+    ACCOUNT_DEACTIVATED = "The account is deactivated"
+    TRY_AGAIN = "Try once again"
+
+    #Otp verification api
+    INVALID_OTP = "Invalid OTP"
+    OTP_LENGTH_INVALID = "OTP has to be exactly 4 digits"
+    OTP_VERIFIED_SUCCESSFULLY = "OTP verified successfully"
+    USER_NOT_FOUND = "User not found"
+    SOMETHING_WENT_WRONG = "Something went wrong"
+    OTP_EXPIRED = "OTP expired or invalid"
+
+    #add station
+    STATION_CREATED_SUCCESSFULLY = "Station created successfully"
+    STATION_ALREADY_EXISTS = "Station with this id already exists"
+    STATION_CREATION_FAILED = "Unable to create station"
+    NO_CHARGEPOINTS_PROVIDED = "No chargepoints provided for EV Power station"
+    SOMETHING_WENT_WRONG = "Something went wrong"
+
+    # Generic messages
+    SUCCESS = "File uploaded successfully, processing started."
+    UNKNOWN_ERROR = "Something went wrong."
+    INVALID_EXCEL_FILE = "File not recognized as Excel file."
+    
+    # Validation-related
+    MISSING_SHEETS = "Sheet must include {missing_tabs}"
+    
+    # Tabs
+    TAB_SITES = '"Sites" tab'
+    TAB_CHARGEPOINT = '"Chargepoint" tab'
+    TAB_MFG = '"MFG" tab'
+    TAB_VALETING_TERMINALS = '"Valeting Terminals" tab'
+    TAB_VALETING_MACHINES = '"Valeting Machines" tab'
+
+    #Listing Station
+    STATION_LIST_FETCH_SUCCESS = "Station list fetched successfully."
+    STATION_LIST_EMPTY = "No stations available."
+    INVALID_PAGE_NUMBER = "Invalid page number."
+    SOMETHING_WENT_WRONG = "something went wrong while fetching stations."
+    STATION_DATA_RETRIVED_SUCCESS = "station data retrived successfully."
+    STATION_NOT_FOUND = "station not found."
+    STATION_DELETED_SUCCESS = "station delete successfully"
+    STATION_UPDATED_SUCCESS = "station update successfully."
+
+    SOMETHING_WENT_WRONG = "Something went wrong while processing your request."
+    LOYALTY_ADDED_SUCCESS = "Loyalty created successfully."
+    LOYALTY_DUPLICATE_CODE = "Loyalty with this unique code already exists."
+    COSTA_COFFEE_ALREADY_EXISTS = "An active Costa Coffee loyalty already exists."
+    LOYALTY_CREATION_FAILED = "Failed to create loyalty."
+
+    LOYALTY_ADDED_SUCCESS = "Loyalty added successfully."
+    LOYALTY_UPDATED_SUCCESS = "Loyalty updated successfully."
+    LOYALTY_NOT_FOUND = "Loyalty not found."
+    SOMETHING_WENT_WRONG = "Something went wrong, please try again later."
+    LOYALTY_DELETED_SUCCESS = "Loyalty deleted successfully."
+
+    AUDIT_LIST_FETCH_SUCCESS = "Audit list fetched successfully."
+    AUDIT_DETAIL_FETCH_SUCCESS = "Audit details fetched successfully."
+    AUDIT_REVIEW_SUCCESS = "Audit reviewed successfully."
 
 METER_TO_MILES_DIVIDER = 1.609 * 1000
 MILES_TO_METER_MULTIPLIER = 1.609 * 1000
@@ -340,7 +406,59 @@ IN_PROGRESS = "In progress"
 NEED_REVIEW = "Need review"
 FAILED = "Failed"
 
-LOYALTY_TYPES = ['Costa Coffee', 'Free']
+# Loyalty Types
+LOYALTY_TYPES = [
+    ("Regular", "Regular"),
+    ("Costa Coffee", "Costa Coffee"),
+    ("Free", "Free"),
+]
+
+# Offer Types
+OFFER_TYPES = [
+    ("Generic Offers", "Generic Offers"),
+    ("Loyalty Offers", "Loyalty Offers")
+]
+
+# Cycle Durations
+CYCLE_DURATIONS = [
+    ("Daily", "Daily"),
+    ("Weekly", "Weekly"),
+    ("Monthly", "Monthly"),
+]
+
+# Barcode Standards
+BAR_CODE_STANDARDS = [
+    ("CODE128", "CODE128"),
+    ("EAN13", "EAN13"),
+    ("UPC", "UPC"),
+]
+
+# Redeem Types
+REDEEM_TYPES = [
+    ("Instant", "Instant"),
+    ("Deferred", "Deferred"),
+]
+
+# Status Choices
+STATUS_CHOICES = [
+    ("Active", "Active"),
+    ("Inactive", "Inactive"),
+]
+
+# Yes/No Choices
+YES = "Yes"
+NO = "No"
+BOOLEAN_CHOICES = [
+    (YES, "Yes"),
+    (NO, "No"),
+]
+
+# Visibility Choices
+VISIBILITY_CHOICES = [
+    (YES, "Visible"),
+    (NO, "Hidden"),
+]
+
 
 # following constant used to set default string for EV power
 # brands in default images functionality
@@ -719,3 +837,57 @@ REREGISTER_TOKENS_ENDPOINT = "/check-token"
 GUEST_USERS = "Guest Users"
 ALL_USERS = "All Users"
 REGISTERED_USERS = "Registered Users"
+
+# constants/audit_constants.py
+
+USER_ROLE_CHOICES = [
+    ("All", "All"),
+    ("Admin", "Admin"),
+    ("Super admin", "Super admin"),
+    ("Operator", "Operator"),
+    ("Finance operator", "Finance operator"),
+    ("Developer", "Developer"),
+]
+
+REVIEW_STATUS_CHOICES = [
+    ("All", "All"),
+    ("Yes", "Yes"),
+    ("No", "No"),
+]
+
+MODULE_CHOICES = [
+    ("Offers", "Offers"),
+    ("Sites", "Sites"),
+    ("Loyalty", "Loyalty"),
+]
+
+ACTION_CHOICES = [
+    ("All", "All"),
+    ("Create", "Create"),
+    ("Update", "Update"),
+    ("Delete", "Delete"),
+    ("APP_USER_DELETION", "APP_USER_DELETION"),
+]
+
+ORDER_CHOICES = [
+    ("Ascending", "Ascending"),
+    ("Descending", "Descending"),
+]
+
+CATEGORY_CHOICES = [
+    ("Valet","Valet"),
+    ("Costa","Costa"),
+    ("EV","EV"),
+    ("Other","Other")
+]
+
+BAR_CODE_STD = [
+    ("EAN8","EAN8"),
+    ("EAN13","EAN18")
+]
+
+REDEEM_CHOICES = [
+    ("Count","Count"),
+    ("Amount","Amount"),
+    ("Kwh","Kwh")
+]

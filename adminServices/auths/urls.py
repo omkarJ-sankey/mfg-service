@@ -10,6 +10,8 @@
 # Imports required to make urls are below
 from django.urls import path
 from .views import (
+    AdminLoginAPIView,
+    AdminOTPVerificationAPIView,
     AuthorizeMFGUser,
     admin_change_password_page,
     admin_forget_password_page,
@@ -21,12 +23,14 @@ from .views import (
 
 # Assigning Views to particular url to access there functionality
 urlpatterns = [
-    path("", admin_login_page, name="AdminLogin"),
-    path(
-        "admin-otp-verification/",
-        admin_otp_verification_page,
-        name="AdminOTPVerifiction",
-    ),
+    # path("", admin_login_page, name="AdminLogin"),
+    path("admin-login/", AdminLoginAPIView.as_view(), name="AdminLogin"),
+    # path(
+    #     "admin-otp-verification/",
+    #     admin_otp_verification_page,
+    #     name="AdminOTPVerifiction",
+    # ),
+    path("admin-otp-verification/", AdminOTPVerificationAPIView.as_view(), name="AdminOTPVerification"),
     path(
         "admin-forget-password/",
         admin_forget_password_page,

@@ -22,7 +22,7 @@ class EmailAttachments(models.Model):
 
     conditions = ((YES, YES), (NO, NO))
 
-    attachment_id = models.AutoField
+    attachment_id = models.AutoField(primary_key=True)
     attachment = models.FileField(upload_to="images", blank=True, null=True)
     attachment_size = models.IntegerField(blank=True, null=True)
     deleted = models.CharField(

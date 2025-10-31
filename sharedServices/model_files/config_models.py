@@ -21,7 +21,7 @@ from ..constants import YES, NO
 class ConnectorConfiguration(models.Model):
     """Connctor model"""
 
-    connector_id = models.AutoField
+    connector_id = models.AutoField(primary_key=True)
     image_path = models.ImageField(upload_to="images", blank=True, null=True)
     alternate_image_path = models.ImageField(
         upload_to="images", blank=True, null=True
@@ -74,7 +74,7 @@ class ConnectorConfiguration(models.Model):
 class ServiceConfiguration(models.Model):
     """Services models (shops)"""
 
-    service_id = models.AutoField
+    service_id = models.AutoField(primary_key=True)
     service_name = models.CharField(max_length=100, blank=True, null=True)
     image_path = models.ImageField(upload_to="images", blank=True, null=True)
     image_path_with_text = models.ImageField(
@@ -118,7 +118,7 @@ class BaseConfigurations(models.Model):
 
     add_to_cache_conditions = ((YES, YES), (NO, NO))
     frequently_used_conditions = ((YES, YES), (NO, NO))
-    base_configuration_id = models.AutoField
+    base_configuration_id = models.AutoField(primary_key=True)
     base_configuration_key = models.CharField(
         max_length=100, blank=True, null=True
     )
@@ -167,7 +167,7 @@ class BaseConfigurations(models.Model):
 class MapMarkerConfigurations(models.Model):
     """model for map markers/brand logos"""
 
-    map_marker_id = models.AutoField
+    map_marker_id = models.AutoField(primary_key=True)
     map_marker_key = models.CharField(max_length=100, blank=True, null=True)
     map_marker_image = models.ImageField(upload_to="images")
     small_map_marker_image = models.ImageField(upload_to="images", null=True)

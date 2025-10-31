@@ -19,7 +19,7 @@ import uuid
 class OCPICredentialsRole(models.Model):
     "OCPI credentials roles table"
 
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     role = models.CharField(
         max_length=10, blank=True, null=True
     )
@@ -46,7 +46,7 @@ class OCPICredentials(models.Model):
         ("Initiated", "Initiated"),
         ("Failed", "Failed"),
     )
-    id = models.AutoField
+    id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=100, blank=False, null=False
     )

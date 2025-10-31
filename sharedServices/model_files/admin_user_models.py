@@ -28,7 +28,7 @@ class Content(models.Model):
 class RoleAccessTypes(models.Model):
     """role access types model"""
 
-    role_id = models.AutoField
+    role_id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=20, blank=True, null=True)
     access_content = models.ManyToManyField(Content)
 
@@ -45,7 +45,7 @@ class AdminUser(models.Model):
     """admin user model"""
 
     conditions = ((YES, YES), (NO, NO))
-    user_id = models.AutoField
+    user_id = models.AutoField(primary_key=True)
     role_id = models.ForeignKey(
         RoleAccessTypes, null=True, on_delete=models.SET_NULL
     )

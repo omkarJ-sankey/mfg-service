@@ -82,7 +82,8 @@ DJANGO_APP_AZURE_FUNCTION_CRON_JOB_SECRET = config("DJANGO_APP_AZURE_FUNCTION_CR
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*",
+                 "d1730543c59d.ngrok-free.app"]
 CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
 

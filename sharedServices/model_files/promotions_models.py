@@ -32,7 +32,7 @@ class Promotions(models.Model):
         ("All", "All"),
     )
     conditions = ((YES, YES), (NO, NO))
-    promotion_id = models.AutoField
+    promotion_id = models.AutoField(primary_key=True)
     unique_code = models.CharField(max_length=200, blank=True, null=True)
     retail_barcode = models.CharField(max_length=200, blank=True, null=True)
     product = models.CharField(max_length=200, blank=True, null=True)

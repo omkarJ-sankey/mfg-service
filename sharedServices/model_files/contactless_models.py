@@ -30,7 +30,7 @@ class ContactlessReceiptEmailTracking(models.Model):
 class ContactlessSessionsDownloadedReceipts(models.Model):
     """Contactless downloaded receipts"""
 
-    receipt_id = models.AutoField
+    receipt_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         MFGUserEV,
         null=True,

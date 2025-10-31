@@ -37,7 +37,7 @@ class Transactions(models.Model):
         ("Underpayment", "Underpayment"),
         ("-", "-"),
     )
-    transactions_db_id = models.AutoField
+    transactions_db_id = models.AutoField(primary_key=True)
     station_id = models.ForeignKey(
         Stations, null=True, on_delete=models.SET_NULL
     )
@@ -95,7 +95,7 @@ class Transactions(models.Model):
 class TransactionsDetails(models.Model):
     """transaction details model"""
 
-    transactions_db_id = models.AutoField
+    transactions_db_id = models.AutoField(primary_key=True)
     order_id = models.CharField(max_length=30, blank=True, null=True)
     station_id = models.ForeignKey(
         Stations, null=True, on_delete=models.SET_NULL

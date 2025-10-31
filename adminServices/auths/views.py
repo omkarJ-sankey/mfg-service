@@ -34,6 +34,7 @@ from sharedServices.model_files.admin_user_models import (
 )
 from sharedServices.model_files.app_user_models import MFGUserEV
 from sharedServices.common import (
+    api_response,
     generate_token_func,
     email_validator,
     password_validator,
@@ -45,6 +46,8 @@ from sharedServices.email_common_functions import (
 from sharedServices.constants import (
     FORGET_PASS_CONST,
     ADMIN_OTP,
+    OTP_SENT_SUCCESSFULLY,
+    SOMETHING_WENT_WRONG,
     YES,
     NO,
     GET_METHOD_ALLOWED,
@@ -531,3 +534,80 @@ class AuthorizeMFGUser(APIView):
             )
         except COMMON_ERRORS:
             return API_ERROR_OBJECT
+
+
+
+
+#Rest API 
+
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from .serializers import AdminLoginRequestSerializer, AdminOTPVerificationRequestSerializer
+from .services import admin_login_service, admin_otp_verification_service
+import traceback
+
+class AdminLoginAPIView(APIView):
+    """API view for admin login"""
+
+    def post(self, request):
+        try:
+            serializer = AdminLoginRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            result = admin_login_service(serializer.validated_data)
+            print("result-->",result)
+
+            return api_response(
+                self,
+                message=result.get("message"),
+                status=result.get("status"),
+                status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,
+                data = result.get("data")
+            )
+        except Exception as e:
+            print("exception-->",e)
+            return api_response(
+                self,
+                message=SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class AdminOTPVerificationAPIView(APIView):
+    """API view for admin OTP verification"""
+
+    def post(self, request):
+        try:
+            serializer = AdminOTPVerificationRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return api_response(
+                    message=serializer.errors,
+                    status=False,
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    error=serializer.errors
+                )
+
+            result = admin_otp_verification_service(serializer.validated_data)
+            return api_response(
+                self,
+                message=result.get("message"),
+                status=result.get("status"),
+                status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,
+                data=result.get("data", None)
+            )
+
+        except Exception as e:
+            return api_response(
+                message=SOMETHING_WENT_WRONG,
+                status=False,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                error=traceback.format_exc()
+            )

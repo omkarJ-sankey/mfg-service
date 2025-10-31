@@ -21,7 +21,7 @@ class Trips(models.Model):
     """trip's data model"""
 
     conditions = ((YES, YES), (NO, NO))
-    trip_id = models.AutoField
+    trip_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(
         MFGUserEV,
         null=True,

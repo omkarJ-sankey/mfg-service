@@ -22,7 +22,7 @@ class ThirdPartyCredentials(models.Model):
         ("Yes", "Yes"),
         ("No", "No"),
     )
-    third_party_user_id = models.AutoField
+    third_party_user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100, blank=True, null=True)
     password = models.CharField(max_length=500, blank=True, null=True)
     owner = models.CharField(max_length=500, blank=True, null=True)

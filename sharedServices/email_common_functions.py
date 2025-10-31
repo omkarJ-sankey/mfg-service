@@ -104,19 +104,23 @@ def email_sender(
     attachment_name="",
 ):
     """send email function"""
+    print(f"email details {template_id}, {to_emails}, {dynamic_data}, {attachment_data}, {attachment_name}")
     if template_id:
+        print("xyz-->",template_id)
         from_email = BaseConfigurations.objects.get(
             base_configuration_key=SEND_EMAIL_VALUE
         ).base_configuration_value
         from_name = BaseConfigurations.objects.get(
             base_configuration_key=SEND_EMAIL_NAME_VALUE
         ).base_configuration_value
+        print(f"from email-->{from_email} and {from_name}")
         # list of emails and preheader names, update with yours
         print("Sending email to : ",len(to_emails)," users")
         for i in range(0, len(to_emails), 500):
             batch_to_emails = to_emails[i:i + 500]
             
             message = Mail(from_email=(from_email, from_name), to_emails=batch_to_emails)
+            print("message-->",message)
             # pass custom values for our HTML placeholders
             message.dynamic_template_data = dynamic_data
             message.template_id = template_id
@@ -190,11 +194,13 @@ def send_email_function(email, email_type, user_first_name, key_or_password):
             ).base_configuration_value,
         }
     elif email_type == ADMIN_OTP:
+        print("admin otp-->",email_type)
         template_id = config("DJANGO_APP_ADMIN_OTP_TEMPLATE_ID")
         dynamic_data = {
             "user_name": user_first_name,
             "verification_code": key_or_password,
         }
+        print("dynamic data-->",dynamic_data)
     elif email_type == DELETED_ACCOUNT:
         template_id = config("DJANGO_APP_DELETED_ACCOUNT_TEMPLATE_ID")
         dynamic_data = {
@@ -244,19 +250,26 @@ def send_otp(email_or_phone, user_name, otp_type, send_email=True, send_sms_otp_
         user_name = ""
     if email_or_phone:
         key = generate_otp(send_sms_otp_for_v3)
+        print("key-->",key)
+
         if send_email:
+            print("True-->1")
             blocked_email_list = filter_function_for_base_configuration(
                 BLOCKED_USERS_EMAILS_LIST, json.dumps([])
             )
+            print("true -- 2", blocked_email_list)
             if (
                 blocked_email_list and
                 email_or_phone in list(json.loads(blocked_email_list))
             ):
                 return False
+            print(f"xyz--> {email_or_phone} and otp type {otp_type} and key -->{key}")
             send_status = send_email_function(
                 email_or_phone, otp_type, user_name, key
             )
+            print("true -- 3", send_status)
         else:
+            print("else--> true -- 1")
             blocked_phone_list = filter_function_for_base_configuration(
                 BLOCKED_USERS_PHONE_LIST, json.dumps([])
             )
@@ -265,8 +278,11 @@ def send_otp(email_or_phone, user_name, otp_type, send_email=True, send_sms_otp_
                 email_or_phone in list(json.loads(blocked_phone_list))
             ):
                 return False
+            print("else--> true -- 2", email_or_phone , key)
             # logic to send mobile message
             send_status = send_sms(email_or_phone, key)
+            print("else--> true -- 3", send_status)
+            
         if send_status:
             otp_key = str(key)
             return otp_key
