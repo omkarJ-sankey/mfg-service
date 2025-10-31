@@ -84,9 +84,9 @@ def add_audit_data(*args):
         old_data,
     ) = args
     audit_created = AuditTrail.objects.create(
-        user_id=user_data.id,
-        user_name=f"{user_data.full_name}",
-        user_role=f"{user_data.role_id.role_name}",
+        user_id=user_data.get("id"),
+        user_name = user_data.get("full_name"),
+        user_role = user_data.get("role_id", {}).get("role_name"),
         action=action,
         module=module,
         module_id=module_id,
@@ -445,7 +445,7 @@ def format_data_for_promotions(promotion_id):
 def format_data_for_loyalties(loyalty_id):
     """this function formats data for loyalty"""
     loyalty_details_object = {}
-    loyalty_basic_data = Loyalty.objects.filter(id=loyalty_id).values().first()
+    loyalty_basic_data = Loyalty.objects.filter(loyalty_id=loyalty_id).values().first()
     if loyalty_basic_data is None:
         return None
     loyalty_stations = LoyaltyAvailableOn.objects.filter(
@@ -454,7 +454,7 @@ def format_data_for_loyalties(loyalty_id):
 
     shops_from_configurations = ServiceConfiguration.objects.filter(
         ~Q(service_type="Amenity")
-    ).values("id", "service_name", "image_path", "service_type")
+    ).values("service_id", "service_name", "image_path", "service_type")
     shops = []
     input_output = StringIO(loyalty_basic_data["shop_ids"])
     shop_ids = (
@@ -463,7 +463,7 @@ def format_data_for_loyalties(loyalty_id):
     for shop in shops_from_configurations:
         if (
             str(shop["service_name"]) in shop_ids
-            or str(shop["id"]) in shop_ids
+            or str(shop["service_id"]) in shop_ids
         ):
             shops.append(shop["service_name"])
     loyalty_details_object = {
@@ -523,46 +523,46 @@ def format_data_for_loyalties(loyalty_id):
             else ""
         )
     }
-    if loyalty_basic_data["loyalty_type"] in LOYALTY_TYPES:
-        reward_activated_notification_data = PushNotifications.objects.filter(
-            id=loyalty_basic_data["reward_unlocked_notification_id_id"]
-        ).values().first()
-        if reward_activated_notification_data:
-            loyalty_details_object["reward_activated_notification_content"] = {
-                "Title": reward_activated_notification_data["subject"],
-                "Description": reward_activated_notification_data["description"],
-                "Expiry": loyalty_basic_data["reward_activated_notification_expiry"],
-                "Screens": reward_activated_notification_data["screens"],
-                "Type of notification": "In-App Notification" if (
-                    reward_activated_notification_data["inapp_notification"] == 'true'
-                ) else "Push Notification",
-                "Image": (
-                    (AZURE_BLOB_STORAGE_URL + reward_activated_notification_data["image"])
-                    if reward_activated_notification_data["image"]
-                    else ""
-                )
-            }
+    # if loyalty_basic_data["loyalty_type"] in LOYALTY_TYPES:
+    #     reward_activated_notification_data = PushNotifications.objects.filter(
+    #         id=loyalty_basic_data["reward_unlocked_notification_id_id"]
+    #     ).values().first()
+    #     if reward_activated_notification_data:
+    #         loyalty_details_object["reward_activated_notification_content"] = {
+    #             "Title": reward_activated_notification_data["subject"],
+    #             "Description": reward_activated_notification_data["description"],
+    #             "Expiry": loyalty_basic_data["reward_activated_notification_expiry"],
+    #             "Screens": reward_activated_notification_data["screens"],
+    #             "Type of notification": "In-App Notification" if (
+    #                 reward_activated_notification_data["inapp_notification"] == 'true'
+    #             ) else "Push Notification",
+    #             "Image": (
+    #                 (AZURE_BLOB_STORAGE_URL + reward_activated_notification_data["image"])
+    #                 if reward_activated_notification_data["image"]
+    #                 else ""
+    #             )
+    #         }
 
-        reward_expiration_notification_data = PushNotifications.objects.filter(
-            id=loyalty_basic_data["reward_expiration_notification_id_id"]
-        ).values().first()
-        if reward_expiration_notification_data:
-            loyalty_details_object["reward_expiration_notification_content"] = {
-                "Title": reward_expiration_notification_data["subject"],
-                "Description": reward_expiration_notification_data["description"],
-                "Expiry": loyalty_basic_data["reward_expiration_notification_expiry"],
-                "Expire before X days": loyalty_basic_data["expire_reward_before_x_number_of_days"],
-                "Notification trigger time": loyalty_basic_data["reward_expiry_notification_trigger_time"],
-                "Screens": reward_expiration_notification_data["screens"],
-                "Type of notification": "In-App Notification" if (
-                    reward_expiration_notification_data["inapp_notification"] == 'true'
-                ) else "Push Notification",
-                "Image": (
-                    (AZURE_BLOB_STORAGE_URL + reward_expiration_notification_data["image"])
-                    if reward_expiration_notification_data["image"]
-                    else ""
-                )
-            }
+    #     reward_expiration_notification_data = PushNotifications.objects.filter(
+    #         id=loyalty_basic_data["reward_expiration_notification_id_id"]
+    #     ).values().first()
+    #     if reward_expiration_notification_data:
+    #         loyalty_details_object["reward_expiration_notification_content"] = {
+    #             "Title": reward_expiration_notification_data["subject"],
+    #             "Description": reward_expiration_notification_data["description"],
+    #             "Expiry": loyalty_basic_data["reward_expiration_notification_expiry"],
+    #             "Expire before X days": loyalty_basic_data["expire_reward_before_x_number_of_days"],
+    #             "Notification trigger time": loyalty_basic_data["reward_expiry_notification_trigger_time"],
+    #             "Screens": reward_expiration_notification_data["screens"],
+    #             "Type of notification": "In-App Notification" if (
+    #                 reward_expiration_notification_data["inapp_notification"] == 'true'
+    #             ) else "Push Notification",
+    #             "Image": (
+    #                 (AZURE_BLOB_STORAGE_URL + reward_expiration_notification_data["image"])
+    #                 if reward_expiration_notification_data["image"]
+    #                 else ""
+    #             )
+    #         }
     loyalty_details_object["loyalty_products"] = [
         {
             "id": product.id,
