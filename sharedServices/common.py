@@ -1495,3 +1495,14 @@ def safe_json_load(data):
         return json.loads(data)
     except Exception:
         return []
+
+def json_load(data):
+    """Safely convert JSON string to Python dict."""
+    if isinstance(data, dict):
+        return data
+    if not data:
+        return {}
+    try:
+        return json.loads(data)
+    except (TypeError, ValueError):
+        return {}
