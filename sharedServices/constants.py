@@ -856,6 +856,7 @@ REVIEW_STATUS_CHOICES = [
 ]
 
 MODULE_CHOICES = [
+    ("All", "All"),
     ("Offers", "Offers"),
     ("Sites", "Sites"),
     ("Loyalty", "Loyalty"),

@@ -1,7 +1,7 @@
 import datetime
 from rest_framework import serializers
 
-from sharedServices.constants import BAR_CODE_STANDARDS, BAR_CODE_STD, BOOLEAN_CHOICES, CATEGORY_CHOICES, CYCLE_DURATIONS, LOYALTY_TYPES, NO, OFFER_TYPES, REDEEM_CHOICES, REDEEM_TYPES, STATUS_CHOICES, YES
+from sharedServices.constants import BAR_CODE_STANDARDS, BAR_CODE_STD, BOOLEAN_CHOICES, CATEGORY_CHOICES, CYCLE_DURATIONS, LOYALTY_TYPES, NO, OFFER_TYPES, ORDER_CHOICES, REDEEM_CHOICES, REDEEM_TYPES, STATUS_CHOICES, YES
 from sharedServices.model_files.loyalty_models import Loyalty
 
 class AddLoyaltyRequestSerializer(serializers.Serializer):
@@ -218,8 +218,8 @@ class LoyaltyListRequestSerializer(serializers.Serializer):
     search = serializers.CharField(required=False, allow_blank=True, default="")
     from_date = serializers.DateField(required=False)
     to_date = serializers.DateField(required=False)
-    order_by_start_date = serializers.CharField(required=False, allow_blank=True)
-    order_by_end_date = serializers.CharField(required=False, allow_blank=True)
+    order_by_start_date = serializers.ChoiceField(choices=ORDER_CHOICES,required=False)
+    order_by_end_date = serializers.ChoiceField(choices=ORDER_CHOICES,required=False)
     export = serializers.CharField(required=False, allow_blank=True)
 
 class LoyaltyListResponseSerializer(serializers.ModelSerializer):

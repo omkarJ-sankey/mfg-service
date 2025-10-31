@@ -54,3 +54,14 @@ class AuditTrailListResponseSerializer(serializers.ModelSerializer):
 
 class AuditTrailDetailSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
+    module_type = serializers.ChoiceField(choices=MODULE_CHOICES,required=True)
+
+    def validate(self, data):
+        audit_id = data.get("id")
+        audit_instance = AuditTrail.objects.filter(id=audit_id).first()
+        if not audit_instance:
+            raise serializers.ValidationError("Audit Not found.")
+        
+        data["audit_instance"] = audit_instance
+
+        return data

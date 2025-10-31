@@ -1,5 +1,5 @@
 from django.utils import timezone
-from sharedServices.common import safe_json_load
+from sharedServices.common import json_load, safe_json_load
 from sharedServices.constants import YES
 from sharedServices.model_files.audit_models import AuditTrail
 
@@ -20,13 +20,13 @@ def get_audit_trail_list(validated_data):
 
     audit_records = AuditTrail.objects.all()
 
-    if user_role:
+    if user_role and user_role != "All":
         audit_records = audit_records.filter(user_role__icontains=user_role)
-    if reviewed:
+    if reviewed and reviewed != "All":
         audit_records = audit_records.filter(review_status__iexact=reviewed)
-    if module:
+    if module and module != "All":
         audit_records = audit_records.filter(module__iexact=module)
-    if action:
+    if action and action != "All":
         audit_records = audit_records.filter(action__icontains=action)
     if start_date and end_date:
         audit_records = audit_records.filter(created_date__range=[start_date, end_date])
@@ -50,34 +50,16 @@ def get_audit_trail_list(validated_data):
 
     return audit_records
 
-def get_audit_trail_detail(validated_data):
-    """
-    Fetch detailed audit trail record with old/new data and metadata.
-    Includes loyalty_products and loyalty_occurrences comparison.
-    """
-    audit_entry = AuditTrail.objects.filter(id=validated_data.get("id")).first()
-    if not audit_entry:
-        return {
-            "status": False,
-            "message": "Audit entry not found.",
-            "data": {}
-        }
+def get_offers_details(new_data, old_data):
+    """Return offer audit trail details"""
 
-    new_data_raw = safe_json_load(audit_entry.new_data)
-    old_data_raw = safe_json_load(audit_entry.previous_data)
-
-
-    new_data = new_data_raw[0] if isinstance(new_data_raw, list) and new_data_raw else (new_data_raw or {})
-    old_data = old_data_raw[0] if isinstance(old_data_raw, list) and old_data_raw else (old_data_raw or {})
-
-    loyalty_products_new = new_data.get("loyalty_products", []) or []
-    loyalty_products_old = old_data.get("loyalty_products", []) or []
+    loyalty_products_new = new_data.get("loyalty_products", [])
+    loyalty_products_old = old_data.get("loyalty_products", [])
     loyalty_products_resp = []
 
     for idx in range(max(len(loyalty_products_new), len(loyalty_products_old))):
         new_p = loyalty_products_new[idx] if idx < len(loyalty_products_new) else {}
         old_p = loyalty_products_old[idx] if idx < len(loyalty_products_old) else {}
-
         loyalty_products_resp.append({
             "id": new_p.get("id") or old_p.get("id"),
             "product_plu_new": new_p.get("Product PLU"),
@@ -94,14 +76,13 @@ def get_audit_trail_detail(validated_data):
             "status_old": old_p.get("Status"),
         })
 
-    occurrences_new = new_data.get("loyalty_occurrences", []) or []
-    occurrences_old = old_data.get("loyalty_occurrences", []) or []
+    occurrences_new = new_data.get("loyalty_occurrences", [])
+    occurrences_old = old_data.get("loyalty_occurrences", [])
     loyalty_occurrences_resp = []
 
     for idx in range(max(len(occurrences_new), len(occurrences_old))):
         new_o = occurrences_new[idx] if idx < len(occurrences_new) else {}
         old_o = occurrences_old[idx] if idx < len(occurrences_old) else {}
-
         loyalty_occurrences_resp.append({
             "id": new_o.get("id") or old_o.get("id"),
             "start_time_new": new_o.get("Start Time"),
@@ -145,19 +126,162 @@ def get_audit_trail_detail(validated_data):
             "reward_image": data.get("Reward Image"),
         }
 
-    result = {
-            "id": audit_entry.id,
-            "user_name": audit_entry.user_name,
-            "action":audit_entry.action,
-            "reviewed_by":audit_entry.reviewd_by if audit_entry.reviewd_by else None,
-            "reviewed_date":audit_entry.review_date if audit_entry.review_date else None,
-            "created_date": audit_entry.created_date.strftime("%Y-%m-%dT%H:%M:%SZ") if audit_entry.created_date else None,
+    return {
             "new_data": map_main_data(new_data),
             "old_data": map_main_data(old_data),
             "loyalty_products": loyalty_products_resp,
+            "loyalty_occurrences": loyalty_occurrences_resp,
     }
 
-    return result
+
+def get_sites_details(new_data, old_data):
+    """Return site audit trail details."""
+    # new_data = json_load(new_data)
+    # old_data = json_load(old_data)
+
+    new_station_images = new_data.get("station_images", [])
+    old_station_images = old_data.get("station_images", [])
+    station_images_resp = []
+
+    for idx in range(max(len(new_station_images), len(old_station_images))):
+        new_i = new_station_images[idx] if idx < len(new_station_images) else {}
+        old_i = old_station_images[idx] if idx < len(old_station_images) else {}
+        station_images_resp.append({
+            "id": new_i.get("id") or old_i.get("id"),
+            "image_path_new": new_i.get("image_path"),
+            "image_path_old": old_i.get("image_path"),
+        })
+
+    new_amenities = new_data.get("amenities", [])
+    old_amenities = old_data.get("amenities", [])
+    amenities_resp = []
+
+    for idx in range(max(len(new_amenities), len(old_amenities))):
+        new_a = new_amenities[idx] if idx < len(new_amenities) else {}
+        old_a = old_amenities[idx] if idx < len(old_amenities) else {}
+        amenities_resp.append({
+            "id": new_a.get("id") or old_a.get("id"),
+            "service_name_new": new_a.get("service_name"),
+            "service_name_old": old_a.get("service_name"),
+            "image_path_new": new_a.get("image_path"),
+            "image_path_old": old_a.get("image_path"),
+            "service_type_new": new_a.get("service_type"),
+            "service_type_old": old_a.get("service_type"),
+        })
+
+    new_retails = new_data.get("retails", [])
+    old_retails = old_data.get("retails", [])
+    retails_resp = []
+
+    for idx in range(max(len(new_retails), len(old_retails))):
+        new_r = new_retails[idx] if idx < len(new_retails) else {}
+        old_r = old_retails[idx] if idx < len(old_retails) else {}
+        retails_resp.append({
+            "id": new_r.get("id") or old_r.get("id"),
+            "service_name_new": new_r.get("service_name"),
+            "service_name_old": old_r.get("service_name"),
+            "image_path_new": new_r.get("image_path"),
+            "image_path_old": old_r.get("image_path"),
+            "service_type_new": new_r.get("service_type"),
+            "service_type_old": old_r.get("service_type"),
+        })
+
+    new_food = new_data.get("food_to_go", [])
+    old_food = old_data.get("food_to_go", [])
+    food_to_go_resp = []
+
+    for idx in range(max(len(new_food), len(old_food))):
+        new_f = new_food[idx] if idx < len(new_food) else {}
+        old_f = old_food[idx] if idx < len(old_food) else {}
+        food_to_go_resp.append({
+            "id": new_f.get("id") or old_f.get("id"),
+            "service_name_new": new_f.get("service_name"),
+            "service_name_old": old_f.get("service_name"),
+            "image_path_new": new_f.get("image_path"),
+            "image_path_old": old_f.get("image_path"),
+            "service_type_new": new_f.get("service_type"),
+            "service_type_old": old_f.get("service_type"),
+        })
+
+    def map_main_data(data):
+        return {
+            "station_id": data.get("Station ID"),
+            "station_name": data.get("Station Name"),
+            "station_address_1": data.get("Station Address 1"),
+            "station_address_2": data.get("Station Address 2"),
+            "station_address_3": data.get("Station Address 3"),
+            "town": data.get("Town"),
+            "post_code": data.get("Post Code"),
+            "country": data.get("Country"),
+            "brand": data.get("Brand"),
+            "owner": data.get("Owner"),
+            "latitude": data.get("Latitude"),
+            "longitude": data.get("Longitude"),
+            "email": data.get("Email"),
+            "phone": data.get("Phone"),
+            "status": data.get("Status"),
+            "station_type": data.get("Station Type"),
+            "site_title": data.get("Site Title"),
+            "operation_region": data.get("Operation Region"),
+            "region": data.get("Region"),
+            "regional_manager": data.get("Regional Manager"),
+            "area": data.get("Area"),
+            "area_retail_manager": data.get("Area Retail Manager"),
+            "working_hours": data.get("working_hours", {}),
+        }
+
+    return {
+            "new_data": map_main_data(new_data),
+            "old_data": map_main_data(old_data),
+            "station_images": station_images_resp,
+            "amenities": amenities_resp,
+            "retails": retails_resp,
+            "food_to_go": food_to_go_resp,
+    }
+
+
+def get_audit_trail_detail(validated_data):
+    """
+    Fetch detailed audit trail record with old/new data and metadata.
+    """
+    audit_entry : AuditTrail = validated_data.get("audit_instance")
+    new_data_raw = safe_json_load(audit_entry.new_data)
+    old_data_raw = safe_json_load(audit_entry.previous_data)
+
+    new_data = new_data_raw[0] if isinstance(new_data_raw, list) and new_data_raw else (new_data_raw or {})
+    old_data = old_data_raw[0] if isinstance(old_data_raw, list) and old_data_raw else (old_data_raw or {})
+
+    module_type = validated_data.get("module_type")
+
+    if module_type.lower() == "sites":
+        module_details = {"sites_details": get_sites_details(new_data, old_data)}
+
+    elif module_type.lower() == "offers":
+        module_details = {"offers_details": get_offers_details(new_data, old_data)}
+
+    else:
+        module_details = {}
+
+    response_data = {
+        "id": audit_entry.id,
+        "user_name": audit_entry.user_name,
+        "action": audit_entry.action,
+        "created_date": audit_entry.created_date,
+        "updated_date": audit_entry.updated_date,
+        "review_details": {
+            "reviewed_by": audit_entry.reviewd_by,
+            "reviewed_date": audit_entry.review_date,
+            "reviewed_status": audit_entry.review_status,
+        },
+        **module_details
+    }
+
+    return {
+        "status": True,
+        "message": "Audit details fetched successfully.",
+        "data": response_data
+    }
+
 
 def marked_as_reviewed(validated_data):
 
