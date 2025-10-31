@@ -562,14 +562,19 @@ class AdminLoginAPIView(APIView):
                 )
 
             result = admin_login_service(serializer.validated_data)
+            print("result-->",result)
 
             return api_response(
+                self,
                 message=result.get("message"),
                 status=result.get("status"),
-                status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST
+                status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,
+                data = result.get("data")
             )
         except Exception as e:
+            print("exception-->",e)
             return api_response(
+                self,
                 message=SOMETHING_WENT_WRONG,
                 status=False,
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -592,6 +597,7 @@ class AdminOTPVerificationAPIView(APIView):
 
             result = admin_otp_verification_service(serializer.validated_data)
             return api_response(
+                self,
                 message=result.get("message"),
                 status=result.get("status"),
                 status_code=status.HTTP_200_OK if result.get("status") else status.HTTP_400_BAD_REQUEST,

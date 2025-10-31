@@ -1223,7 +1223,7 @@ def filter_function_for_base_configuration(data_key, static_variable):
     """this function gets filtered data from base configuration"""
     base_config_obj = redis_connection.get(data_key)
     if not base_config_obj:
-        base_config_obj = BaseConfigurations.objects.filter(
+        base_config_obj = d.objects.filter(
             base_configuration_key=data_key
         ).first()
         if base_config_obj is None:
@@ -1414,6 +1414,7 @@ def api_response(
     ):
         """Use this common function to send responses for all APIs."""
         if error:
+            print("winting error response")
             logger.error(
                 "Error occured.",
                 extra={

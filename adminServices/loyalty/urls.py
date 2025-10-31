@@ -33,7 +33,7 @@ urlpatterns = [
         change_loyalty_status_view,
         name="change_loyalty_status_view",
     ),
-    # path("add-loyalties/", add_loyalties, name="add_loyalties"),
+    path("add-loyalties/", add_loyalties, name="add_loyalties"),
      path("add-loyalties/", AddLoyaltiesView.as_view(), name="add_loyalties"),
     path(
         "view-loyalties/<int:loyalty_pk>/",
